@@ -54,8 +54,8 @@
         android:id="@+id/button_display_cookie"
         android:layout_width="wrap_content"
         android:layout_height="46dp"
-        android:onClick="displayCookie"
-        android:text="Display Cookie"
+        android:onClick="getFavorites"
+        android:text="Get Favorites"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
@@ -64,12 +64,13 @@
         app:layout_constraintVertical_bias="0.346" />
 
     <TextView
-        android:id="@+id/textView_cookie"
+        android:id="@+id/textView_display"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="@dimen/spacing_small"
         android:gravity="center"
         android:hint="Server cookie"
+        android:scrollbars="vertical"
         android:text="TextView"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"

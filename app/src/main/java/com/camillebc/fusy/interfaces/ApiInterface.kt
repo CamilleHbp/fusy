@@ -1,10 +1,7 @@
 package com.camillebc.fusy.interfaces
 
-import java.net.CookieManager
-
+import android.app.Activity
 
 interface ApiInterface {
-    var cookieManager: CookieManager
-
-    fun login(username: String, password: String)
+    fun login(username: String, password: String, activity: Activity)
 }

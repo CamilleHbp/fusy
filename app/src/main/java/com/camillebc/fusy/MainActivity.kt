@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.Toast
 import com.camillebc.fusy.data.NetworkViewModel
@@ -21,11 +22,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        textView_display.movementMethod = ScrollingMovementMethod()
         networkViewModel = ViewModelProviders.of(this).get(NetworkViewModel::class.java)
         val observer = Observer<String>{
-            textView_cookie.text = it
+            textView_display.text = it
         }
-        networkViewModel.cookieManager.observe(this, observer)
+        networkViewModel.favorites.observe(this, observer)
     }
 
     fun connect(v: View) {
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Login and password cannot be empty.", Toast.LENGTH_SHORT).show()
             return
         }
-        royalRoadApi.login(login, password)
+        royalRoadApi.login(login, password, this)
     }
 
     fun displayCookie(v: View) {
@@ -45,5 +47,8 @@ class MainActivity : AppCompatActivity() {
                     + "Name: ${royalRoadApi.cookieManager.cookieStore.cookies[0].name}\n"
                     + "Value: ${royalRoadApi.cookieManager.cookieStore.cookies[0].value}\n"
         )
+    }
+    fun getFavorites(v: View) {
+        royalRoadApi.getFavorites(networkViewModel.favorites)
     }
 }

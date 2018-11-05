@@ -39,6 +39,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-drive:15.0.1'
     // JSON library
     implementation 'com.google.code.gson:gson:2.8.5'
+    // JSoup HTML parser
+    implementation 'org.jsoup:jsoup:1.11.3'
     // Kotlin Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0-RC1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0-RC1'
