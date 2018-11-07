@@ -17,4 +17,5 @@
     <dimen name="button_height_small">32dp</dimen>
     <dimen name="button_height_medium">40dp</dimen>
     <dimen name="button_height_large">60dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>
