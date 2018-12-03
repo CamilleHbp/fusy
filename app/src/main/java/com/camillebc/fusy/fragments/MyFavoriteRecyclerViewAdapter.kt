@@ -1,17 +1,21 @@
 package com.camillebc.fusy.fragments
 
-import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.camillebc.fusy.R
 import com.camillebc.fusy.data.FictionData
 
 
 import com.camillebc.fusy.fragments.FavoriteFragment.OnListFragmentInteractionListener
+import com.camillebc.fusy.utilities.BackgroundThread
+import com.camillebc.fusy.utilities.ImageLoader
 
 import kotlinx.android.synthetic.main.fragment_favorite.view.*
 
@@ -21,7 +25,8 @@ import kotlinx.android.synthetic.main.fragment_favorite.view.*
  */
 class MyFavoriteRecyclerViewAdapter(
     private var data: List<FictionData>,
-    private val mListener: OnListFragmentInteractionListener?
+    private val mListener: OnListFragmentInteractionListener?,
+    private val glide: RequestManager
 ) : RecyclerView.Adapter<MyFavoriteRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
@@ -35,18 +40,23 @@ class MyFavoriteRecyclerViewAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyFavoriteRecyclerViewAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_favorite, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        // Alternate the row's colour
+        if(position %2 == 1) holder.itemView.setBackgroundColor(Color.parseColor("#F4F4F4"))
+        else holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"))
+
         val item = data[position]
         holder.id.text = position.toString()
         holder.title.text = item.title
-        val bitmap = BitmapFactory.decodeFile(item.image!!.absolutePath)
-        holder.image.setImageBitmap(bitmap)
+        glide
+            .load(item.imageUrl)
+            .into(holder.image)
 
         with(holder.view) {
             tag = item

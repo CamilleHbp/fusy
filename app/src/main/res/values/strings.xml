@@ -4,4 +4,7 @@
     <string name="hint_login">Login</string>
     <string name="api_connection">Connect</string>
     <string name="account_title">Account</string>
+    <string name="undefined_number">#</string>
+    <string name="fiction_title">Fiction title</string>
+    <string name="fiction_miniature_missing">Fiction miniature missing</string>
 </resources>

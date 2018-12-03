@@ -2,14 +2,9 @@ package com.camillebc.fusy.network
 
 import APP_TAG
 import android.arch.lifecycle.MutableLiveData
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.util.Log
 import com.camillebc.fusy.data.FictionData
 import com.camillebc.fusy.interfaces.ApiInterface
-import com.camillebc.fusy.utilities.BackgroundThread
-import com.camillebc.fusy.utilities.ImageDownloader
-import kotlinx.coroutines.runBlocking
 import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -95,11 +90,7 @@ class RoyalroadService: ApiInterface {
                     }.toString()
                     val imageUrl = element.select(FAVORITE_IMAGE_QUERY).first().absUrl("src")
                     Log.i(TAG, "Image url: $imageUrl")
-                    val tempFile = File.createTempFile(title, null)
-                    val backgroundThread = BackgroundThread()
-                    backgroundThread.startBackgroundThread()
-                    backgroundThread.backgroundHandler?.post(ImageDownloader(imageUrl, tempFile))
-                    val fictionData = FictionData(title, tempFile, description)
+                    val fictionData = FictionData(title, imageUrl, description)
                     mutableList.add(index, fictionData)
                 }
                 liveData.postValue(mutableList.toList())

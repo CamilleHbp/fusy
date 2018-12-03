@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -30,6 +32,10 @@ dependencies {
     // Android preferences library
     implementation 'com.android.support:preference-v7:28.0.0'
     implementation 'com.android.support:preference-v14:28.0.0'
+    // Glide image loading library
+    implementation "com.github.bumptech.glide:glide:4.8.0"
+    kapt 'com.github.bumptech.glide:compiler:4.8.0'
+//    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     // Google Play services Auth split
     implementation 'com.google.android.gms:play-services-auth:16.0.0'
     // Google Api Client library and Android extension

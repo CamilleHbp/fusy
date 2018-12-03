@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.camillebc.fusy.R
 import com.camillebc.fusy.data.FictionData
 import com.camillebc.fusy.data.RoyalroadViewModel
@@ -52,7 +53,11 @@ class FavoriteFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                val favoritesAdapter = MyFavoriteRecyclerViewAdapter(RoyalroadViewModel.favoriteList.value!!, listener)
+                val favoritesAdapter = MyFavoriteRecyclerViewAdapter(
+                    RoyalroadViewModel.favoriteList.value!!,
+                    listener,
+                    Glide.with(this)
+                )
                 val favoritesObserver = Observer<List<FictionData>> {
                     if (it != null) {
                         favoritesAdapter.setData(it)
