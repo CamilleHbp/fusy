@@ -1,10 +1,10 @@
 package com.camillebc.fusy.network
 
 import APP_TAG
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.util.Log
 import com.camillebc.fusy.data.FictionData
-import com.camillebc.fusy.interfaces.ApiInterface
+import com.camillebc.fusy.interfaces.FictionProviderInterface
 import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -15,7 +15,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.io.File
 import java.lang.StringBuilder
 import java.net.CookieHandler
 import java.net.CookieManager
@@ -23,16 +22,16 @@ import java.net.CookiePolicy
 
 private const val BASE_URL = "https://www.royalroad.com/"
 private const val RETURN_URL = "https://www.royalroad.com/home"
-private const val TAG = APP_TAG + "RoyalroadService"
-// CSS QUERIES
-//private const val FAVORITE_IMAGE_QUERY = "img[src~=(?i)\\.(png|jpe?g|gif)]"
+private const val TAG = APP_TAG + "RoyalroadProvider"
+// JSOUP CSS QUERIES
 private const val FAVORITE_IMAGE_QUERY = "img[id~=cover]"
 private const val FAVORITE_ITEM_QUERY = "div.fiction-list-item"
 private const val FAVORITE_TITLE_QUERY = "h2.fiction-title"
 private const val FAVORITE_DESCRIPTION_QUERY = "div.description > div.hidden-content > p"
 
 
-class RoyalroadService: ApiInterface {
+class RoyalroadProvider: FictionProviderInterface {
+
     val cookieManager = CookieManager().apply { setCookiePolicy(CookiePolicy.ACCEPT_ALL) }
 
     private val networkInterface: RoyalroadInterface
@@ -70,7 +69,7 @@ class RoyalroadService: ApiInterface {
         })
     }
 
-    fun getFavorites(liveData: MutableLiveData<List<FictionData>>) {
+    override fun updateFavourites(favouritesList: MutableLiveData<List<FictionData>>) {
         val call = networkInterface.getFavorites()
         call.enqueue(object: Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -93,8 +92,12 @@ class RoyalroadService: ApiInterface {
                     val fictionData = FictionData(title, imageUrl, description)
                     mutableList.add(index, fictionData)
                 }
-                liveData.postValue(mutableList.toList())
+                favouritesList.postValue(mutableList.toList())
             }
         })
+    }
+
+    override fun updateReading(readingList: MutableLiveData<List<FictionData>>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

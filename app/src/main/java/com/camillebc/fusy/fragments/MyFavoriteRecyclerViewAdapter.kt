@@ -1,7 +1,7 @@
 package com.camillebc.fusy.fragments
 
 import android.graphics.Color
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,15 +27,15 @@ class MyFavoriteRecyclerViewAdapter(
     private var data: List<FictionData>,
     private val mListener: OnListFragmentInteractionListener?,
     private val glide: RequestManager
-) : RecyclerView.Adapter<MyFavoriteRecyclerViewAdapter.ViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<MyFavoriteRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
 
     init {
         mOnClickListener = View.OnClickListener { v ->
             val item = v.tag as FictionData
-            // Notify the active callbacks interface (the activity, if the fragment is attached to
-            // one) that an item has been selected.
+            // Notify the active callbacks interface (the activity, if the fragment is attached to one)
+            // that an item has been selected.
             mListener?.onListFragmentInteraction(item)
         }
     }
@@ -54,10 +54,9 @@ class MyFavoriteRecyclerViewAdapter(
         val item = data[position]
         holder.id.text = position.toString()
         holder.title.text = item.title
-        glide
-            .load(item.imageUrl)
-            .into(holder.image)
+        glide.load(item.imageUrl).into(holder.image)
 
+        // Set the click listener with the item as view's tag
         with(holder.view) {
             tag = item
             setOnClickListener(mOnClickListener)
@@ -71,7 +70,7 @@ class MyFavoriteRecyclerViewAdapter(
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(val view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
         val id: TextView = view.favorite_number
         val image: ImageView = view.favorite_image
         val title: TextView = view.favorite_title

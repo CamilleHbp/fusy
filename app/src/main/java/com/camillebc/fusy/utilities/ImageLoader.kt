@@ -2,7 +2,7 @@ package com.camillebc.fusy.utilities
 
 import android.graphics.BitmapFactory
 import android.os.Build
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.widget.ImageView
 import com.camillebc.fusy.data.FictionData
 import com.camillebc.fusy.fragments.MyFavoriteRecyclerViewAdapter

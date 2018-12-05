@@ -1,16 +1,16 @@
 package com.camillebc.fusy.utilities
 
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 
-fun AppCompatActivity.addFragment(fragment: Fragment, frameId: Int) {
+fun AppCompatActivity.addFragment(fragment: androidx.fragment.app.Fragment, frameId: Int) {
     supportFragmentManager.inTransaction { add(frameId, fragment) }
 }
 
-fun AppCompatActivity.removeFragment(fragment: Fragment, frameId: Int) {
+fun AppCompatActivity.removeFragment(fragment: androidx.fragment.app.Fragment, frameId: Int) {
     supportFragmentManager.inTransaction { remove(fragment) }
 }
 
-fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: Int) {
+fun AppCompatActivity.replaceFragment(fragment: androidx.fragment.app.Fragment, frameId: Int) {
     supportFragmentManager.inTransaction { replace(frameId, fragment) }
 }

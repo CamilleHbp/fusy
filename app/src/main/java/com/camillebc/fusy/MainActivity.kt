@@ -1,34 +1,46 @@
 package com.camillebc.fusy
 
 import APP_TAG
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.camillebc.fusy.di.AppComponent
 import com.camillebc.fusy.data.FictionData
 import com.camillebc.fusy.data.RoyalroadViewModel
-import com.camillebc.fusy.network.RoyalroadService
+import com.camillebc.fusy.di.DaggerAppComponent
+import com.camillebc.fusy.di.modules.AppModule
+import com.camillebc.fusy.network.RoyalroadProvider
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 private const val TAG = APP_TAG + "MainActivity"
 
 class MainActivity : AppCompatActivity() {
-    private val royalRoadApi = RoyalroadService()
+    private val royalRoadApi = RoyalroadProvider()
+    private lateinit var appComponent: AppComponent
+    @Inject lateinit var app: Context
 //    private lateinit var royalroadViewModel: RoyalroadViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // DaggerFun
+        appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
+        appComponent.inject(this)
+        Toast.makeText(this, "AppContext: $app", Toast.LENGTH_SHORT).show()
+
+
         setContentView(R.layout.activity_main)
 //        royalroadViewModel = ViewModelProviders.of(this).get(RoyalroadViewModel::class.java)
         val connectionObserver = Observer<Boolean> {
             if (it!!) {
                 Toast.makeText(this, "Login successful.", Toast.LENGTH_SHORT).show()
                 // TODO("Implement Database") // The favorites will be initialized when creating the database in the future
-                royalRoadApi.getFavorites(RoyalroadViewModel.favoriteList)
+                royalRoadApi.updateFavourites(RoyalroadViewModel.favoriteList)
             } else {
                 Toast.makeText(this, "Login failed: check your login/password.", Toast.LENGTH_SHORT).show()
             }

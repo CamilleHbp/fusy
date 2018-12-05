@@ -1,13 +1,12 @@
 package com.camillebc.fusy.fragments
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,16 +14,13 @@ import com.bumptech.glide.Glide
 import com.camillebc.fusy.R
 import com.camillebc.fusy.data.FictionData
 import com.camillebc.fusy.data.RoyalroadViewModel
-import com.camillebc.fusy.fragments.dummy.DummyContent
-
-import com.camillebc.fusy.network.RoyalroadService
 
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
  * [FavoriteFragment.OnListFragmentInteractionListener] interface.
  */
-class FavoriteFragment : Fragment() {
+class FavoriteFragment : androidx.fragment.app.Fragment() {
 
     private var columnCount = 1
     private var listener: OnListFragmentInteractionListener? = null
@@ -47,11 +43,11 @@ class FavoriteFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_favorite_list, container, false)
 
         // Set the adapter
-        if (view is RecyclerView) {
+        if (view is androidx.recyclerview.widget.RecyclerView) {
             with(view) {
                 layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
+                    columnCount <= 1 -> androidx.recyclerview.widget.LinearLayoutManager(context)
+                    else -> androidx.recyclerview.widget.GridLayoutManager(context, columnCount)
                 }
                 val favoritesAdapter = MyFavoriteRecyclerViewAdapter(
                     RoyalroadViewModel.favoriteList.value!!,
