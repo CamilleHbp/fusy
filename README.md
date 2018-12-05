@@ -9,7 +9,8 @@
 <p>The goal would be to centralise all those sources, add the ability to download the fictions offline and manage them in a library.</p>
 <h3 id="fictioncomponent">FictionComponent</h3>
 <p>I am using dagger to try my hand at dependency injection. I’ve decided to create a singleton component that will manage the FictionRepository, which itself will manage the FictionDb and the FictionProviders (i.e. RoyalRoad, FanFiction…).</p>
-<p><img src="docs/images/FictionDependencies.png" alt="FictionDependencies"></p>
+<p><img src="docs/images/FictionDependencies.png" alt="FictionDependencies"><br>
+<a href="https://www.draw.io/#HCamilleBC%2Ffusy%2Fmaster%2Fdocs%2Fimages%2FFictionDependencies.xml">Edit</a></p>
 <p>Updates:</p>
 <ul>
 <li><a href="https://github.com/CamilleBC/fusy/commit/76173f3b7ca6f2c4dd43769217421a798013fa5f">2018/12/03</a>:  using <a href="https://bumptech.github.io/glide/">Glide</a> to manage image loadings.</li>
