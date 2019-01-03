@@ -18,6 +18,7 @@
 <li>using deferred coroutines with retrofit (thanks, <a href="https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter">Jake Wharton</a>) for the fiction host (<a href="http://RoyalRoad.com">RoyalRoad.com</a>) calls.</li>
 <li>creating the beginning of a <a href="https://developer.android.com/training/data-storage/room/">Room</a> architecture for the fiction db/repository.</li>
 <li>creating the beginning of a <a href="https://google.github.io/dagger/">dagger2</a> dependency injection architecture for the fiction db/repository.</li>
+<li>add a HardwareStatusManager that uses the global App context to retrive the network and battery status. TODO: implement a broadcast listener to get the <a href="https://developer.android.com/reference/android/content/Intent.html#ACTION_BATTERY_LOW">ACTION_BATTERY_LOW</a> intent broadcast.</li>
 </ul>
 </li>
 <li><strong>2018/12/05</strong>:
