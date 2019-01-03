@@ -1,11 +1,10 @@
 package com.camillebc.fusy.di.modules
 
-import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
 
 @Module
-class FictionRepositoryModule(private val appContext: Context) {
-    @Provides @Singleton fun provideApplicationContext()= appContext
+class FictionRepositoryModule {
+    private val isConnectedRoyalroad = MutableLiveData<Boolean>().also { it.value = false }
+    private val isConnectedFanfiction = MutableLiveData<Boolean>().also { it.value = false }
 }

@@ -1,12 +1,13 @@
 package com.camillebc.fusy.di
 
-import com.camillebc.fusy.MainActivity
-import com.camillebc.fusy.di.modules.AppModule
+import com.camillebc.fusy.AccountActivity
+import com.camillebc.fusy.di.modules.ContextModule
+import com.camillebc.fusy.di.modules.FictionDatabaseModule
 import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class])
+@Component(modules = [ContextModule::class, FictionDatabaseModule::class])
 interface FictionComponent {
-    fun inject(mainActivity: MainActivity)
+    fun inject(accountActivity: AccountActivity)
 }

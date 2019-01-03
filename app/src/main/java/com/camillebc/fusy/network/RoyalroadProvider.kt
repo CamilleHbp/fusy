@@ -3,8 +3,10 @@ package com.camillebc.fusy.network
 import APP_TAG
 import androidx.lifecycle.MutableLiveData
 import android.util.Log
-import com.camillebc.fusy.data.FictionData
+import com.camillebc.fusy.data.Fiction
 import com.camillebc.fusy.interfaces.FictionProviderInterface
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import kotlinx.coroutines.*
 import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -19,6 +21,7 @@ import java.lang.StringBuilder
 import java.net.CookieHandler
 import java.net.CookieManager
 import java.net.CookiePolicy
+import kotlin.coroutines.CoroutineContext
 
 private const val BASE_URL = "https://www.royalroad.com/"
 private const val RETURN_URL = "https://www.royalroad.com/home"
@@ -44,6 +47,7 @@ class RoyalroadProvider: FictionProviderInterface {
             cookieJar(JavaNetCookieJar(cookieManager))
         }
         val retrofit = Retrofit.Builder().apply {
+            addCallAdapterFactory(CoroutineCallAdapterFactory())
             addConverterFactory(ScalarsConverterFactory.create())
             baseUrl(BASE_URL)
             client(httpClient.build())
@@ -69,35 +73,57 @@ class RoyalroadProvider: FictionProviderInterface {
         })
     }
 
-    override fun updateFavourites(favouritesList: MutableLiveData<List<FictionData>>) {
-        val call = networkInterface.getFavorites()
-        call.enqueue(object: Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e(TAG, t.message)
-            }
+    override suspend fun getFavouritesOrNull(): List<Fiction>? {
+        val response = networkInterface.getFavorites().await()
 
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                Log.i(TAG, "GetFavorites")
-                val mutableList = mutableListOf<FictionData>()
-                val doc = Jsoup.parse(response.body()?.string())
-                val item = doc.select(FAVORITE_ITEM_QUERY)
-                item.forEachIndexed { index, element ->
-                    val title = element.select(FAVORITE_TITLE_QUERY).text()
-                    val description = StringBuilder().also {
-                        element.select(FAVORITE_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
-                        }
-                    }.toString()
-                    val imageUrl = element.select(FAVORITE_IMAGE_QUERY).first().absUrl("src")
-                    Log.i(TAG, "Image url: $imageUrl")
-                    val fictionData = FictionData(title, imageUrl, description)
-                    mutableList.add(index, fictionData)
-                }
-                favouritesList.postValue(mutableList.toList())
+        if (response.isSuccessful) {
+            Log.i(TAG, "GetFavorites")
+            val mutableList = mutableListOf<Fiction>()
+            val doc = Jsoup.parse(response.body()?.string())
+            val item = doc.select(FAVORITE_ITEM_QUERY)
+            item.forEachIndexed { index, element ->
+                val title = element.select(FAVORITE_TITLE_QUERY).text()
+                val description = StringBuilder().also {
+                    element.select(FAVORITE_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
+                    }
+                }.toString()
+                val imageUrl = element.select(FAVORITE_IMAGE_QUERY).first().absUrl("src")
+                Log.i(TAG, "Image url: $imageUrl")
+
+                val fictionData = Fiction(title, imageUrl, description, true, "royalroad")
+                mutableList.add(index, fictionData)
             }
-        })
+            return mutableList.toList()
+        }
+        return null
+//        call.enqueue(object: Callback<ResponseBody> {
+//            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+//                Log.e(TAG, t.message)
+//            }
+//
+//            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+//                Log.i(TAG, "GetFavorites")
+//                val mutableList = mutableListOf<Fiction>()
+//                val doc = Jsoup.parse(response.body()?.string())
+//                val item = doc.select(FAVORITE_ITEM_QUERY)
+//                item.forEachIndexed { index, element ->
+//                    val title = element.select(FAVORITE_TITLE_QUERY).text()
+//                    val description = StringBuilder().also {
+//                        element.select(FAVORITE_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
+//                        }
+//                    }.toString()
+//                    val imageUrl = element.select(FAVORITE_IMAGE_QUERY).first().absUrl("src")
+//                    Log.i(TAG, "Image url: $imageUrl")
+//
+//                    val fictionData = Fiction(title, imageUrl, description, true, "royalroad")
+//                    mutableList.add(index, fictionData)
+//                }
+//                mutableList.toList()
+//            }
+//        })
     }
 
-    override fun updateReading(readingList: MutableLiveData<List<FictionData>>) {
+    override fun updateReading(readingList: MutableLiveData<List<Fiction>>) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

@@ -1,10 +1,10 @@
 package com.camillebc.fusy.interfaces
 
 import androidx.lifecycle.MutableLiveData
-import com.camillebc.fusy.data.FictionData
+import com.camillebc.fusy.data.Fiction
 
 interface FictionProviderInterface {
     fun login(username: String, password: String, isConnected: MutableLiveData<Boolean>)
-    fun updateFavourites(favouritesList: MutableLiveData<List<FictionData>>)
-    fun updateReading(readingList: MutableLiveData<List<FictionData>>)
+    suspend fun getFavouritesOrNull(): List<Fiction>?
+    fun updateReading(readingList: MutableLiveData<List<Fiction>>)
 }

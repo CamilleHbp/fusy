@@ -1,7 +1,9 @@
 package com.camillebc.fusy.network
 
+import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 private const val RETURN_URL_KEY = "returnUrl"
@@ -20,6 +22,6 @@ interface RoyalroadInterface {
     ): Call<String>
 
     @GET("my/favorites")
-    fun getFavorites(): Call<ResponseBody>
+    fun getFavorites(): Deferred<Response<ResponseBody>>
 }
 

@@ -3,16 +3,12 @@ package com.camillebc.fusy.fragments
 import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.camillebc.fusy.R
-import com.camillebc.fusy.data.FictionData
+import com.camillebc.fusy.data.Fiction
 import com.camillebc.fusy.data.RoyalroadViewModel
 
 /**
@@ -54,7 +50,7 @@ class FavoriteFragment : androidx.fragment.app.Fragment() {
                     listener,
                     Glide.with(this)
                 )
-                val favoritesObserver = Observer<List<FictionData>> {
+                val favoritesObserver = Observer<List<Fiction>> {
                     if (it != null) {
                         favoritesAdapter.setData(it)
                     }
@@ -93,7 +89,7 @@ class FavoriteFragment : androidx.fragment.app.Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: FictionData?)
+        fun onListFragmentInteraction(item: Fiction?)
     }
 
     companion object {

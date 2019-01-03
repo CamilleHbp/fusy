@@ -9,13 +9,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
+import com.camillebc.fusy.R.id.editText_login
+import com.camillebc.fusy.R.id.editText_password
 import com.camillebc.fusy.di.AppComponent
-import com.camillebc.fusy.data.FictionData
+import com.camillebc.fusy.data.Fiction
 import com.camillebc.fusy.data.RoyalroadViewModel
+import com.camillebc.fusy.data.RoyalroadViewModel.favoriteList
 import com.camillebc.fusy.di.DaggerAppComponent
-import com.camillebc.fusy.di.modules.AppModule
+import com.camillebc.fusy.di.modules.ContextModule
 import com.camillebc.fusy.network.RoyalroadProvider
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 private const val TAG = APP_TAG + "MainActivity"
@@ -29,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // DaggerFun
-        appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
+        appComponent = DaggerAppComponent.builder().contextModule(ContextModule(this)).build()
         appComponent.inject(this)
         Toast.makeText(this, "AppContext: $app", Toast.LENGTH_SHORT).show()
 
@@ -40,13 +45,19 @@ class MainActivity : AppCompatActivity() {
             if (it!!) {
                 Toast.makeText(this, "Login successful.", Toast.LENGTH_SHORT).show()
                 // TODO("Implement Database") // The favorites will be initialized when creating the database in the future
-                royalRoadApi.updateFavourites(RoyalroadViewModel.favoriteList)
+                 val favouritesJob= CoroutineScope(Dispatchers.IO).launch {
+                     val favourites = royalRoadApi.getFavouritesOrNull()
+
+                     withContext(Dispatchers.Default) {
+                         RoyalroadViewModel.favoriteList.postValue(favourites)
+                 }
+                }
             } else {
                 Toast.makeText(this, "Login failed: check your login/password.", Toast.LENGTH_SHORT).show()
             }
         }
         RoyalroadViewModel.isConnected.observe(this, connectionObserver)
-        val favoriteObserver = Observer<List<FictionData>> {
+        val favoriteObserver = Observer<List<Fiction>> {
             launchAccountActivity()
         }
         RoyalroadViewModel.favoriteList.observe(this, favoriteObserver)

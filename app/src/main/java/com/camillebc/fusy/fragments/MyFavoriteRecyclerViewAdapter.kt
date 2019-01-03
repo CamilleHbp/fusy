@@ -7,24 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.camillebc.fusy.R
-import com.camillebc.fusy.data.FictionData
+import com.camillebc.fusy.data.Fiction
 
 
 import com.camillebc.fusy.fragments.FavoriteFragment.OnListFragmentInteractionListener
-import com.camillebc.fusy.utilities.BackgroundThread
-import com.camillebc.fusy.utilities.ImageLoader
 
 import kotlinx.android.synthetic.main.fragment_favorite.view.*
 
 /**
- * [RecyclerView.Adapter] that can display a [FictionData] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [Fiction] and makes a call to the
  * specified [OnListFragmentInteractionListener].
  */
 class MyFavoriteRecyclerViewAdapter(
-    private var data: List<FictionData>,
+    private var data: List<Fiction>,
     private val mListener: OnListFragmentInteractionListener?,
     private val glide: RequestManager
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<MyFavoriteRecyclerViewAdapter.ViewHolder>() {
@@ -33,7 +30,7 @@ class MyFavoriteRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as FictionData
+            val item = v.tag as Fiction
             // Notify the active callbacks interface (the activity, if the fragment is attached to one)
             // that an item has been selected.
             mListener?.onListFragmentInteraction(item)
@@ -65,7 +62,7 @@ class MyFavoriteRecyclerViewAdapter(
 
     override fun getItemCount(): Int = data.size
 
-    fun setData(newData: List<FictionData>) {
+    fun setData(newData: List<Fiction>) {
         data = newData
         notifyDataSetChanged()
     }

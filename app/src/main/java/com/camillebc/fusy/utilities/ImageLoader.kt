@@ -2,10 +2,7 @@ package com.camillebc.fusy.utilities
 
 import android.graphics.BitmapFactory
 import android.os.Build
-import androidx.recyclerview.widget.RecyclerView
 import android.widget.ImageView
-import com.camillebc.fusy.data.FictionData
-import com.camillebc.fusy.fragments.MyFavoriteRecyclerViewAdapter
 import java.io.File
 import java.net.URL
 import java.nio.channels.Channels

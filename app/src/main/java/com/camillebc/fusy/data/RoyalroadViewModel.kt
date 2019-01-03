@@ -6,5 +6,5 @@ import androidx.lifecycle.ViewModel
 object RoyalroadViewModel: ViewModel() {
     val isConnected = MutableLiveData<Boolean>()
     val cookieManager = MutableLiveData<String>()
-    val favoriteList = MutableLiveData<List<FictionData>>()
+    val favoriteList = MutableLiveData<List<Fiction>>()
 }
