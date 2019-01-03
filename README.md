@@ -13,8 +13,23 @@
 <a href="https://www.draw.io/#HCamilleBC%2Ffusy%2Fmaster%2Fdocs%2Fimages%2FFictionDependencies.xml">Edit</a></p>
 <p>Updates:</p>
 <ul>
-<li><a href="https://github.com/CamilleBC/fusy/commit/76173f3b7ca6f2c4dd43769217421a798013fa5f">2018/12/03</a>:  using <a href="https://bumptech.github.io/glide/">Glide</a> to manage image loadings.</li>
-<li><strong>2018/12/05</strong>: add a diagram to explain the FictionComponent architecture.</li>
+<li><a href="https://github.com/CamilleBC/fusy/commit/c4dd7b8d9de759f08e64db58bba386e260d225bd">2019/01/03</a>:
+<ul>
+<li>using deferred coroutines with retrofit (thanks, <a href="https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter">Jake Wharton</a>) for the fiction host (<a href="http://RoyalRoad.com">RoyalRoad.com</a>) calls.</li>
+<li>creating the beginning of a <a href="https://developer.android.com/training/data-storage/room/">Room</a> architecture for the fiction db/repository.</li>
+<li>creating the beginning of a <a href="https://google.github.io/dagger/">dagger2</a> dependency injection architecture for the fiction db/repository.</li>
+</ul>
+</li>
+<li><strong>2018/12/05</strong>:
+<ul>
+<li>add a diagram to explain the FictionComponent architecture.</li>
+</ul>
+</li>
+<li><a href="https://github.com/CamilleBC/fusy/commit/76173f3b7ca6f2c4dd43769217421a798013fa5f">2018/12/03</a>:
+<ul>
+<li>using <a href="https://bumptech.github.io/glide/">Glide</a> to manage image loadings.</li>
+</ul>
+</li>
 </ul>
 <blockquote>
 <p>Written with <a href="https://stackedit.io/">StackEdit</a>.</p>
