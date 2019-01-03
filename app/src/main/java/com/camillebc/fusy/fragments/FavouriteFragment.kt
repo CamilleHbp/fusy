@@ -14,13 +14,12 @@ import com.camillebc.fusy.data.RoyalroadViewModel
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
- * [FavoriteFragment.OnListFragmentInteractionListener] interface.
+ * [FavouriteFragment.OnListFragmentInteractionListener] interface.
  */
-class FavoriteFragment : androidx.fragment.app.Fragment() {
+class FavouriteFragment : androidx.fragment.app.Fragment() {
 
     private var columnCount = 1
     private var listener: OnListFragmentInteractionListener? = null
-//    private lateinit var royalroadViewModel: RoyalroadViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +27,6 @@ class FavoriteFragment : androidx.fragment.app.Fragment() {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
-
-//        royalroadViewModel = ViewModelProviders.of(this).get(RoyalroadViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -56,7 +53,7 @@ class FavoriteFragment : androidx.fragment.app.Fragment() {
                     }
                 }
                 adapter = favoritesAdapter
-                RoyalroadViewModel.favoriteList.observe(this@FavoriteFragment, favoritesObserver)
+                RoyalroadViewModel.favoriteList.observe(this@FavouriteFragment, favoritesObserver)
             }
         }
         return view
@@ -88,7 +85,6 @@ class FavoriteFragment : androidx.fragment.app.Fragment() {
      * for more information.
      */
     interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onListFragmentInteraction(item: Fiction?)
     }
 
@@ -100,7 +96,7 @@ class FavoriteFragment : androidx.fragment.app.Fragment() {
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            FavoriteFragment().apply {
+            FavouriteFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }

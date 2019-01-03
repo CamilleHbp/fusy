@@ -27,20 +27,12 @@ private const val TAG = APP_TAG + "MainActivity"
 
 class MainActivity : AppCompatActivity() {
     private val royalRoadApi = RoyalroadProvider()
-    private lateinit var appComponent: AppComponent
     @Inject lateinit var app: Context
-//    private lateinit var royalroadViewModel: RoyalroadViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // DaggerFun
-        appComponent = DaggerAppComponent.builder().contextModule(ContextModule(this)).build()
-        appComponent.inject(this)
-        Toast.makeText(this, "AppContext: $app", Toast.LENGTH_SHORT).show()
-
 
         setContentView(R.layout.activity_main)
-//        royalroadViewModel = ViewModelProviders.of(this).get(RoyalroadViewModel::class.java)
         val connectionObserver = Observer<Boolean> {
             if (it!!) {
                 Toast.makeText(this, "Login successful.", Toast.LENGTH_SHORT).show()

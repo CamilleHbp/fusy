@@ -12,7 +12,7 @@ import com.camillebc.fusy.R
 import com.camillebc.fusy.data.Fiction
 
 
-import com.camillebc.fusy.fragments.FavoriteFragment.OnListFragmentInteractionListener
+import com.camillebc.fusy.fragments.FavouriteFragment.OnListFragmentInteractionListener
 
 import kotlinx.android.synthetic.main.fragment_favorite.view.*
 

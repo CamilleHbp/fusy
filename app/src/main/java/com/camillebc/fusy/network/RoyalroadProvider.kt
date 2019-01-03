@@ -1,15 +1,13 @@
 package com.camillebc.fusy.network
 
 import APP_TAG
-import androidx.lifecycle.MutableLiveData
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.camillebc.fusy.data.Fiction
 import com.camillebc.fusy.interfaces.FictionProviderInterface
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import kotlinx.coroutines.*
 import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import org.jsoup.Jsoup
 import retrofit2.Call
@@ -17,11 +15,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.lang.StringBuilder
 import java.net.CookieHandler
 import java.net.CookieManager
 import java.net.CookiePolicy
-import kotlin.coroutines.CoroutineContext
 
 private const val BASE_URL = "https://www.royalroad.com/"
 private const val RETURN_URL = "https://www.royalroad.com/home"

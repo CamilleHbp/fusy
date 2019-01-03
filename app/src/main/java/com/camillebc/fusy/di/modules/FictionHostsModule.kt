@@ -6,6 +6,6 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class FictionProvidersModule(private val appContext: Context) {
+class FictionHostsModule(private val appContext: Context) {
     @Provides @Singleton fun provideApplicationContext()= appContext
 }
