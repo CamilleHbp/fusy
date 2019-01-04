@@ -7,12 +7,17 @@
 <h2 id="a-webserial-library-manager">A webserial library manager</h2>
 <p>This project will try to implement custom APIs to <a href="https://www.royalroad.com/">royalroad.com</a>, <a href="http://japtem.com/fanfic.php">japtem</a>, <a href="https://www.fanfiction.net/">fanfiction.net</a>, <a href="https://www.wattpad.com/">wattpad</a> and other webserials and fanfiction websites.</p>
 <p>The goal would be to centralise all those sources, add the ability to download the fictions offline and manage them in a library.</p>
-<h3 id="fictioncomponent">FictionComponent</h3>
-<p>I am using dagger to try my hand at dependency injection. I’ve decided to create a singleton component that will manage the FictionRepository, which itself will manage the FictionDb and the FictionProviders (i.e. RoyalRoad, FanFiction…).</p>
-<p><img src="docs/images/FictionDependencies.png" alt="FictionDependencies"><br>
-<a href="https://www.draw.io/#HCamilleBC%2Ffusy%2Fmaster%2Fdocs%2Fimages%2FFictionDependencies.xml">Edit</a></p>
-<p>Updates:</p>
+<h2 id="wiki"><a href="https://github.com/CamilleBC/fusy/wiki">WIKI</a></h2>
+<p>Checkout the <a href="https://github.com/CamilleBC/fusy/wiki">wiki</a> if you want more information about how the project’s architecture!</p>
+<h2 id="updates">Updates:</h2>
 <ul>
+<li><a href="https://github.com/CamilleBC/fusy/commit/273e588588fc708cdd3dbd1852b5ea86aa22ccd2">2019/01/03</a>:
+<ul>
+<li>using dagger 2 to inject a singleton Fiction component that provides a FictionRepository to all activites/fragments.</li>
+<li>Fiction host and database are now hidden in a Fiction repository, which will manage all interactions with the fictions.</li>
+<li>started a wiki to describe the project’s architecture.</li>
+</ul>
+</li>
 <li><a href="https://github.com/CamilleBC/fusy/commit/c4dd7b8d9de759f08e64db58bba386e260d225bd">2019/01/03</a>:
 <ul>
 <li>using deferred coroutines with retrofit (thanks, <a href="https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter">Jake Wharton</a>) for the fiction host (<a href="http://RoyalRoad.com">RoyalRoad.com</a>) calls.</li>
