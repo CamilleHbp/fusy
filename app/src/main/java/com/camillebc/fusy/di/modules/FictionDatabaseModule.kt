@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Module
 class FictionDatabaseModule {
-    @Provides @Singleton
-    fun providesFictionDatabase(context: Context): FictionDatabase =
-        Room.databaseBuilder(context, FictionDatabase::class.java, "fiction-db").build()
+    @Provides
+    @Singleton
+    fun providesFictionDatabase(context: Context) = Room.databaseBuilder(context, FictionDatabase::class.java, "fiction-db").build()
 }

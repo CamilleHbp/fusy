@@ -1,58 +1,47 @@
 package com.camillebc.fusy
 
-import APP_TAG
-import androidx.lifecycle.Observer
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
-import com.camillebc.fusy.R.id.editText_login
-import com.camillebc.fusy.R.id.editText_password
-import com.camillebc.fusy.di.AppComponent
-import com.camillebc.fusy.data.Fiction
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import com.camillebc.fusy.data.FictionRepository
 import com.camillebc.fusy.data.RoyalroadViewModel
-import com.camillebc.fusy.data.RoyalroadViewModel.favoriteList
-import com.camillebc.fusy.di.DaggerAppComponent
-import com.camillebc.fusy.di.modules.ContextModule
-import com.camillebc.fusy.network.RoyalroadProvider
+import com.camillebc.fusy.di.Injector
+import com.camillebc.fusy.utilities.APP_TAG
+import com.camillebc.fusy.utilities.HardwareStatusManager
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.*
 import javax.inject.Inject
 
 private const val TAG = APP_TAG + "MainActivity"
 
 class MainActivity : AppCompatActivity() {
-    private val royalRoadApi = RoyalroadProvider()
-    @Inject lateinit var app: Context
+    @Inject lateinit var hardwareStatusManager: HardwareStatusManager
+    @Inject lateinit var repository: FictionRepository
+
+    init {
+        Injector.getFictionComponent().inject(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+        val status = hardwareStatusManager.getConnectivityStatus().toString()
+        val type = hardwareStatusManager.getConnectivityType().name
+        val battery = hardwareStatusManager.getBatteryStatus().name
+
+        Toast.makeText(this,
+            "Connectivity status: $status\nConnectivity type: $type\nBattery status: $battery",
+            Toast.LENGTH_SHORT).show()
+
         val connectionObserver = Observer<Boolean> {
             if (it!!) {
-                Toast.makeText(this, "Login successful.", Toast.LENGTH_SHORT).show()
-                // TODO("Implement Database") // The favorites will be initialized when creating the database in the future
-                 val favouritesJob= CoroutineScope(Dispatchers.IO).launch {
-                     val favourites = royalRoadApi.getFavouritesOrNull()
-
-                     withContext(Dispatchers.Default) {
-                         RoyalroadViewModel.favoriteList.postValue(favourites)
-                 }
-                }
-            } else {
-                Toast.makeText(this, "Login failed: check your login/password.", Toast.LENGTH_SHORT).show()
+                launchAccountActivity()
             }
         }
         RoyalroadViewModel.isConnected.observe(this, connectionObserver)
-        val favoriteObserver = Observer<List<Fiction>> {
-            launchAccountActivity()
-        }
-        RoyalroadViewModel.favoriteList.observe(this, favoriteObserver)
     }
 
     fun connect(v: View) {
@@ -63,24 +52,11 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Login and password cannot be empty.", Toast.LENGTH_SHORT).show()
             return
         }
-        royalRoadApi.login(login, password, RoyalroadViewModel.isConnected)
+        repository.host.login(login, password, RoyalroadViewModel.isConnected)
     }
 
     private fun launchAccountActivity() {
-        RoyalroadViewModel.favoriteList.value!!.forEach {
-            Log.i(TAG, "Result title: ${it.title}")
-            Log.i(TAG, "Result description: ${it.description}")
-        }
         val intent = Intent(this, AccountActivity::class.java)
         startActivity(intent)
-    }
-
-    @Deprecated("Displays the cookie's values for debugging purposes")
-    fun displayCookie(v: View) {
-        RoyalroadViewModel.cookieManager.postValue(
-            "Domain: ${royalRoadApi.cookieManager.cookieStore.cookies[0].domain}\n"
-                    + "Name: ${royalRoadApi.cookieManager.cookieStore.cookies[0].name}\n"
-                    + "Value: ${royalRoadApi.cookieManager.cookieStore.cookies[0].value}\n"
-        )
     }
 }

@@ -1,11 +1,12 @@
 package com.camillebc.fusy.fragments
 
-import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.camillebc.fusy.R
 import com.camillebc.fusy.data.Fiction
@@ -43,16 +44,18 @@ class FavouriteFragment : androidx.fragment.app.Fragment() {
                     else -> androidx.recyclerview.widget.GridLayoutManager(context, columnCount)
                 }
                 val favoritesAdapter = MyFavoriteRecyclerViewAdapter(
-                    RoyalroadViewModel.favoriteList.value!!,
+                    RoyalroadViewModel.favoriteList.value?: listOf<Fiction>(),
                     listener,
                     Glide.with(this)
                 )
-                val favoritesObserver = Observer<List<Fiction>> {
-                    if (it != null) {
-                        favoritesAdapter.setData(it)
-                    }
-                }
                 adapter = favoritesAdapter
+                val favoritesObserver = Observer<List<Fiction>> {
+                        var test = "No data"
+                        if (it.isNotEmpty()) test = it[it.lastIndex].title
+
+                        Toast.makeText(this.context, test, Toast.LENGTH_SHORT).show()
+                        favoritesAdapter.setData(it)
+                }
                 RoyalroadViewModel.favoriteList.observe(this@FavouriteFragment, favoritesObserver)
             }
         }

@@ -1,6 +1,5 @@
 package com.camillebc.fusy.utilities
 
-import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 
 fun AppCompatActivity.addFragment(fragment: androidx.fragment.app.Fragment, frameId: Int) {

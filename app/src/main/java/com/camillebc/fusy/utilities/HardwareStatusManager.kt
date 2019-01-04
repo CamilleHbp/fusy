@@ -6,8 +6,6 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.BatteryManager
-import androidx.lifecycle.MutableLiveData
-import com.camillebc.fusy.di.modules.FictionRepositoryModule
 
 
 class HardwareStatusManager(private val context: Context) {
@@ -32,8 +30,8 @@ class HardwareStatusManager(private val context: Context) {
     }
 
     fun getBatteryStatus(): BatteryStatus {
-        val batteryStatus: Intent? = IntentFilter(Intent.ACTION_BATTERY_CHANGED).let { ifilter ->
-            context.registerReceiver(null, ifilter)
+        val batteryStatus: Intent? = IntentFilter(Intent.ACTION_BATTERY_CHANGED).let { intentFilter ->
+            context.registerReceiver(null, intentFilter)
         }
         val status: Int = batteryStatus?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
 

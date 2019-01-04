@@ -1,10 +1,5 @@
 package com.camillebc.fusy.network
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import androidx.lifecycle.MutableLiveData
-import dagger.Module
 import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.Call
