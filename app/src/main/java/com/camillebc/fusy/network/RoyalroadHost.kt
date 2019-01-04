@@ -73,7 +73,7 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
         })
     }
 
-    override suspend fun getFavouritesOrNull(): List<Fiction>? {
+    override suspend fun getFavourites(): List<Fiction> {
         val response = networkInterface.getFavorites().await()
 
         Log.i(TAG, "Favourites Cookies: ${cookieManager.cookieStore.cookies}")
@@ -99,7 +99,7 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
             }
             return mutableList.toList()
         }
-        return null
+        return listOf()
     }
 
     override fun updateReading(readingList: MutableLiveData<List<Fiction>>) {

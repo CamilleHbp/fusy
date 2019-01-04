@@ -39,12 +39,10 @@ class AccountActivity : AppCompatActivity(), FavouriteFragment.OnListFragmentInt
         val favoriteFragment = FavouriteFragment()
         addFragment(favoriteFragment, R.id.favorite_layout)
 
-        val favouritesJob= CoroutineScope(Dispatchers.IO).launch {
-            val favourites = repository.host.getFavouritesOrNull()!!
+        GlobalScope.launch {
+            val favourites = repository.getFavourites()
 
-            withContext(Dispatchers.Default) {
-                RoyalroadViewModel.favoriteList.postValue(favourites)
-            }
+            RoyalroadViewModel.favoriteList.postValue(favourites)
         }
     }
 }

@@ -1,17 +1,17 @@
 package com.camillebc.fusy.data
 
+import androidx.lifecycle.MutableLiveData
 import com.camillebc.fusy.interfaces.FictionHostInterface
-import javax.inject.Inject
+import kotlinx.coroutines.*
 import javax.inject.Singleton
 
 @Singleton
-class FictionRepository {
-    private val database: FictionDatabase
-    val host: FictionHostInterface
+class FictionRepository(fictionDatabase: FictionDatabase, host: FictionHostInterface) {
+    private val database = fictionDatabase
+    val host = host
 
-    @Inject
-    constructor(fictionDatabase: FictionDatabase, host: FictionHostInterface) {
-        this.database = fictionDatabase
-        this.host = host
-    }
+    suspend fun getFavourites(): List<Fiction> = host.getFavourites()
+
+    fun login(username: String, password: String, isLoggedIn: MutableLiveData<Boolean>) =
+        host.login(username, password, isLoggedIn)
 }

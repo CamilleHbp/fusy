@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Login and password cannot be empty.", Toast.LENGTH_SHORT).show()
             return
         }
-        repository.host.login(login, password, RoyalroadViewModel.isConnected)
+        repository.login(login, password, RoyalroadViewModel.isConnected)
     }
 
     private fun launchAccountActivity() {

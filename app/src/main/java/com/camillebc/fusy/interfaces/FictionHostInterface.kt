@@ -5,6 +5,6 @@ import com.camillebc.fusy.data.Fiction
 
 interface FictionHostInterface {
     fun login(username: String, password: String, isConnected: MutableLiveData<Boolean>)
-    suspend fun getFavouritesOrNull(): List<Fiction>?
+    suspend fun getFavourites(): List<Fiction>
     fun updateReading(readingList: MutableLiveData<List<Fiction>>)
 }
