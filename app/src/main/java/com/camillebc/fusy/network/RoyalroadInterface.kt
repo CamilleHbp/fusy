@@ -19,7 +19,7 @@ interface RoyalroadInterface {
         @Field(USERNAME_KEY) username: String,
         @Field(PASSWORD_KEY) password: String,
         @Field(REMEMBER_KEY) remember: Boolean
-    ): Call<String>
+    ): Deferred<Response<ResponseBody>>
 
     @GET("my/favorites")
     fun getFavorites(): Deferred<Response<ResponseBody>>

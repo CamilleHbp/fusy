@@ -12,13 +12,14 @@ class HardwareStatusManager(private val context: Context) {
     enum class InternetStatus { OFFLINE, RESTRICTED, UNRESTRICTED }
     enum class BatteryStatus { DISCHARGING, CHARGING }
 
-    fun getConnectivityStatus(): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        return connectivityManager.activeNetworkInfo.isConnected
-    }
+//    fun getConnectivityStatus(): Boolean {
+//        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+//        return connectivityManager.activeNetworkInfo.isConnected
+//    }
 
-    fun getConnectivityType(): InternetStatus {
+    fun getConnectivityStatus(): InternetStatus {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (connectivityManager.activeNetworkInfo == null )return InternetStatus.OFFLINE
         val networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if ( networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)){
             if ( networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)){

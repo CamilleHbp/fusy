@@ -3,6 +3,7 @@ package com.camillebc.fusy.di.modules
 import com.camillebc.fusy.data.FictionDatabase
 import com.camillebc.fusy.data.FictionRepository
 import com.camillebc.fusy.interfaces.FictionHostInterface
+import com.camillebc.fusy.utilities.HardwareStatusManager
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -11,5 +12,5 @@ import javax.inject.Singleton
 class FictionRepositoryModule {
     @Provides
     @Singleton
-    fun provideFictionRepository(fictionDatabase: FictionDatabase, host: FictionHostInterface) = FictionRepository(fictionDatabase, host)
+    fun provideFictionRepository(fictionDatabase: FictionDatabase, host: FictionHostInterface, hardwareStatusManager: HardwareStatusManager) = FictionRepository(fictionDatabase, host, hardwareStatusManager)
 }

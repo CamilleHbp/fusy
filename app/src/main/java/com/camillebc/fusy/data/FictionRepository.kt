@@ -1,17 +1,46 @@
 package com.camillebc.fusy.data
 
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
 import com.camillebc.fusy.interfaces.FictionHostInterface
-import kotlinx.coroutines.*
+import com.camillebc.fusy.interfaces.RepositoryInterface
+import com.camillebc.fusy.utilities.APP_TAG
+import com.camillebc.fusy.utilities.HardwareStatusManager
 import javax.inject.Singleton
 
+private const val TAG = APP_TAG + "FictionRepository"
 @Singleton
-class FictionRepository(fictionDatabase: FictionDatabase, host: FictionHostInterface) {
-    private val database = fictionDatabase
-    val host = host
+class FictionRepository(
+    private val database: FictionDatabase,
+    private val host: FictionHostInterface,
+    private val hardwareStatusManager: HardwareStatusManager
+): RepositoryInterface<Fiction> {
 
-    suspend fun getFavourites(): List<Fiction> = host.getFavourites()
+    override fun getById(id: Long): Fiction {
+        return database.fictionDao().getFictionById(id)
+    }
 
-    fun login(username: String, password: String, isLoggedIn: MutableLiveData<Boolean>) =
-        host.login(username, password, isLoggedIn)
+    override fun add(item: Fiction) {
+        database.fictionDao().insertFiction(item)
+    }
+
+    override fun delete(item: Fiction) {
+        database.fictionDao().deleteFiction(item)
+    }
+
+    override fun edit(item: Fiction) {
+        database.fictionDao().updateFiction(item)
+    }
+
+    suspend fun getFavourites(): List<Fiction> {
+       if (hardwareStatusManager.getConnectivityStatus() != HardwareStatusManager.InternetStatus.OFFLINE) {
+           Log.i(TAG, "Connectivity status: ${hardwareStatusManager.getConnectivityStatus().name}")
+           Log.i(TAG, "Getting favourites from Host")
+           val favourites = host.getFavourites()
+           // TODO() // Create a diff to see if there is a need to insert in Db
+           database.fictionDao().insertFictions(favourites)
+           return favourites
+       }
+        Log.i(TAG, "Getting favourites from Db")
+       return database.fictionDao().getFavourites()
+    }
 }

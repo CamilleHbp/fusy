@@ -44,18 +44,13 @@ class FavouriteFragment : androidx.fragment.app.Fragment() {
                     else -> androidx.recyclerview.widget.GridLayoutManager(context, columnCount)
                 }
                 val favoritesAdapter = MyFavoriteRecyclerViewAdapter(
-                    RoyalroadViewModel.favoriteList.value?: listOf<Fiction>(),
+//                    RoyalroadViewModel.favoriteList.value?: listOf<Fiction>(),
+                    RoyalroadViewModel.favoriteList.value!!,
                     listener,
                     Glide.with(this)
                 )
+                val favoritesObserver = Observer<List<Fiction>> { favoritesAdapter.setData(it) }
                 adapter = favoritesAdapter
-                val favoritesObserver = Observer<List<Fiction>> {
-                        var test = "No data"
-                        if (it.isNotEmpty()) test = it[it.lastIndex].title
-
-                        Toast.makeText(this.context, test, Toast.LENGTH_SHORT).show()
-                        favoritesAdapter.setData(it)
-                }
                 RoyalroadViewModel.favoriteList.observe(this@FavouriteFragment, favoritesObserver)
             }
         }

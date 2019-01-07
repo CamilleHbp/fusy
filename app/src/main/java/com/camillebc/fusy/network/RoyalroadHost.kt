@@ -15,6 +15,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.io.IOException
+import java.lang.Error
 import java.net.CookieHandler
 import java.net.CookieManager
 import java.net.CookiePolicy
@@ -54,23 +56,34 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
         Log.i(TAG, "Init")
     }
 
-    override fun login(username: String, password: String, isLoggedIn: MutableLiveData<Boolean>) {
-        val call = networkInterface.login(RETURN_URL, username, password, false)
-        call.enqueue(object: Callback<String> {
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.e(TAG, t.message)
-                isLoggedIn.postValue(false)
+    override suspend fun login(username: String, password: String): Boolean {
+        try {
+            val response = networkInterface.login(RETURN_URL, username, password, false).await()
+            if (response.isSuccessful) {
+                Log.i(TAG, "Login successful!")
+                return true
             }
-
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if (response.isSuccessful) {
-                    Log.i(TAG, "Login successful!")
-                    Log.i(TAG, "Login cookies: ${cookieManager.cookieStore.cookies}")
-                    isLoggedIn.postValue(true)
-                }
-                else isLoggedIn.postValue(false)
-            }
-        })
+            Log.e(TAG, response.message())
+            return false
+        } catch (e: IOException) {
+            Log.e(TAG, "Server non-responsive")
+            return false
+        }
+//        call.enqueue(object: Callback<String> {
+//            override fun onFailure(call: Call<String>, t: Throwable) {
+//                Log.e(TAG, t.message)
+//                isLoggedIn.postValue(false)
+//            }
+//
+//            override fun onResponse(call: Call<String>, response: Response<String>) {
+//                if (response.isSuccessful) {
+//                    Log.i(TAG, "Login successful!")
+//                    Log.i(TAG, "Login cookies: ${cookieManager.cookieStore.cookies}")
+//                    isLoggedIn.postValue(true)
+//                }
+//                else isLoggedIn.postValue(false)
+//            }
+//        })
     }
 
     override suspend fun getFavourites(): List<Fiction> {
