@@ -12,6 +12,7 @@
     <dimen name="spacing_medium">16dp</dimen>
     <dimen name="spacing_large">24dp</dimen>
     <dimen name="spacing_huge">32dp</dimen>
+    <dimen name="spacing_max">56dp</dimen>
 
     <!-- typical sizes of views -->
     <dimen name="button_height_small">32dp</dimen>

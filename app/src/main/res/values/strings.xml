@@ -2,7 +2,7 @@
     <string name="app_name">Fusy</string>
     <string name="hint_password">Password</string>
     <string name="hint_login">Login</string>
-    <string name="api_connection">Connect</string>
+    <string name="api_connection">Login</string>
     <string name="account_title">Account</string>
     <string name="undefined_number">#</string>
     <string name="fiction_title">Fiction title</string>
@@ -18,4 +18,7 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

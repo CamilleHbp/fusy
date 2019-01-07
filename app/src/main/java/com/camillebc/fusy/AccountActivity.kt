@@ -47,4 +47,5 @@ class AccountActivity : AppCompatActivity(), FavouriteFragment.OnListFragmentInt
             }
         }
     }
+
 }
