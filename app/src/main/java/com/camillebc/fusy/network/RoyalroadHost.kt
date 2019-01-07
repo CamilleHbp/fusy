@@ -60,8 +60,13 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
         try {
             val response = networkInterface.login(RETURN_URL, username, password, false).await()
             if (response.isSuccessful) {
-                Log.i(TAG, "Login successful!")
-                return true
+                Log.i(TAG, response.raw().request().url().toString())
+                if (response.raw().request().url().toString().contains("loginsuccess")) {
+                    Log.i(TAG, "Login successful!")
+                    return true
+                }
+                Log.i(TAG, "Invalid login/password!")
+                return false
             }
             Log.e(TAG, response.message())
             return false
@@ -69,21 +74,6 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
             Log.e(TAG, "Server non-responsive")
             return false
         }
-//        call.enqueue(object: Callback<String> {
-//            override fun onFailure(call: Call<String>, t: Throwable) {
-//                Log.e(TAG, t.message)
-//                isLoggedIn.postValue(false)
-//            }
-//
-//            override fun onResponse(call: Call<String>, response: Response<String>) {
-//                if (response.isSuccessful) {
-//                    Log.i(TAG, "Login successful!")
-//                    Log.i(TAG, "Login cookies: ${cookieManager.cookieStore.cookies}")
-//                    isLoggedIn.postValue(true)
-//                }
-//                else isLoggedIn.postValue(false)
-//            }
-//        })
     }
 
     override suspend fun getFavourites(): List<Fiction> {

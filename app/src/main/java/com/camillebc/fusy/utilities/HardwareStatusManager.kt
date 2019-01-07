@@ -12,11 +12,6 @@ class HardwareStatusManager(private val context: Context) {
     enum class InternetStatus { OFFLINE, RESTRICTED, UNRESTRICTED }
     enum class BatteryStatus { DISCHARGING, CHARGING }
 
-//    fun getConnectivityStatus(): Boolean {
-//        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-//        return connectivityManager.activeNetworkInfo.isConnected
-//    }
-
     fun getConnectivityStatus(): InternetStatus {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         if (connectivityManager.activeNetworkInfo == null )return InternetStatus.OFFLINE

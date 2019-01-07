@@ -18,7 +18,10 @@ import kotlin.coroutines.CoroutineContext
 
 private const val TAG = APP_TAG + "MainActivity"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CoroutineScope {
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + SupervisorJob() // Children of supervisor job can fail independently
+
     @Inject lateinit var hardwareStatusManager: HardwareStatusManager
     @Inject lateinit var fictionHost: FictionHostInterface
 
@@ -44,7 +47,24 @@ class MainActivity : AppCompatActivity() {
         RoyalroadViewModel.isConnected.observe(this, connectionObserver)
     }
 
-    fun connect(v: View) {
+    override fun onDestroy() {
+        super.onDestroy()
+//         Cancel all running coroutines when destroying the activity
+        coroutineContext[Job]!!.cancel()
+    }
+
+    suspend fun connect(login: String, password: String) {
+        this.async {
+            val loggedStatus = withContext(Dispatchers.IO) {
+                fictionHost.login(login, password)
+            }
+            if (loggedStatus) Toast.makeText(this@MainActivity, "Connected", Toast.LENGTH_SHORT).show()
+            else Toast.makeText(this@MainActivity, "Offline", Toast.LENGTH_SHORT).show()
+        }.await()
+        launchAccountActivity()
+    }
+
+    fun connectOnClick(v: View) {
         val login = editText_login.text.toString()
         val password = editText_password.text.toString()
 
@@ -52,14 +72,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Login and password cannot be empty.", Toast.LENGTH_SHORT).show()
             return
         }
-        runBlocking {
-            val loggedStatus = withContext(Dispatchers.IO) {
-                fictionHost.login(login, password)
-            }
-            if (loggedStatus) Toast.makeText(this@MainActivity, "Connected", Toast.LENGTH_SHORT).show()
-            else Toast.makeText(this@MainActivity, "Offline", Toast.LENGTH_SHORT).show()
-        }
-        launchAccountActivity()
+        this.launch {  connect(login, password) }
     }
 
     private fun launchAccountActivity() {
