@@ -11,18 +11,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.camillebc.fusy.R
 import com.camillebc.fusy.data.Fiction
-import com.camillebc.fusy.fragments.FavouriteFragment.OnListFragmentInteractionListener
-import kotlinx.android.synthetic.main.fragment_favorite.view.*
+import com.camillebc.fusy.fragments.FictionListFragment.OnListFragmentInteractionListener
+import kotlinx.android.synthetic.main.fragment_fiction.view.*
 
 /**
  * [RecyclerView.Adapter] that can display a [Fiction] and makes a call to the
  * specified [OnListFragmentInteractionListener].
  */
-class MyFavoriteRecyclerViewAdapter(
+class FictionListRecyclerViewAdapter(
     private var data: List<Fiction>,
     private val mListener: OnListFragmentInteractionListener?,
     private val glide: RequestManager
-) : androidx.recyclerview.widget.RecyclerView.Adapter<MyFavoriteRecyclerViewAdapter.ViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<FictionListRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
 
@@ -35,9 +35,9 @@ class MyFavoriteRecyclerViewAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyFavoriteRecyclerViewAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FictionListRecyclerViewAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_favorite, parent, false)
+            .inflate(R.layout.fragment_fiction, parent, false)
         return ViewHolder(view)
     }
 

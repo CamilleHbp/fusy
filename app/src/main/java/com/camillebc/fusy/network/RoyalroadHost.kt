@@ -79,10 +79,35 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
     override suspend fun getFavourites(): List<Fiction> {
         val response = networkInterface.getFavorites().await()
 
-        Log.i(TAG, "Favourites Cookies: ${cookieManager.cookieStore.cookies}")
-
         if (response.isSuccessful) {
             Log.i(TAG, "GetFavorites")
+            Log.i(TAG, "Response: $response")
+            val mutableList = mutableListOf<Fiction>()
+            val doc = Jsoup.parse(response.body()?.string())
+            val item = doc.select(FAVORITE_ITEM_QUERY)
+            Log.i(TAG, "${item.toString()}")
+            item.forEachIndexed { index, element ->
+                val title = element.select(FAVORITE_TITLE_QUERY).text()
+                val description = StringBuilder().also {
+                    element.select(FAVORITE_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
+                    }
+                }.toString()
+                val imageUrl = element.select(FAVORITE_IMAGE_QUERY).first().absUrl("src")
+                Log.i(TAG, "Image url: $imageUrl")
+
+                val fictionData = Fiction(title, imageUrl, description, true, "royalroad")
+                mutableList.add(index, fictionData)
+            }
+            return mutableList.toList()
+        }
+        return listOf()
+    }
+
+    override suspend fun search(query: String): List<Fiction> {
+        val response = networkInterface.search(query).await()
+
+        if (response.isSuccessful) {
+            Log.i(TAG, "Search")
             Log.i(TAG, "Response: $response")
             val mutableList = mutableListOf<Fiction>()
             val doc = Jsoup.parse(response.body()?.string())

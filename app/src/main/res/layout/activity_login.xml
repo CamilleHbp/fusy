@@ -9,6 +9,7 @@
         android:id="@+id/scrollView_hosts"
         android:layout_width="match_parent"
         android:layout_marginBottom="@dimen/spacing_small"
+        android:layout_marginTop="@dimen/spacing_small"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="wrap_content">
 
@@ -62,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/spacing_medium"
+            android:layout_marginBottom="@dimen/spacing_large"
             android:src="@drawable/banner_royalroad" />
 
         <com.google.android.material.textfield.TextInputLayout

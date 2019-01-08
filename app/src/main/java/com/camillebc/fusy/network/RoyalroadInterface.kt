@@ -23,4 +23,7 @@ interface RoyalroadInterface {
 
     @GET("my/favorites")
     fun getFavorites(): Deferred<Response<ResponseBody>>
+
+    @GET("search")
+    fun search(@Query("query") query: String): Deferred<Response<ResponseBody>>
 }
