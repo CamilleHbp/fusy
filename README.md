@@ -11,14 +11,30 @@
 <p>Checkout the <a href="https://github.com/CamilleBC/fusy/wiki">wiki</a> if you want more information about how the project’s architecture!</p>
 <h2 id="updates">Updates:</h2>
 <ul>
-<li><a href="https://github.com/CamilleBC/fusy/commit/273e588588fc708cdd3dbd1852b5ea86aa22ccd2">2019/01/03</a>:
+<li>
+<p><a href="https://github.com/CamilleBC/fusy/commit/7a01a4514dca8e7182c997e50a596521e563ee44">2019/01/07</a></p>
+<ul>
+<li>The repository now saves the data to the Db and retrieves it if the host in unavailable</li>
+<li>Login is managed in a separate activity</li>
+<li>TODO:
+<ul>
+<li>configure a second host on login</li>
+<li>add an Error manager to Retrofit to avoid crashes on “host unavailable”</li>
+<li>save and manage royal road fiction chapters</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/CamilleBC/fusy/commit/273e588588fc708cdd3dbd1852b5ea86aa22ccd2">2019/01/03</a>:</p>
 <ul>
 <li>using dagger 2 to inject a singleton Fiction component that provides a FictionRepository to all activites/fragments.</li>
 <li>Fiction host and database are now hidden in a Fiction repository, which will manage all interactions with the fictions.</li>
 <li>started a wiki to describe the project’s architecture.</li>
 </ul>
 </li>
-<li><a href="https://github.com/CamilleBC/fusy/commit/c4dd7b8d9de759f08e64db58bba386e260d225bd">2019/01/03</a>:
+<li>
+<p><a href="https://github.com/CamilleBC/fusy/commit/c4dd7b8d9de759f08e64db58bba386e260d225bd">2019/01/03</a>:</p>
 <ul>
 <li>using deferred coroutines with retrofit (thanks, <a href="https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter">Jake Wharton</a>) for the fiction host (<a href="http://RoyalRoad.com">RoyalRoad.com</a>) calls.</li>
 <li>creating the beginning of a <a href="https://developer.android.com/training/data-storage/room/">Room</a> architecture for the fiction db/repository.</li>
@@ -26,12 +42,14 @@
 <li>add a HardwareStatusManager that uses the global App context to retrive the network and battery status. TODO: implement a broadcast listener to get the <a href="https://developer.android.com/reference/android/content/Intent.html#ACTION_BATTERY_LOW">ACTION_BATTERY_LOW</a> intent broadcast.</li>
 </ul>
 </li>
-<li><strong>2018/12/05</strong>:
+<li>
+<p><strong>2018/12/05</strong>:</p>
 <ul>
 <li>add a diagram to explain the FictionComponent architecture.</li>
 </ul>
 </li>
-<li><a href="https://github.com/CamilleBC/fusy/commit/76173f3b7ca6f2c4dd43769217421a798013fa5f">2018/12/03</a>:
+<li>
+<p><a href="https://github.com/CamilleBC/fusy/commit/76173f3b7ca6f2c4dd43769217421a798013fa5f">2018/12/03</a>:</p>
 <ul>
 <li>using <a href="https://bumptech.github.io/glide/">Glide</a> to manage image loadings.</li>
 </ul>
