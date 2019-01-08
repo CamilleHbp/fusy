@@ -21,9 +21,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-private const val TAG = APP_TAG + "SearchActivity"
+private const val TAG = APP_TAG + "SearchableActivity"
 
-class SearchActivity : AppCompatActivity(), FictionListFragment.OnListFragmentInteractionListener  {
+class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragmentInteractionListener  {
     @Inject lateinit var repository: FictionRepository
     @Inject lateinit var host: FictionHostInterface
     private lateinit var fictionViewModel: FictionViewModel
@@ -41,7 +41,7 @@ class SearchActivity : AppCompatActivity(), FictionListFragment.OnListFragmentIn
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        setContentView(R.layout.activity_searchable)
 
         // Verify the action and get the query
         if (Intent.ACTION_SEARCH == intent.action) {
