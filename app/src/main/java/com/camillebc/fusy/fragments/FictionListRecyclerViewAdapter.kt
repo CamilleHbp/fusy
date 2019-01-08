@@ -66,9 +66,9 @@ class FictionListRecyclerViewAdapter(
     }
 
     inner class ViewHolder(val view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
-        val id: TextView = view.favorite_number
-        val image: ImageView = view.favorite_image
-        val title: TextView = view.favorite_title
+        val id: TextView = view.fiction_number
+        val image: ImageView = view.fiction_image
+        val title: TextView = view.fiction_title
 
         override fun toString(): String {
             return super.toString() + " '" + title.text + "'"
