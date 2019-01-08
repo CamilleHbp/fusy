@@ -52,7 +52,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
         }
     }
 
-    fun switch(v: View) {
+    fun switchHost(v: View) {
         val tag = v.tag.toString()
         when (tag) {
             "fanfiction" -> {

@@ -9,5 +9,5 @@
     android:layout_gravity="left"
     android:layout_marginLeft="@dimen/spacing_medium"
     android:layout_marginRight="@dimen/spacing_medium"
-    tools:context=".fragments.FavouriteFragment"
-    tools:listitem="@layout/fragment_favorite" />
+    tools:context=".fragments.FictionListFragment"
+    tools:listitem="@layout/fragment_fiction" />
