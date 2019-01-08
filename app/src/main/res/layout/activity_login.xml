@@ -82,10 +82,10 @@
 
             <ImageView
                 android:id="@+id/imageView_hostRoyalroad"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:src="@drawable/logo_royalroad" />
+            android:src="@mipmap/ic_royalroad_round" />
         </LinearLayout>
     </ScrollView>
 
