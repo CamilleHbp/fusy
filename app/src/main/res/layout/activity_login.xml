@@ -13,16 +13,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/scrollView_hosts"
         android:orientation="vertical"
-        android:paddingTop="@dimen/spacing_max"
         android:paddingLeft="@dimen/spacing_medium"
         android:paddingRight="@dimen/spacing_medium">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/imageView_fusy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/logo_fusy" />
+            android:src="@drawable/banner_fusy" />
+
+        <ImageView
+            android:id="@+id/imageView_host"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/banner_royalroad" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -76,8 +82,9 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:orientation="horizontal">
 
             <ImageView
@@ -85,7 +92,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-            android:src="@mipmap/ic_royalroad_round" />
+                android:layout_marginStart="@dimen/spacing_small"
+                android:layout_marginEnd="@dimen/spacing_small"
+                android:src="@mipmap/ic_royalroad_round"
+                android:onClick="switch" android:tag="royalroad"/>
+            <ImageView
+                android:id="@+id/imageView_hostFanfiction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginStart="@dimen/spacing_small"
+                android:layout_marginEnd="@dimen/spacing_small"
+                android:src="@mipmap/ic_fanfiction_round"
+                android:onClick="switch" android:tag="fanfiction"/>
         </LinearLayout>
     </ScrollView>
 
