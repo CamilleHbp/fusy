@@ -1,7 +1,10 @@
 package com.camillebc.fusy.network
 
+import android.content.ContentResolver
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.camillebc.fusy.R
 import com.camillebc.fusy.data.Fiction
 import com.camillebc.fusy.interfaces.FictionHostInterface
 import com.camillebc.fusy.utilities.APP_TAG
@@ -15,6 +18,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.io.File
 import java.io.IOException
 import java.lang.Error
 import java.net.CookieHandler
@@ -33,10 +37,10 @@ private const val FAVORITE_ITEM_QUERY = "div.fiction-list-item"
 private const val FAVORITE_TITLE_QUERY = "h2.fiction-title"
 private const val FAVORITE_DESCRIPTION_QUERY = "div.description > div.hidden-content > p"
 private const val SEARCH_IMAGE_QUERY = "img[id~=cover]"
-//private const val SEARCH_ITEM_QUERY = "div.search-container > li.search-item"
 private const val SEARCH_ITEM_QUERY = "li.search-item"
 private const val SEARCH_TITLE_QUERY = "div.search-content > h2"
 private const val SEARCH_DESCRIPTION_QUERY = "div.fiction-description > p"
+private const val PLACEHOLDER_URL = "Content/Images/rr-placeholder.jpg"
 
 
 @Singleton
@@ -126,8 +130,7 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
                     element.select(SEARCH_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
                     }
                 }.toString()
-                val imageUrl = element.select(SEARCH_IMAGE_QUERY).first().absUrl("src")
-
+                var imageUrl = element.select(SEARCH_IMAGE_QUERY).first().absUrl("src")
                 val fictionData = Fiction(title, imageUrl, description, true, HOST)
                 mutableList.add(index, fictionData)
             }

@@ -47,7 +47,7 @@ class FictionListRecyclerViewAdapter(
         else holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"))
 
         val item = data[position]
-        holder.id.text = position.toString()
+        holder.id.text = position.toString().padStart(3, '0')
         holder.title.text = item.title
         glide.load(item.imageUrl).into(holder.image)
 

@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.camillebc.fusy.R
 import com.camillebc.fusy.data.Fiction
 import com.camillebc.fusy.data.FictionViewModel
@@ -39,6 +40,10 @@ class FictionListFragment : androidx.fragment.app.Fragment() {
      */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val requestOptions = RequestOptions().apply{
+            placeholder(R.drawable.fiction_placeholder_royalroad)
+            error(R.drawable.fiction_placeholder_royalroad)
+        }
         fictionModel = ViewModelProviders.of(this.activity!!).get(FictionViewModel::class.java)
         with(fictionListView) {
             layoutManager = when {
@@ -48,7 +53,7 @@ class FictionListFragment : androidx.fragment.app.Fragment() {
             val favoritesAdapter = FictionListRecyclerViewAdapter(
                 fictionModel.favoriteList.value!!,
                 listener,
-                Glide.with(this)
+                Glide.with(this).setDefaultRequestOptions(requestOptions)
             )
             val favoritesObserver = Observer<List<Fiction>> { favoritesAdapter.setData(it) }
             adapter = favoritesAdapter
