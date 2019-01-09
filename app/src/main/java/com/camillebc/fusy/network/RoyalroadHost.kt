@@ -32,15 +32,16 @@ private const val HOST = "royalroad"
 private const val RETURN_URL = "https://www.royalroad.com/home"
 private const val TAG = APP_TAG + "RoyalroadHost"
 // JSOUP CSS QUERIES
-private const val FAVORITE_IMAGE_QUERY = "img[id~=cover]"
-private const val FAVORITE_ITEM_QUERY = "div.fiction-list-item"
-private const val FAVORITE_TITLE_QUERY = "h2.fiction-title"
+private const val FAVORITE_ITEM_QUERY = "div.fiction-list-item"             // parent element
 private const val FAVORITE_DESCRIPTION_QUERY = "div.description > div.hidden-content > p"
+private const val FAVORITE_IMAGE_QUERY = "img[id~=cover]"
+private const val FAVORITE_TITLE_QUERY = "h2.fiction-title"
+private const val FAVORITE_URL_QUERY = "h2.fiction-title > a"
+private const val SEARCH_ITEM_QUERY = "li.search-item"                      // parent element
+private const val SEARCH_DESCRIPTION_QUERY = "div.fiction-description"
 private const val SEARCH_IMAGE_QUERY = "img[id~=cover]"
-private const val SEARCH_ITEM_QUERY = "li.search-item"
 private const val SEARCH_TITLE_QUERY = "div.search-content > h2"
-private const val SEARCH_DESCRIPTION_QUERY = "div.fiction-description > p"
-private const val PLACEHOLDER_URL = "Content/Images/rr-placeholder.jpg"
+private const val SEARCH_URL_QUERY = "div.search-content > h2 > a"
 
 
 @Singleton
@@ -98,6 +99,7 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
             Log.i(TAG, "${item.toString()}")
             item.forEachIndexed { index, element ->
                 val title = element.select(FAVORITE_TITLE_QUERY).text()
+                val url = element.select(FAVORITE_URL_QUERY).attr("href")
                 val description = StringBuilder().also {
                     element.select(FAVORITE_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
                     }
@@ -105,7 +107,14 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
                 val imageUrl = element.select(FAVORITE_IMAGE_QUERY).first().absUrl("src")
                 Log.i(TAG, "Image url: $imageUrl")
 
-                val fictionData = Fiction(title, imageUrl, description, true, HOST)
+                val fictionData = Fiction(
+                    title = title,
+                    imageUrl = imageUrl,
+                    url = url,
+                    description = description,
+                    favourite = true,
+                    host = HOST
+                )
                 mutableList.add(index, fictionData)
             }
             return mutableList.toList()
@@ -126,12 +135,20 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
             Log.i(TAG, "${item.toString()}")
             item.forEachIndexed { index, element ->
                 val title = element.select(SEARCH_TITLE_QUERY).text()
+                val url = element.select(SEARCH_URL_QUERY).attr("href")
                 val description = StringBuilder().also {
                     element.select(SEARCH_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
                     }
                 }.toString()
                 var imageUrl = element.select(SEARCH_IMAGE_QUERY).first().absUrl("src")
-                val fictionData = Fiction(title, imageUrl, description, true, HOST)
+                val fictionData = Fiction(
+                    title = title,
+                    imageUrl = imageUrl,
+                    url = url,
+                    description = description,
+                    favourite = false,
+                    host = HOST
+                )
                 mutableList.add(index, fictionData)
             }
             return mutableList.toList()

@@ -35,7 +35,7 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
     override fun onListFragmentInteraction(item: Fiction?) {
         if (item != null) {
             Log.i(TAG, item?.title)
-            Toast.makeText(this, "Selected: ${item.description}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Selected: ${item.url}", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -59,7 +59,6 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
     private fun search(query: String) {
         GlobalScope.launch(Dispatchers.IO) {
             val results = host.search(query)
-//            val results = host.getFavourites()
 
             withContext(Dispatchers.Default) {
                 fictionViewModel.favoriteList.postValue(results)

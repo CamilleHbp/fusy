@@ -9,6 +9,7 @@ data class Fiction(
     val title: String,
     @ColumnInfo(name = "image_url")
     val imageUrl: String?,
+    val url: String,
     val description: String,
     val favourite: Boolean = false,
     val host: String

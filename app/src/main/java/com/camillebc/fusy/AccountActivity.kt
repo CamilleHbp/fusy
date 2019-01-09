@@ -66,7 +66,7 @@ class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentI
     override fun onListFragmentInteraction(item: Fiction?) {
         if (item != null) {
             Log.i(TAG, item?.title)
-            Toast.makeText(this, "Selected: ${item.title}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "URL: ${item.url}", Toast.LENGTH_SHORT).show()
         }
     }
 

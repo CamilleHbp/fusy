@@ -11,5 +11,8 @@ import javax.inject.Singleton
 class FictionDatabaseModule {
     @Provides
     @Singleton
-    fun providesFictionDatabase(context: Context) = Room.databaseBuilder(context, FictionDatabase::class.java, "fiction-db").build()
+    fun providesFictionDatabase(context: Context) = Room.databaseBuilder( context,
+        FictionDatabase::class.java, "fiction-db" )
+        .fallbackToDestructiveMigration()
+        .build()
 }
