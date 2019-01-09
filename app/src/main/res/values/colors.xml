@@ -43,9 +43,17 @@
     <color name="material_blue_grey">#607d8b</color>
     <color name="material_blue_grey_dark">#455a64</color>
 
-    <color name="colorPrimary">@color/material_indigo</color>
-    <color name="colorPrimaryDark">@color/material_indigo_dark</color>
-    <color name="colorAccent">@color/material_blue</color>
+
+    <!--- Not material design -->
+    <color name="prussian_blue">#004265</color>
+    <color name="prussian_blue_dark">#001c3a</color>
+    <color name="prussian_blue_accent">#3e6d93</color>
+    <color name="bali_hai_blue">#7a97a5</color>
+
+
+    <color name="colorPrimary">@color/prussian_blue</color>
+    <color name="colorPrimaryDark">@color/prussian_blue_dark</color>
+    <color name="colorAccent">@color/prussian_blue_accent</color>
     <color name="row">#FFFFFF</color>
     <color name="rowAlternate">#F4F4F4</color>
 </resources>
