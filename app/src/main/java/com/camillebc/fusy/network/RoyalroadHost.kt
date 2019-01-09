@@ -24,6 +24,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 private const val BASE_URL = "https://www.royalroad.com/"
+private const val HOST = "royalroad"
 private const val RETURN_URL = "https://www.royalroad.com/home"
 private const val TAG = APP_TAG + "RoyalroadHost"
 // JSOUP CSS QUERIES
@@ -31,6 +32,11 @@ private const val FAVORITE_IMAGE_QUERY = "img[id~=cover]"
 private const val FAVORITE_ITEM_QUERY = "div.fiction-list-item"
 private const val FAVORITE_TITLE_QUERY = "h2.fiction-title"
 private const val FAVORITE_DESCRIPTION_QUERY = "div.description > div.hidden-content > p"
+private const val SEARCH_IMAGE_QUERY = "img[id~=cover]"
+//private const val SEARCH_ITEM_QUERY = "div.search-container > li.search-item"
+private const val SEARCH_ITEM_QUERY = "li.search-item"
+private const val SEARCH_TITLE_QUERY = "div.search-content > h2"
+private const val SEARCH_DESCRIPTION_QUERY = "div.fiction-description > p"
 
 
 @Singleton
@@ -95,7 +101,7 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
                 val imageUrl = element.select(FAVORITE_IMAGE_QUERY).first().absUrl("src")
                 Log.i(TAG, "Image url: $imageUrl")
 
-                val fictionData = Fiction(title, imageUrl, description, true, "royalroad")
+                val fictionData = Fiction(title, imageUrl, description, true, HOST)
                 mutableList.add(index, fictionData)
             }
             return mutableList.toList()
@@ -108,21 +114,21 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
 
         if (response.isSuccessful) {
             Log.i(TAG, "Search")
-            Log.i(TAG, "Response: $response")
+            Log.i(TAG, "Response Body: ${response.body()}")
             val mutableList = mutableListOf<Fiction>()
             val doc = Jsoup.parse(response.body()?.string())
-            val item = doc.select(FAVORITE_ITEM_QUERY)
+            Log.i(TAG, "DOC: \n$doc")
+            val item = doc.select(SEARCH_ITEM_QUERY)
             Log.i(TAG, "${item.toString()}")
             item.forEachIndexed { index, element ->
-                val title = element.select(FAVORITE_TITLE_QUERY).text()
+                val title = element.select(SEARCH_TITLE_QUERY).text()
                 val description = StringBuilder().also {
-                    element.select(FAVORITE_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
+                    element.select(SEARCH_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
                     }
                 }.toString()
-                val imageUrl = element.select(FAVORITE_IMAGE_QUERY).first().absUrl("src")
-                Log.i(TAG, "Image url: $imageUrl")
+                val imageUrl = element.select(SEARCH_IMAGE_QUERY).first().absUrl("src")
 
-                val fictionData = Fiction(title, imageUrl, description, true, "royalroad")
+                val fictionData = Fiction(title, imageUrl, description, true, HOST)
                 mutableList.add(index, fictionData)
             }
             return mutableList.toList()

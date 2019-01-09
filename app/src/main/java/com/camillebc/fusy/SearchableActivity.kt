@@ -58,8 +58,8 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
 
     private fun search(query: String) {
         GlobalScope.launch(Dispatchers.IO) {
-//            val results = host.search(query)
-            val results = host.getFavourites()
+            val results = host.search(query)
+//            val results = host.getFavourites()
 
             withContext(Dispatchers.Default) {
                 fictionViewModel.favoriteList.postValue(results)
