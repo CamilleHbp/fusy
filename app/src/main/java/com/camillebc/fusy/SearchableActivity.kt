@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.camillebc.fusy.data.Fiction
-import com.camillebc.fusy.data.FictionRepository
 import com.camillebc.fusy.data.FictionViewModel
 import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.fragments.FictionListFragment
@@ -24,7 +23,6 @@ import javax.inject.Inject
 private const val TAG = APP_TAG + "SearchableActivity"
 
 class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragmentInteractionListener  {
-    @Inject lateinit var repository: FictionRepository
     @Inject lateinit var host: FictionHostInterface
     private lateinit var fictionViewModel: FictionViewModel
 
@@ -34,8 +32,16 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
 
     override fun onListFragmentInteraction(item: Fiction?) {
         if (item != null) {
-            Log.i(TAG, item?.title)
-            Toast.makeText(this, "Selected: ${item.url}", Toast.LENGTH_SHORT).show()
+            Log.i(TAG, item.name)
+            Toast.makeText(this, "Selected: ${item.description}", Toast.LENGTH_SHORT).show()
+            GlobalScope.launch(Dispatchers.IO) {
+                val fiction = host.getFiction(item.hostId)
+//                val tags = host.getFictionTags(item.hostId)
+
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@SearchableActivity, "Fiction updated: ${item.name}", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

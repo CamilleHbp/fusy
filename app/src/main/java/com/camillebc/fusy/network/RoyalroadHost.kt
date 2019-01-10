@@ -1,11 +1,9 @@
 package com.camillebc.fusy.network
 
-import android.content.ContentResolver
-import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.camillebc.fusy.R
 import com.camillebc.fusy.data.Fiction
+import com.camillebc.fusy.data.Tag
 import com.camillebc.fusy.interfaces.FictionHostInterface
 import com.camillebc.fusy.utilities.APP_TAG
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -13,14 +11,9 @@ import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.jsoup.Jsoup
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.io.File
 import java.io.IOException
-import java.lang.Error
 import java.net.CookieHandler
 import java.net.CookieManager
 import java.net.CookiePolicy
@@ -32,17 +25,24 @@ private const val HOST = "royalroad"
 private const val RETURN_URL = "https://www.royalroad.com/home"
 private const val TAG = APP_TAG + "RoyalroadHost"
 // JSOUP CSS QUERIES
+// FAVOURITE QUERIES
 private const val FAVORITE_ITEM_QUERY = "div.fiction-list-item"             // parent element
 private const val FAVORITE_DESCRIPTION_QUERY = "div.description > div.hidden-content > p"
 private const val FAVORITE_IMAGE_QUERY = "img[id~=cover]"
-private const val FAVORITE_TITLE_QUERY = "h2.fiction-title"
-private const val FAVORITE_URL_QUERY = "h2.fiction-title > a"
+private const val FAVORITE_TITLE_QUERY = "h2.fiction-name"
+private const val FAVORITE_URL_QUERY = "h2.fiction-name > a"
+// SEARCH QUERIES
 private const val SEARCH_ITEM_QUERY = "li.search-item"                      // parent element
 private const val SEARCH_DESCRIPTION_QUERY = "div.fiction-description"
 private const val SEARCH_IMAGE_QUERY = "img[id~=cover]"
 private const val SEARCH_TITLE_QUERY = "div.search-content > h2"
 private const val SEARCH_URL_QUERY = "div.search-content > h2 > a"
+// FICTION QUERIES
+private const val TAGS_QUERY = "span.tags > span.label"                      // parent element
+private const val FICTION_AUTHOR_QUERY = "h4[property=\"author\"] > span[property=\"name\"]"
+private const val FICTION_NAME_QUERY = "h1[property=\"name\"]"
 
+private val ID_INDEX = 2
 
 @Singleton
 class RoyalroadHost @Inject constructor(): FictionHostInterface {
@@ -108,9 +108,9 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
                 Log.i(TAG, "Image url: $imageUrl")
 
                 val fictionData = Fiction(
-                    title = title,
+                    name = title,
                     imageUrl = imageUrl,
-                    url = url,
+                    hostId = 0,
                     description = description,
                     favourite = true,
                     host = HOST
@@ -135,16 +135,16 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
             Log.i(TAG, "${item.toString()}")
             item.forEachIndexed { index, element ->
                 val title = element.select(SEARCH_TITLE_QUERY).text()
-                val url = element.select(SEARCH_URL_QUERY).attr("href")
+                val hostId = element.select(SEARCH_URL_QUERY).attr("href").split("/")[2].toLong()
                 val description = StringBuilder().also {
                     element.select(SEARCH_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
                     }
                 }.toString()
                 var imageUrl = element.select(SEARCH_IMAGE_QUERY).first().absUrl("src")
                 val fictionData = Fiction(
-                    title = title,
+                    name = title,
+                    hostId = hostId,
                     imageUrl = imageUrl,
-                    url = url,
                     description = description,
                     favourite = false,
                     host = HOST
@@ -156,7 +156,65 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
         return listOf()
     }
 
+    override suspend fun getFiction(hostId: Long): Fiction {
+        val response = networkInterface.getFiction(hostId).await()
+
+        if (response.isSuccessful) {
+            Log.i(TAG, "[getFiction]")
+            val doc = Jsoup.parse(response.body()?.string())
+            val name = doc.select(FICTION_NAME_QUERY).text()
+            Log.i(TAG, "Name: $name")
+            val author = doc.select(FICTION_AUTHOR_QUERY).text()
+            Log.i(TAG, "Author: $author")
+//            val item = doc.select(SEARCH_ITEM_QUERY)
+//            Log.i(TAG, "${item.toString()}")
+//            item.forEachIndexed { index, element ->
+//                val name = element.select(SEARCH_TITLE_QUERY).text()
+//                val url = element.select(SEARCH_URL_QUERY).attr("href")
+//                val description = StringBuilder().also {
+//                    element.select(SEARCH_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
+//                    }
+//                }.toString()
+//                var imageUrl = element.select(SEARCH_IMAGE_QUERY).first().absUrl("src")
+//                val fictionData = Fiction(
+//                    name = name,
+//                    imageUrl = imageUrl,
+//                    url = url,
+//                    description = description,
+//                    favourite = false,
+//                    host = HOST
+//                )
+//                mutableList.add(index, fictionData)
+        }
+        return Fiction(
+            name = "",
+            host = "royalroad",
+            hostId = 0
+            )
+    }
+
+    override suspend fun getFictionTags(hostId: Long): List<Tag> {
+        val response = networkInterface.getFiction(hostId).await()
+        val tags = mutableListOf<Tag>()
+
+        if (response.isSuccessful) {
+            Log.i(TAG, "[getFictionTags]")
+            val mutableList = mutableListOf<Fiction>()
+            val doc = Jsoup.parse(response.body()?.string())
+            val tagElements = doc.select(TAGS_QUERY)
+            tagElements.forEach {
+                Log.i(TAG, "Tag: ${it.text()}")
+                tags.add(Tag(it.text()))
+            }
+        }
+        return tags
+    }
+
+    suspend fun getAllTags(): List<Tag>{
+        TODO("implement")
+    }
+
     override fun updateReading(readingList: MutableLiveData<List<Fiction>>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("implement")
     }
 }

@@ -48,7 +48,7 @@ class FictionListRecyclerViewAdapter(
 
         val item = data[position]
         holder.id.text = position.toString().padStart(3, '0')
-        holder.title.text = item.title
+        holder.title.text = item.name
         glide.load(item.imageUrl).into(holder.image)
 
         // Set the click listener with the item as view's tag

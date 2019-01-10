@@ -1,7 +1,6 @@
 package com.camillebc.fusy
 
 import android.app.SearchManager
-import android.content.ComponentName
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -65,9 +64,8 @@ class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentI
 
     override fun onListFragmentInteraction(item: Fiction?) {
         if (item != null) {
-            Log.i(TAG, item?.title)
-            Toast.makeText(this, "URL: ${item.url}", Toast.LENGTH_SHORT).show()
+            Log.i(TAG, item.name)
+            Toast.makeText(this, "URL: ${item.description}", Toast.LENGTH_SHORT).show()
         }
     }
-
 }
