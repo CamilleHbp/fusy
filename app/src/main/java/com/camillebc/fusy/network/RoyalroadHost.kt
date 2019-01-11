@@ -1,7 +1,6 @@
 package com.camillebc.fusy.network
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.camillebc.fusy.data.Fiction
 import com.camillebc.fusy.data.Tag
 import com.camillebc.fusy.interfaces.FictionHostInterface
@@ -25,24 +24,31 @@ private const val HOST = "royalroad"
 private const val RETURN_URL = "https://www.royalroad.com/home"
 private const val TAG = APP_TAG + "RoyalroadHost"
 // JSOUP CSS QUERIES
+// COVER IMAGE
+private const val COVER_IMAGE_QUERY = "img[id~=cover]"
 // FAVOURITE QUERIES
-private const val FAVORITE_ITEM_QUERY = "div.fiction-list-item"             // parent element
-private const val FAVORITE_DESCRIPTION_QUERY = "div.description > div.hidden-content > p"
-private const val FAVORITE_IMAGE_QUERY = "img[id~=cover]"
-private const val FAVORITE_TITLE_QUERY = "h2.fiction-name"
-private const val FAVORITE_URL_QUERY = "h2.fiction-name > a"
+private const val FAVOURITE_ITEM_QUERY = "div.fiction-list-item"             // parent element
+private const val FAVOURITE_AUTHOR_QUERY = "div.fiction-info > span.author"
+private const val FAVOURITE_AUTHOR_URL_QUERY = "$FAVOURITE_AUTHOR_QUERY > a"
+private const val FAVOURITE_DESCRIPTION_QUERY = "div.description"
+private const val FAVOURITE_NAME_QUERY = "h2.fiction-title"
+private const val FAVOURITE_URL_QUERY = "$FAVOURITE_NAME_QUERY > a"
 // SEARCH QUERIES
 private const val SEARCH_ITEM_QUERY = "li.search-item"                      // parent element
+private const val SEARCH_AUTHOR_QUERY = "div.fiction-info > span.author"
 private const val SEARCH_DESCRIPTION_QUERY = "div.fiction-description"
-private const val SEARCH_IMAGE_QUERY = "img[id~=cover]"
-private const val SEARCH_TITLE_QUERY = "div.search-content > h2"
-private const val SEARCH_URL_QUERY = "div.search-content > h2 > a"
-// FICTION QUERIES
+private const val SEARCH_NAME_QUERY = "h2"
+private const val SEARCH_URL_QUERY = "$SEARCH_NAME_QUERY > a"
+// TAG QUERIES
 private const val TAGS_QUERY = "span.tags > span.label"                      // parent element
+// FICTION QUERIES
 private const val FICTION_AUTHOR_QUERY = "h4[property=\"author\"] > span[property=\"name\"]"
+private const val FICTION_AUTHOR_URL_QUERY = "$FICTION_AUTHOR_QUERY > a"
+private const val FICTION_DESCRIPTION_QUERY = "div[property=\"description\"]"
 private const val FICTION_NAME_QUERY = "h1[property=\"name\"]"
-
-private val ID_INDEX = 2
+// ID INDEXES
+private const val FICTION_ID_INDEX = 2
+private const val AUTHOR_ID_INDEX = 2
 
 @Singleton
 class RoyalroadHost @Inject constructor(): FictionHostInterface {
@@ -64,7 +70,6 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
             client(httpClient.build())
         }.build()
         networkInterface = retrofit.create(RoyalroadInterface::class.java)
-        Log.i(TAG, "Init")
     }
 
     override suspend fun login(username: String, password: String): Boolean {
@@ -88,118 +93,92 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
     }
 
     override suspend fun getFavourites(): List<Fiction> {
-        val response = networkInterface.getFavorites().await()
+        val response = networkInterface.getFavourites().await()
+        val fictionList = mutableListOf<Fiction>()
+        Log.i(TAG, "GetFavourites")
 
         if (response.isSuccessful) {
-            Log.i(TAG, "GetFavorites")
-            Log.i(TAG, "Response: $response")
-            val mutableList = mutableListOf<Fiction>()
             val doc = Jsoup.parse(response.body()?.string())
-            val item = doc.select(FAVORITE_ITEM_QUERY)
-            Log.i(TAG, "${item.toString()}")
-            item.forEachIndexed { index, element ->
-                val title = element.select(FAVORITE_TITLE_QUERY).text()
-                val url = element.select(FAVORITE_URL_QUERY).attr("href")
+            val item = doc.select(FAVOURITE_ITEM_QUERY)
+            Log.i(TAG, "$item")
+            item.forEach { element ->
+                val name = element.select(FAVOURITE_NAME_QUERY).text()
+                val author = element.select(FAVOURITE_AUTHOR_QUERY).text()
+                val authorId = element.select(FAVOURITE_AUTHOR_URL_QUERY).attr("href")
+                    .split("/")[AUTHOR_ID_INDEX].toLong()
+                val hostId = element.select(FAVOURITE_URL_QUERY).attr("href")
+                    .split("/")[FICTION_ID_INDEX].toLong()
                 val description = StringBuilder().also {
-                    element.select(FAVORITE_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
+                    element.select(FAVOURITE_DESCRIPTION_QUERY).forEach { p ->
+                        it.appendln(p.text())
                     }
                 }.toString()
-                val imageUrl = element.select(FAVORITE_IMAGE_QUERY).first().absUrl("src")
-                Log.i(TAG, "Image url: $imageUrl")
-
-                val fictionData = Fiction(
-                    name = title,
-                    imageUrl = imageUrl,
-                    hostId = 0,
-                    description = description,
-                    favourite = true,
-                    host = HOST
-                )
-                mutableList.add(index, fictionData)
-            }
-            return mutableList.toList()
-        }
-        return listOf()
-    }
-
-    override suspend fun search(query: String): List<Fiction> {
-        val response = networkInterface.search(query).await()
-
-        if (response.isSuccessful) {
-            Log.i(TAG, "Search")
-            Log.i(TAG, "Response Body: ${response.body()}")
-            val mutableList = mutableListOf<Fiction>()
-            val doc = Jsoup.parse(response.body()?.string())
-            Log.i(TAG, "DOC: \n$doc")
-            val item = doc.select(SEARCH_ITEM_QUERY)
-            Log.i(TAG, "${item.toString()}")
-            item.forEachIndexed { index, element ->
-                val title = element.select(SEARCH_TITLE_QUERY).text()
-                val hostId = element.select(SEARCH_URL_QUERY).attr("href").split("/")[2].toLong()
-                val description = StringBuilder().also {
-                    element.select(SEARCH_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
-                    }
-                }.toString()
-                var imageUrl = element.select(SEARCH_IMAGE_QUERY).first().absUrl("src")
-                val fictionData = Fiction(
-                    name = title,
+                var imageUrl = element.select(COVER_IMAGE_QUERY).first().absUrl("src")
+                // DEBUG: Logging
+                Log.i(TAG, "Name: $name")
+                Log.i(TAG, "Host ID: $hostId")
+                Log.i(TAG, "Author: $author")
+                Log.i(TAG, "Author ID: $authorId")
+                Log.i(TAG, "Description: $description")
+                Log.i(TAG, "Image URL: $imageUrl")
+                fictionList.add(Fiction(
+                    name = name,
+                    host = HOST,
                     hostId = hostId,
-                    imageUrl = imageUrl,
+                    author = author,
+                    authorId = authorId,
                     description = description,
                     favourite = false,
-                    host = HOST
-                )
-                mutableList.add(index, fictionData)
+                    imageUrl = imageUrl
+                ))
             }
-            return mutableList.toList()
         }
-        return listOf()
+        return fictionList
     }
 
-    override suspend fun getFiction(hostId: Long): Fiction {
+    override suspend fun getFiction(hostId: Long): Fiction? {
         val response = networkInterface.getFiction(hostId).await()
+        var fiction: Fiction? = null
+        Log.i(TAG, "[getFiction]")
 
         if (response.isSuccessful) {
-            Log.i(TAG, "[getFiction]")
             val doc = Jsoup.parse(response.body()?.string())
             val name = doc.select(FICTION_NAME_QUERY).text()
+            val author= doc.select(FICTION_AUTHOR_QUERY).text()
+            val authorId = doc.select(FICTION_AUTHOR_URL_QUERY).attr("href")
+                .split("/")[AUTHOR_ID_INDEX].toLong()
+            val description = StringBuilder().also {
+                doc.select(FICTION_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
+                }
+            }.toString()
+            var imageUrl = doc.select(COVER_IMAGE_QUERY).first().absUrl("src")
+            // DEBUG: Logging
             Log.i(TAG, "Name: $name")
-            val author = doc.select(FICTION_AUTHOR_QUERY).text()
+            Log.i(TAG, "Host ID: $hostId")
             Log.i(TAG, "Author: $author")
-//            val item = doc.select(SEARCH_ITEM_QUERY)
-//            Log.i(TAG, "${item.toString()}")
-//            item.forEachIndexed { index, element ->
-//                val name = element.select(SEARCH_TITLE_QUERY).text()
-//                val url = element.select(SEARCH_URL_QUERY).attr("href")
-//                val description = StringBuilder().also {
-//                    element.select(SEARCH_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
-//                    }
-//                }.toString()
-//                var imageUrl = element.select(SEARCH_IMAGE_QUERY).first().absUrl("src")
-//                val fictionData = Fiction(
-//                    name = name,
-//                    imageUrl = imageUrl,
-//                    url = url,
-//                    description = description,
-//                    favourite = false,
-//                    host = HOST
-//                )
-//                mutableList.add(index, fictionData)
-        }
-        return Fiction(
-            name = "",
-            host = "royalroad",
-            hostId = 0
+            Log.i(TAG, "Author ID: $authorId")
+            Log.i(TAG, "Description: $description")
+            Log.i(TAG, "Image URL: $imageUrl")
+            fiction = Fiction(
+                name = name,
+                host = HOST,
+                hostId = hostId,
+                author = author,
+                authorId = authorId,
+                description = description,
+                favourite = false,
+                imageUrl = imageUrl
             )
+        }
+        return fiction
     }
 
     override suspend fun getFictionTags(hostId: Long): List<Tag> {
         val response = networkInterface.getFiction(hostId).await()
         val tags = mutableListOf<Tag>()
+        Log.i(TAG, "[getFictionTags]")
 
         if (response.isSuccessful) {
-            Log.i(TAG, "[getFictionTags]")
-            val mutableList = mutableListOf<Fiction>()
             val doc = Jsoup.parse(response.body()?.string())
             val tagElements = doc.select(TAGS_QUERY)
             tagElements.forEach {
@@ -210,11 +189,45 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
         return tags
     }
 
-    suspend fun getAllTags(): List<Tag>{
-        TODO("implement")
+    override suspend fun search(query: String): List<Fiction> {
+        val response = networkInterface.search(query).await()
+        val fictionList = mutableListOf<Fiction>()
+        Log.i(TAG, "[search]")
+
+        if (response.isSuccessful) {
+            val doc = Jsoup.parse(response.body()?.string())
+            val item = doc.select(SEARCH_ITEM_QUERY)
+            item.forEach { element ->
+                val name = element.select(SEARCH_NAME_QUERY).text()
+                val author = element.select(SEARCH_AUTHOR_QUERY).text()
+                val hostId = element.select(SEARCH_URL_QUERY).attr("href")
+                    .split("/")[FICTION_ID_INDEX].toLong()
+                val description = StringBuilder().also {
+                    element.select(SEARCH_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
+                    }
+                }.toString()
+                var imageUrl = element.select(COVER_IMAGE_QUERY).first().absUrl("src")
+                // DEBUG: Logging
+                Log.i(TAG, "Name: $name")
+                Log.i(TAG, "Host ID: $hostId")
+                Log.i(TAG, "Author: $author")
+                Log.i(TAG, "Description: $description")
+                Log.i(TAG, "Image URL: $imageUrl")
+                fictionList.add(Fiction(
+                    name = name,
+                    host = HOST,
+                    hostId = hostId,
+                    author = author,
+                    description = description,
+                    favourite = false,
+                    imageUrl = imageUrl
+                ))
+            }
+        }
+        return fictionList
     }
 
-    override fun updateReading(readingList: MutableLiveData<List<Fiction>>) {
+    suspend fun getAllTags(): List<Tag>{
         TODO("implement")
     }
 }

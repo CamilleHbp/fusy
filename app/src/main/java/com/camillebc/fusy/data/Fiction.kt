@@ -2,7 +2,6 @@ package com.camillebc.fusy.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "fiction")
@@ -12,6 +11,8 @@ data class Fiction(
     @ColumnInfo(name = "host_id")
     val hostId: Long,
     val author: String = "unknown",
+    @ColumnInfo(name = "author_id")
+    val authorId: Long? = null,
     val description: String = "No description.",
     val favourite: Boolean = false,
     @ColumnInfo(name = "image_url")

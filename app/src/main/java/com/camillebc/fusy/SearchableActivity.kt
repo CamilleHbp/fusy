@@ -14,6 +14,7 @@ import com.camillebc.fusy.fragments.FictionListFragment
 import com.camillebc.fusy.interfaces.FictionHostInterface
 import com.camillebc.fusy.utilities.APP_TAG
 import com.camillebc.fusy.utilities.addFragment
+import com.camillebc.fusy.utilities.notifyObserver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -63,11 +64,12 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
     }
 
     private fun search(query: String) {
-        GlobalScope.launch(Dispatchers.IO) {
-            val results = host.search(query)
+        val searchFictionList = mutableListOf<Fiction>()
 
+        GlobalScope.launch(Dispatchers.IO) {
+            searchFictionList.addAll(host.search(query))
             withContext(Dispatchers.Default) {
-                fictionViewModel.favoriteList.postValue(results)
+                fictionViewModel.fictionList.postValue(searchFictionList)
             }
         }
     }

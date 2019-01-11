@@ -31,16 +31,16 @@ class FictionRepository(
         database.fictionDao().updateFiction(item)
     }
 
-    suspend fun getFavourites(): List<Fiction> {
-       if (hardwareStatusManager.getConnectivityStatus() != HardwareStatusManager.InternetStatus.OFFLINE) {
-           Log.i(TAG, "Connectivity status: ${hardwareStatusManager.getConnectivityStatus().name}")
-           Log.i(TAG, "Getting favourites from Host")
-           val favourites = host.getFavourites()
-           // TODO() // Create a diff to see if there is a need to insert in Db
-           database.fictionDao().insertFictions(favourites)
-           return favourites
-       }
+    suspend fun updateFavourites(hostIds: List<Long>) {
+        if (hardwareStatusManager.getConnectivityStatus() != HardwareStatusManager.InternetStatus.OFFLINE) {
+            Log.i(TAG, "Connectivity status: ${hardwareStatusManager.getConnectivityStatus().name}")
+            Log.i(TAG, "Getting favourites from Host")
+            val favourites = host.getFavourites()
+            // TODO() // Create a diff to see if there is a need to insert in Db
+//            database.fictionDao().insertFictions(fictionList)
+//            return fictionList
+        }
         Log.i(TAG, "Getting favourites from Db")
-       return database.fictionDao().getFavourites()
+//        return database.fictionDao().getFavourites()
     }
 }

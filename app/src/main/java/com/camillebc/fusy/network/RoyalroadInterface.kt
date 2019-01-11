@@ -22,7 +22,7 @@ interface RoyalroadInterface {
     ): Deferred<Response<ResponseBody>>
 
     @GET("my/favorites")
-    fun getFavorites(): Deferred<Response<ResponseBody>>
+    fun getFavourites(): Deferred<Response<ResponseBody>>
 
     @GET("fiction/{id}")
     fun getFiction(@Path("id") id: Long): Deferred<Response<ResponseBody>>

@@ -8,14 +8,16 @@ import android.view.Menu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModelProviders
 import com.camillebc.fusy.data.Fiction
-import com.camillebc.fusy.data.FictionRepository
 import com.camillebc.fusy.data.FictionViewModel
 import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.fragments.FictionListFragment
+import com.camillebc.fusy.interfaces.FictionHostInterface
 import com.camillebc.fusy.utilities.APP_TAG
 import com.camillebc.fusy.utilities.addFragment
+import com.camillebc.fusy.utilities.notifyObserver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -25,7 +27,7 @@ import javax.inject.Inject
 private const val TAG = APP_TAG + "AccountActivity"
 
 class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentInteractionListener {
-    @Inject lateinit var repository: FictionRepository
+    @Inject lateinit var host: FictionHostInterface
     private lateinit var fictionViewModel: FictionViewModel
 
     init {
@@ -40,11 +42,11 @@ class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentI
         val favoriteFragment = FictionListFragment()
         addFragment(favoriteFragment, R.id.account_favorite_layout)
 
+        val favouriteFictionList = mutableListOf<Fiction>()
         GlobalScope.launch(Dispatchers.IO) {
-            val favourites = repository.getFavourites()
-
+            favouriteFictionList.addAll(host.getFavourites())
             withContext(Dispatchers.Default) {
-                fictionViewModel.favoriteList.postValue(favourites)
+                fictionViewModel.fictionList.postValue(favouriteFictionList)
             }
         }
     }
@@ -65,7 +67,7 @@ class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentI
     override fun onListFragmentInteraction(item: Fiction?) {
         if (item != null) {
             Log.i(TAG, item.name)
-            Toast.makeText(this, "URL: ${item.description}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Selected: ${item.description}", Toast.LENGTH_SHORT).show()
         }
     }
 }

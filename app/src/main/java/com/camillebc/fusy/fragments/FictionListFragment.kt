@@ -13,7 +13,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.camillebc.fusy.R
 import com.camillebc.fusy.data.Fiction
 import com.camillebc.fusy.data.FictionViewModel
-import kotlinx.android.synthetic.main.fragment_fiction_list.*
 
 /**
  * A fragment representing a list of Items.
@@ -51,13 +50,15 @@ class FictionListFragment : androidx.fragment.app.Fragment() {
                 else -> androidx.recyclerview.widget.GridLayoutManager(context, columnCount)
             }
             val favoritesAdapter = FictionListRecyclerViewAdapter(
-                fictionModel.favoriteList.value!!,
+                fictionModel.fictionList.value!!,
                 listener,
                 Glide.with(this).setDefaultRequestOptions(requestOptions)
             )
-            val favoritesObserver = Observer<List<Fiction>> { favoritesAdapter.setData(it) }
+            val favoritesObserver = Observer<MutableList<Fiction>> {
+                favoritesAdapter.setData(it)
+            }
             adapter = favoritesAdapter
-            fictionModel.favoriteList.observe(this@FictionListFragment, favoritesObserver)
+            fictionModel.fictionList.observe(this@FictionListFragment, favoritesObserver)
         }
     }
 
