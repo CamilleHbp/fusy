@@ -2,8 +2,10 @@ package com.camillebc.fusy
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
@@ -29,7 +31,7 @@ class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentI
     private lateinit var fictionViewModel: FictionViewModel
 
     init {
-        Injector.getFictionComponent().inject(this)
+        Injector.fictionComponent.inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,5 +71,10 @@ class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentI
             val detailFragment = FictionDetailFragment()
             replaceFragment(detailFragment, R.id.account_fragment, true)
         }
+    }
+
+    fun launchLibrary(v: View) {
+        val intent = Intent(this, LibraryActivity::class.java)
+        startActivity(intent)
     }
 }

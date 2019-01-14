@@ -24,7 +24,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
     private var host = Host.ROYALROAD
 
     init {
-        Injector.getFictionComponent().inject(this)
+        Injector.fictionComponent.inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,8 +38,8 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
     }
 
     fun login(v: View) {
-        val login = editText_login.text.toString()
-        val password = editText_password.text.toString()
+        val login = login_login.text.toString()
+        val password = login_password.text.toString()
 
         if (login.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Login and password cannot be empty.", Toast.LENGTH_SHORT).show()
@@ -56,15 +56,15 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
         val tag = v.tag.toString()
         when (tag) {
             "fanfiction" -> {
-                imageView_host.setImageDrawable(resources.getDrawable(R.drawable.banner_fanfiction, this.theme))
+                login_logoHost.setImageDrawable(resources.getDrawable(R.drawable.banner_fanfiction, this.theme))
                 host = Host.FANFICTION
             }
             "royalroad" -> {
-                imageView_host.setImageDrawable(resources.getDrawable(R.drawable.banner_royalroad, this.theme))
+                login_logoHost.setImageDrawable(resources.getDrawable(R.drawable.banner_royalroad, this.theme))
                 host = Host.ROYALROAD
             }
             else -> {
-                imageView_host.setImageResource(R.color.mtrl_btn_transparent_bg_color)
+                login_logoHost.setImageResource(R.color.mtrl_btn_transparent_bg_color)
                 host = Host.DEFAULT
             }
         }

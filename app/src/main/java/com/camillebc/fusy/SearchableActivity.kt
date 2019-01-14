@@ -30,7 +30,7 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
     private lateinit var fictionViewModel: FictionViewModel
 
     init {
-        Injector.getFictionComponent().inject(this)
+        Injector.fictionComponent.inject(this)
     }
 
     override fun onBackPressed() {

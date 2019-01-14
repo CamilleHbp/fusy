@@ -15,6 +15,10 @@ class FictionRepository(
     private val hardwareStatusManager: HardwareStatusManager
 ): RepositoryInterface<Fiction> {
 
+    fun getAll(): List<Fiction> {
+        return database.fictionDao().getAllFictions()
+    }
+
     override fun getById(id: Long): Fiction {
         return database.fictionDao().getFictionById(id)
     }

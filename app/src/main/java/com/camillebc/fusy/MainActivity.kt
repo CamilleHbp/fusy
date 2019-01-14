@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
     @Inject lateinit var hardwareStatusManager: HardwareStatusManager
 
     init {
-        Injector.getFictionComponent().inject(this)
+        Injector.fictionComponent.inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

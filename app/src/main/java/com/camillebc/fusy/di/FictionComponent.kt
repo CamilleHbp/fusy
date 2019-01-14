@@ -1,9 +1,6 @@
 package com.camillebc.fusy.di
 
-import com.camillebc.fusy.AccountActivity
-import com.camillebc.fusy.LoginActivity
-import com.camillebc.fusy.MainActivity
-import com.camillebc.fusy.SearchableActivity
+import com.camillebc.fusy.*
 import com.camillebc.fusy.di.modules.*
 import dagger.Component
 import javax.inject.Singleton
@@ -18,6 +15,7 @@ import javax.inject.Singleton
 ])
 interface FictionComponent {
     fun inject(accountActivity: AccountActivity)
+    fun inject(libraryActivity: LibraryActivity)
     fun inject(loginActivity: LoginActivity)
     fun inject(mainActivity: MainActivity)
     fun inject(searchableActivity: SearchableActivity)

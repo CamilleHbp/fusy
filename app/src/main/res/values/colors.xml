@@ -54,6 +54,7 @@
     <color name="colorPrimary">@color/prussian_blue</color>
     <color name="colorPrimaryDark">@color/prussian_blue_dark</color>
     <color name="colorAccent">@color/prussian_blue_accent</color>
+    <color name="colorBackgroundLight">#FAFAFA</color>
     <color name="row">#FFFFFF</color>
     <color name="rowAlternate">#F4F4F4</color>
 </resources>
