@@ -10,6 +10,15 @@ fun AppCompatActivity.removeFragment(fragment: androidx.fragment.app.Fragment, f
     supportFragmentManager.inTransaction { remove(fragment) }
 }
 
-fun AppCompatActivity.replaceFragment(fragment: androidx.fragment.app.Fragment, frameId: Int) {
-    supportFragmentManager.inTransaction { replace(frameId, fragment) }
+fun AppCompatActivity.replaceFragment(
+    fragment: androidx.fragment.app.Fragment,
+    frameId: Int,
+    toBackStack: Boolean = false,
+    backStackName: String? = null
+) {
+    if (toBackStack) {
+        supportFragmentManager.inTransaction { replace(frameId, fragment).addToBackStack(backStackName) }
+    } else {
+        supportFragmentManager.inTransaction { replace(frameId, fragment) }
+    }
 }

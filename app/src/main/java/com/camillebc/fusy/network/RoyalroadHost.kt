@@ -38,6 +38,7 @@ private const val SEARCH_ITEM_QUERY = "li.search-item"                      // p
 private const val SEARCH_AUTHOR_QUERY = "div.fiction-info > span.author"
 private const val SEARCH_DESCRIPTION_QUERY = "div.fiction-description"
 private const val SEARCH_NAME_QUERY = "h2"
+private const val SEARCH_NO_RESULT_QUERY = "h4"
 private const val SEARCH_URL_QUERY = "$SEARCH_NAME_QUERY > a"
 // TAG QUERIES
 private const val TAGS_QUERY = "span.tags > span.label"                      // parent element
@@ -198,6 +199,10 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
             val doc = Jsoup.parse(response.body()?.string())
             val item = doc.select(SEARCH_ITEM_QUERY)
             item.forEach { element ->
+                // Check if search returned any value
+                val noResults = element.select(SEARCH_NO_RESULT_QUERY)
+                if (noResults.text().contains("No results")) return emptyList()
+
                 val name = element.select(SEARCH_NAME_QUERY).text()
                 val author = element.select(SEARCH_AUTHOR_QUERY).text()
                 val hostId = element.select(SEARCH_URL_QUERY).attr("href")

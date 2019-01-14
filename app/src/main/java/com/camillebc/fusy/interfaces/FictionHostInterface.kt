@@ -1,6 +1,5 @@
 package com.camillebc.fusy.interfaces
 
-import androidx.lifecycle.MutableLiveData
 import com.camillebc.fusy.data.Fiction
 import com.camillebc.fusy.data.Tag
 

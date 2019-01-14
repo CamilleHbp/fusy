@@ -6,21 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".SearchableActivity">
 
-    <TextView
-        android:id="@+id/account_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/search_title"
-        android:textSize="@dimen/font_huge"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
     <FrameLayout
-        android:id="@+id/search_layout"
+        android:id="@+id/searchable_fragment_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="@+id/account_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

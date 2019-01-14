@@ -42,12 +42,7 @@ class FictionListRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        // Alternate the row's colour
-        if(position %2 == 1) holder.itemView.setBackgroundColor(Color.parseColor("#F4F4F4"))
-        else holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"))
-
         val item = data[position]
-        holder.id.text = position.toString().padStart(3, '0')
         holder.title.text = item.name
         glide.load(item.imageUrl).into(holder.image)
 
@@ -66,12 +61,7 @@ class FictionListRecyclerViewAdapter(
     }
 
     inner class ViewHolder(val view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
-        val id: TextView = view.fiction_number
-        val image: ImageView = view.fiction_image
-        val title: TextView = view.fiction_title
-
-        override fun toString(): String {
-            return super.toString() + " '" + title.text + "'"
-        }
+        val image: ImageView = view.fictionCard_image
+        val title: TextView = view.fictionCard_title
     }
 }

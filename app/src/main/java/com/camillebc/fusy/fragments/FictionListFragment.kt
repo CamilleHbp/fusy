@@ -7,12 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.camillebc.fusy.R
 import com.camillebc.fusy.data.Fiction
 import com.camillebc.fusy.data.FictionViewModel
+import com.camillebc.fusy.utilities.APP_TAG
+import com.camillebc.fusy.utilities.RecyclerViewEmptySupport
+import kotlinx.android.synthetic.main.fragment_fiction_list.*
+
+private const val TAG = APP_TAG + "FictionListFragment"
 
 /**
  * A fragment representing a list of Items.
@@ -23,7 +27,7 @@ class FictionListFragment : androidx.fragment.app.Fragment() {
 
     private var columnCount = 1
     private var listener: OnListFragmentInteractionListener? = null
-    private lateinit var fictionListView: RecyclerView
+    private lateinit var fictionListView: RecyclerViewEmptySupport
     private lateinit var fictionModel: FictionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +48,7 @@ class FictionListFragment : androidx.fragment.app.Fragment() {
             error(R.drawable.fiction_placeholder_royalroad)
         }
         fictionModel = ViewModelProviders.of(this.activity!!).get(FictionViewModel::class.java)
+        fictionListView = recyclerView_fictionList
         with(fictionListView) {
             layoutManager = when {
                 columnCount <= 1 -> androidx.recyclerview.widget.LinearLayoutManager(context)
@@ -58,6 +63,7 @@ class FictionListFragment : androidx.fragment.app.Fragment() {
                 favoritesAdapter.setData(it)
             }
             adapter = favoritesAdapter
+            setEmptyView(textView_searchableEmpty)
             fictionModel.fictionList.observe(this@FictionListFragment, favoritesObserver)
         }
     }
@@ -66,11 +72,8 @@ class FictionListFragment : androidx.fragment.app.Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_fiction_list, container, false)
-        fictionListView = view as RecyclerView
-
         // Set the adapter
-        return view
+        return inflater.inflate(R.layout.fragment_fiction_list, container, false)
     }
 
     override fun onAttach(context: Context) {

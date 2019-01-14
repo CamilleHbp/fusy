@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/list_fiction"
-    android:name="com.camillebc.fusy.fragments.FavoriteFragment"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="left"
-    android:layout_marginLeft="@dimen/spacing_medium"
-    android:layout_marginRight="@dimen/spacing_medium"
-    tools:context=".fragments.FictionListFragment"
-    tools:listitem="@layout/fragment_fiction" />
+    android:layout_height="match_parent">
+
+    <com.camillebc.fusy.utilities.RecyclerViewEmptySupport xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/recyclerView_fictionList"
+        android:name="com.camillebc.fusy.fragments.FavoriteFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".fragments.FictionListFragment"
+        tools:listitem="@layout/fragment_fiction" />
+
+    <TextView
+        android:id="@+id/textView_searchableEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/search_empty"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView_fictionList"
+        app:layout_constraintVertical_bias="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
