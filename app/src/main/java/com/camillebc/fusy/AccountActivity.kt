@@ -3,21 +3,19 @@ package com.camillebc.fusy
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModelProviders
 import com.camillebc.fusy.data.Fiction
 import com.camillebc.fusy.data.FictionViewModel
 import com.camillebc.fusy.di.Injector
+import com.camillebc.fusy.fragments.FictionDetailFragment
 import com.camillebc.fusy.fragments.FictionListFragment
 import com.camillebc.fusy.interfaces.FictionHostInterface
 import com.camillebc.fusy.utilities.APP_TAG
 import com.camillebc.fusy.utilities.addFragment
-import com.camillebc.fusy.utilities.notifyObserver
+import com.camillebc.fusy.utilities.replaceFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -40,7 +38,7 @@ class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentI
 
         fictionViewModel = ViewModelProviders.of(this).get(FictionViewModel::class.java)
         val favoriteFragment = FictionListFragment()
-        addFragment(favoriteFragment, R.id.account_favorite_layout)
+        addFragment(favoriteFragment, R.id.account_fragment)
 
         val favouriteFictionList = mutableListOf<Fiction>()
         GlobalScope.launch(Dispatchers.IO) {
@@ -57,7 +55,6 @@ class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentI
         // Get the SearchView and set the searchable configuration
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         (menu!!.findItem(R.id.menu_search).actionView as SearchView).apply {
-            // Assumes current activity is the searchable activity
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
         }
 
@@ -66,8 +63,11 @@ class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentI
 
     override fun onListFragmentInteraction(item: Fiction?) {
         if (item != null) {
-            Log.i(TAG, item.name)
-            Toast.makeText(this, "Selected: ${item.description}", Toast.LENGTH_SHORT).show()
+            GlobalScope.launch(Dispatchers.IO) {
+                fictionViewModel.fiction.postValue(host.getFiction(item.hostId))
+            }
+            val detailFragment = FictionDetailFragment()
+            replaceFragment(detailFragment, R.id.account_fragment, true)
         }
     }
 }

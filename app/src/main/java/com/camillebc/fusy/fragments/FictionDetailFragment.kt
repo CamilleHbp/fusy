@@ -1,7 +1,6 @@
 package com.camillebc.fusy.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,18 +37,17 @@ class FictionDetailFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        fictionAuthor = textView_fictionAuthor
+        fictionAuthor = fictionDetail_author
         fictionDescription = textView_fictionDescription
-        fictionImage = imageView_image
-        fictionName = textView_fictionName
+        fictionImage = fictionDetail_image
+        fictionName = fictionDetail_name
         val requestOptions = RequestOptions().apply{
             placeholder(R.drawable.fiction_placeholder_royalroad)
             error(R.drawable.fiction_placeholder_royalroad)
         }
         fictionModel = activity?.run {
             ViewModelProviders.of(this).get(FictionViewModel::class.java)
-        } ?: throw Exception("$TAG |Invalid Activity")
-//        Log.i(TAG,  "Invalid Activity for ${this@FictionDetailFragment::class.simpleName}")
+        } ?: throw Exception("$TAG | Invalid Activity")
         fictionModel.fiction.observe(this, Observer<Fiction> { fiction ->
             fictionAuthor.text = fiction.author
             fictionDescription.text = fiction.description
@@ -62,8 +60,7 @@ class FictionDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_fiction_detail, container, false)
         // Inflate the layout for this fragment
-        return view
+        return inflater.inflate(R.layout.fragment_fiction_detail, container, false)
     }
 }

@@ -2,38 +2,39 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fictionDetail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.FictionDetailFragment">
 
     <TextView
-        android:id="@+id/textView_fictionName"
+        android:id="@+id/fictionDetail_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_medium"
         android:text="@string/fiction_unknown"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/textView_fictionBy"
+        app:layout_constraintBottom_toTopOf="@+id/fictionDetail_by"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView_fictionBy"
+        android:id="@+id/fictionDetail_by"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/fiction_detail_by"
         android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@+id/textView_fictionName" />
+        app:layout_constraintTop_toBottomOf="@+id/fictionDetail_name" />
 
     <TextView
-        android:id="@+id/textView_fictionAuthor"
+        android:id="@+id/fictionDetail_author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/fiction_unknown"
         android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@+id/textView_fictionBy" />
+        app:layout_constraintTop_toBottomOf="@+id/fictionDetail_by" />
 
     <ImageView
-        android:id="@+id/imageView_image"
+        android:id="@+id/fictionDetail_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_large"
@@ -44,7 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_fictionAuthor"
+        app:layout_constraintTop_toBottomOf="@+id/fictionDetail_author"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -56,6 +57,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_image" />
+        app:layout_constraintTop_toBottomOf="@+id/fictionDetail_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
