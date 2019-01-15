@@ -10,11 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
 import com.camillebc.fusy.data.Fiction
+import com.camillebc.fusy.data.FictionRepository
 import com.camillebc.fusy.data.FictionViewModel
+import com.camillebc.fusy.data.ROYALROAD
 import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.fragments.FictionDetailFragment
 import com.camillebc.fusy.fragments.FictionListFragment
-import com.camillebc.fusy.interfaces.FictionHostInterface
 import com.camillebc.fusy.utilities.APP_TAG
 import com.camillebc.fusy.utilities.addFragment
 import com.camillebc.fusy.utilities.replaceFragment
@@ -25,9 +26,10 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 private const val TAG = APP_TAG + "AccountActivity"
+private const val ACCOUNT_BACKSTACK = "account_backstack"
 
 class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentInteractionListener {
-    @Inject lateinit var host: FictionHostInterface
+    @Inject lateinit var repository: FictionRepository
     private lateinit var fictionViewModel: FictionViewModel
 
     init {
@@ -42,9 +44,9 @@ class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentI
         val favoriteFragment = FictionListFragment()
         addFragment(favoriteFragment, R.id.account_fragment)
 
-        val favouriteFictionList = mutableListOf<Fiction>()
         GlobalScope.launch(Dispatchers.IO) {
-            favouriteFictionList.addAll(host.getFavourites())
+            val favouriteFictionList = (repository.getFavourites(ROYALROAD)) as MutableList
+
             withContext(Dispatchers.Default) {
                 fictionViewModel.fictionList.postValue(favouriteFictionList)
             }
@@ -66,10 +68,10 @@ class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentI
     override fun onListFragmentInteraction(item: Fiction?) {
         if (item != null) {
             GlobalScope.launch(Dispatchers.IO) {
-                fictionViewModel.fiction.postValue(host.getFiction(item.hostId))
+                fictionViewModel.fiction.postValue(repository.getFiction(item.id, ROYALROAD))
             }
             val detailFragment = FictionDetailFragment()
-            replaceFragment(detailFragment, R.id.account_fragment, true)
+            replaceFragment(detailFragment, R.id.account_fragment, true, ACCOUNT_BACKSTACK)
         }
     }
 

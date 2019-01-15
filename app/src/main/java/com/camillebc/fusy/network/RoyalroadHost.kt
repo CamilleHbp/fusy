@@ -1,7 +1,9 @@
 package com.camillebc.fusy.network
 
+import android.os.Build.HOST
 import android.util.Log
 import com.camillebc.fusy.data.Fiction
+import com.camillebc.fusy.data.ROYALROAD
 import com.camillebc.fusy.data.Tag
 import com.camillebc.fusy.interfaces.FictionHostInterface
 import com.camillebc.fusy.utilities.APP_TAG
@@ -20,7 +22,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 private const val BASE_URL = "https://www.royalroad.com/"
-private const val HOST = "royalroad"
 private const val RETURN_URL = "https://www.royalroad.com/home"
 private const val TAG = APP_TAG + "RoyalroadHost"
 // JSOUP CSS QUERIES
@@ -107,7 +108,7 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
                 val author = element.select(FAVOURITE_AUTHOR_QUERY).text()
                 val authorId = element.select(FAVOURITE_AUTHOR_URL_QUERY).attr("href")
                     .split("/")[AUTHOR_ID_INDEX].toLong()
-                val hostId = element.select(FAVOURITE_URL_QUERY).attr("href")
+                val id = element.select(FAVOURITE_URL_QUERY).attr("href")
                     .split("/")[FICTION_ID_INDEX].toLong()
                 val description = StringBuilder().also {
                     element.select(FAVOURITE_DESCRIPTION_QUERY).forEach { p ->
@@ -116,16 +117,16 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
                 }.toString()
                 var imageUrl = element.select(COVER_IMAGE_QUERY).first().absUrl("src")
                 // DEBUG: Logging
+                Log.i(TAG, "ID: $id")
                 Log.i(TAG, "Name: $name")
-                Log.i(TAG, "Host ID: $hostId")
                 Log.i(TAG, "Author: $author")
                 Log.i(TAG, "Author ID: $authorId")
                 Log.i(TAG, "Description: $description")
                 Log.i(TAG, "Image URL: $imageUrl")
                 fictionList.add(Fiction(
+                    id = id,
                     name = name,
-                    host = HOST,
-                    hostId = hostId,
+                    host = ROYALROAD,
                     author = author,
                     authorId = authorId,
                     description = description,
@@ -137,8 +138,8 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
         return fictionList
     }
 
-    override suspend fun getFiction(hostId: Long): Fiction? {
-        val response = networkInterface.getFiction(hostId).await()
+    override suspend fun getFiction(id: Long): Fiction? {
+        val response = networkInterface.getFiction(id).await()
         var fiction: Fiction? = null
         Log.i(TAG, "[getFiction]")
 
@@ -154,16 +155,16 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
             }.toString()
             var imageUrl = doc.select(COVER_IMAGE_QUERY).first().absUrl("src")
             // DEBUG: Logging
+            Log.i(TAG, "ID: $id")
             Log.i(TAG, "Name: $name")
-            Log.i(TAG, "Host ID: $hostId")
             Log.i(TAG, "Author: $author")
             Log.i(TAG, "Author ID: $authorId")
             Log.i(TAG, "Description: $description")
             Log.i(TAG, "Image URL: $imageUrl")
             fiction = Fiction(
+                id = id,
                 name = name,
-                host = HOST,
-                hostId = hostId,
+                host = ROYALROAD,
                 author = author,
                 authorId = authorId,
                 description = description,
@@ -205,7 +206,7 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
 
                 val name = element.select(SEARCH_NAME_QUERY).text()
                 val author = element.select(SEARCH_AUTHOR_QUERY).text()
-                val hostId = element.select(SEARCH_URL_QUERY).attr("href")
+                val id = element.select(SEARCH_URL_QUERY).attr("href")
                     .split("/")[FICTION_ID_INDEX].toLong()
                 val description = StringBuilder().also {
                     element.select(SEARCH_DESCRIPTION_QUERY).forEach { p -> it.appendln(p.text())
@@ -213,15 +214,15 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
                 }.toString()
                 var imageUrl = element.select(COVER_IMAGE_QUERY).first().absUrl("src")
                 // DEBUG: Logging
+                Log.i(TAG, "ID: $id")
                 Log.i(TAG, "Name: $name")
-                Log.i(TAG, "Host ID: $hostId")
                 Log.i(TAG, "Author: $author")
                 Log.i(TAG, "Description: $description")
                 Log.i(TAG, "Image URL: $imageUrl")
                 fictionList.add(Fiction(
+                    id = id,
                     name = name,
-                    host = HOST,
-                    hostId = hostId,
+                    host = ROYALROAD,
                     author = author,
                     description = description,
                     favourite = false,

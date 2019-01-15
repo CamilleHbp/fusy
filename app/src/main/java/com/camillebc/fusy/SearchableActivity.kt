@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
 import com.camillebc.fusy.data.Fiction
+import com.camillebc.fusy.data.FictionRepository
 import com.camillebc.fusy.data.FictionViewModel
+import com.camillebc.fusy.data.ROYALROAD
 import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.fragments.FictionDetailFragment
 import com.camillebc.fusy.fragments.FictionListFragment
@@ -27,6 +29,7 @@ private const val TAG = APP_TAG + "SearchableActivity"
 
 class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragmentInteractionListener  {
     @Inject lateinit var host: FictionHostInterface
+    @Inject lateinit var repository: FictionRepository
     private lateinit var fictionViewModel: FictionViewModel
 
     init {
@@ -70,7 +73,7 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
     override fun onListFragmentInteraction(item: Fiction?) {
         if (item != null) {
             GlobalScope.launch(Dispatchers.IO) {
-                fictionViewModel.fiction.postValue(host.getFiction(item.hostId))
+                fictionViewModel.fiction.postValue(repository.getFiction(item.id, ROYALROAD))
             }
             val detailFragment = FictionDetailFragment()
             replaceFragment(detailFragment, R.id.searchable_fragment_layout, true)

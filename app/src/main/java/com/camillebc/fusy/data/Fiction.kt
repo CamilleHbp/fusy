@@ -2,14 +2,18 @@ package com.camillebc.fusy.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "fiction")
+@Entity(
+    tableName = "fiction",
+    indices = [Index(value = ["id", "host"], unique = true)]
+)
 data class Fiction(
+    @PrimaryKey(autoGenerate = false)
+    val id: Long,
     val name: String,
     val host: String,
-    @ColumnInfo(name = "host_id")
-    val hostId: Long,
     val author: String = "unknown",
     @ColumnInfo(name = "author_id")
     val authorId: Long? = null,
@@ -17,7 +21,4 @@ data class Fiction(
     val favourite: Boolean = false,
     @ColumnInfo(name = "image_url")
     val imageUrl: String = ""
-) {
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
-}
+)
