@@ -16,6 +16,8 @@ import java.io.IOException
 import java.net.CookieHandler
 import java.net.CookieManager
 import java.net.CookiePolicy
+import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -62,6 +64,22 @@ class RoyalroadHost @Inject constructor(): FictionHostInterface {
         val logging = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.HEADERS }
         val httpClient = OkHttpClient.Builder().apply {
             addInterceptor(logging)
+            readTimeout(30, TimeUnit.SECONDS)
+            followRedirects(true)
+            followSslRedirects(true)
+            addInterceptor { chain ->
+                val newRequest = chain.request().newBuilder()
+                    .addHeader("Authorization", UUID.randomUUID().toString())
+                    .addHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+                    .addHeader("accept-encoding", "gzip, deflate")
+                    .addHeader("accept-language", "en-US,en;q=0.9")
+                    .addHeader("upgrade-insecure-requests", "1")
+                    .addHeader("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36")
+                    .addHeader("referer", "https://royalroad.com/account/login")
+                    .addHeader("upgrade-insecure-requests", "1")
+                    .build()
+                chain.proceed(newRequest)
+            }
             cookieJar(JavaNetCookieJar(cookieManager))
         }
         val retrofit = Retrofit.Builder().apply {

@@ -7,6 +7,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.interfaces.FictionHostInterface
+import com.chaquo.python.PyObject
+import com.chaquo.python.Python
+import com.chaquo.python.android.AndroidPlatform
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -53,8 +56,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
     }
 
     fun switchHost(v: View) {
-        val tag = v.tag.toString()
-        when (tag) {
+        when (v.tag.toString()) {
             "fanfiction" -> {
                 login_logoHost.setImageDrawable(resources.getDrawable(R.drawable.banner_fanfiction, this.theme))
                 host = Host.FANFICTION
@@ -80,6 +82,13 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
     }
 
     private suspend fun loginRoyalroad(login: String, password: String) {
+        // "context" must be an Activity, Service or Application object from your app.
+        if (! Python.isStarted()) {
+            Python.start(AndroidPlatform(this))
+        }
+        val py = Python.getInstance()
+        val pyLogin = py.getModule("login")
+        pyLogin.callAttr("login", login, password)
         this.async {
             val loggedStatus = withContext(Dispatchers.IO) {
                 fictionHost.login(login, password)

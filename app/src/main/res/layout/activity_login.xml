@@ -84,7 +84,7 @@
                 android:layout_marginTop="@dimen/spacing_small"
                 android:ems="10"
                 android:hint="@string/hint_login"
-                android:text="CamilleBC" />
+                android:text="camille.baillat@pm.me" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,7 +100,8 @@
                 android:layout_marginTop="@dimen/spacing_small"
                 android:ems="10"
                 android:hint="@string/hint_password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:text="QL2Em72(hgNSKQ8iyK1%"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
