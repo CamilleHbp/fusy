@@ -1,7 +1,6 @@
 package com.camillebc.fusy.fragments
 
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.camillebc.fusy.R
-import com.camillebc.fusy.data.Fiction
+import com.camillebc.fusy.model.Fiction
 import com.camillebc.fusy.fragments.FictionListFragment.OnListFragmentInteractionListener
 import kotlinx.android.synthetic.main.fragment_fiction.view.*
 

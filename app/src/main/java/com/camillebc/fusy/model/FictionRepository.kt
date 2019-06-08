@@ -1,4 +1,4 @@
-package com.camillebc.fusy.data
+package com.camillebc.fusy.model
 
 import android.util.Log
 import com.camillebc.fusy.interfaces.FictionHostInterface

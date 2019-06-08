@@ -1,7 +1,7 @@
 package com.camillebc.fusy.di.modules
 
-import com.camillebc.fusy.data.FictionDatabase
-import com.camillebc.fusy.data.FictionRepository
+import com.camillebc.fusy.model.FictionDatabase
+import com.camillebc.fusy.model.FictionRepository
 import com.camillebc.fusy.interfaces.FictionHostInterface
 import com.camillebc.fusy.utilities.HardwareStatusManager
 import dagger.Module

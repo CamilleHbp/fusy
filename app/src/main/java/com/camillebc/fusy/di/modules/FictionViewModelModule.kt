@@ -1,6 +1,6 @@
 package com.camillebc.fusy.di.modules
 
-import com.camillebc.fusy.data.FictionViewModel
+import com.camillebc.fusy.model.FictionViewModel
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

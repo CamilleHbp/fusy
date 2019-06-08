@@ -1,14 +1,16 @@
-package com.camillebc.fusy.ui
+package com.camillebc.fusy.account.view
 
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.fragment.app.Fragment
 import com.camillebc.fusy.R
+import com.camillebc.fusy.utilities.APP_TAG
+
+private const val TAG = APP_TAG + "AccountFragment"
 
 /**
  * A simple [Fragment] subclass.

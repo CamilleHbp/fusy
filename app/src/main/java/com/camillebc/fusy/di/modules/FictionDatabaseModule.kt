@@ -2,7 +2,7 @@ package com.camillebc.fusy.di.modules
 
 import android.content.Context
 import androidx.room.Room
-import com.camillebc.fusy.data.FictionDatabase
+import com.camillebc.fusy.model.FictionDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

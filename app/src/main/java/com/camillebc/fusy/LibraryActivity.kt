@@ -3,9 +3,9 @@ package com.camillebc.fusy
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
-import com.camillebc.fusy.data.Fiction
-import com.camillebc.fusy.data.FictionRepository
-import com.camillebc.fusy.data.FictionViewModel
+import com.camillebc.fusy.model.Fiction
+import com.camillebc.fusy.model.FictionRepository
+import com.camillebc.fusy.model.FictionViewModel
 import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.fragments.FictionListFragment
 import com.camillebc.fusy.utilities.addFragment

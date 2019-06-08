@@ -1,8 +1,8 @@
 package com.camillebc.fusy.network
 
 import android.util.Log
-import com.camillebc.fusy.data.Fiction
-import com.camillebc.fusy.data.Tag
+import com.camillebc.fusy.model.Fiction
+import com.camillebc.fusy.model.Tag
 import com.camillebc.fusy.interfaces.FictionHostInterface
 import com.camillebc.fusy.utilities.APP_TAG
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory

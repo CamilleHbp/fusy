@@ -1,14 +1,14 @@
-package com.camillebc.fusy.ui
+package com.camillebc.fusy.account.view
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.camillebc.fusy.R
+
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,7 +20,7 @@ import com.camillebc.fusy.R
  * to handle interaction events.
  *
  */
-class FirstLaunchFragment :  Fragment() {
+class FirstLaunchFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

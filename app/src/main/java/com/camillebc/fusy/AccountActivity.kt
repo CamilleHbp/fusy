@@ -9,8 +9,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
-import com.camillebc.fusy.data.Fiction
-import com.camillebc.fusy.data.FictionViewModel
+import com.camillebc.fusy.model.Fiction
+import com.camillebc.fusy.model.FictionViewModel
 import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.fragments.FictionDetailFragment
 import com.camillebc.fusy.fragments.FictionListFragment

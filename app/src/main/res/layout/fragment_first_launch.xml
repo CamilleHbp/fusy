@@ -5,31 +5,43 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.FirstLaunchFragment">
+    tools:context=".account.view.FirstLaunchFragment">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/fusy_image_view"
+        android:src="@drawable/banner_fusy"
+        app:layout_constraintBottom_toTopOf="@+id/button_firstLaunch_local"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_firstLaunch_local"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_small"
-        android:layout_marginEnd="@dimen/spacing_small"
+        android:layout_marginBottom="8dp"
         android:text="@string/local_account"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_firstLaunch_google"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <Button
-        android:id="@+id/button2"
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/button_firstLaunch_google"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_small"
-        android:layout_marginEnd="@dimen/spacing_small"
-        android:text="@string/drive_account_sync"
+        android:layout_marginBottom="8dp"
         android:background="@color/material_indigo"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/drive_account_sync"
+        app:layout_constraintBottom_toBottomOf="@+id/button_firstLaunch_local"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_firstLaunch_local"
+        app:layout_constraintTop_toTopOf="@+id/button_firstLaunch_local" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

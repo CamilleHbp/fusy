@@ -1,7 +1,7 @@
 package com.camillebc.fusy.interfaces
 
-import com.camillebc.fusy.data.Fiction
-import com.camillebc.fusy.data.Tag
+import com.camillebc.fusy.model.Fiction
+import com.camillebc.fusy.model.Tag
 
 interface FictionHostInterface {
     suspend fun login(username: String, password: String): Boolean

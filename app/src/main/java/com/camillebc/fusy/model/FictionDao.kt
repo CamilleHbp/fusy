@@ -1,4 +1,4 @@
-package com.camillebc.fusy.data
+package com.camillebc.fusy.model
 
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
