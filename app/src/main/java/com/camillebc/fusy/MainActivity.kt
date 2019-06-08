@@ -11,11 +11,19 @@ import com.camillebc.fusy.utilities.APP_TAG
 import com.camillebc.fusy.utilities.HardwareStatusManager
 import com.camillebc.fusy.utilities.isFirstLaunch
 import javax.inject.Inject
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.tasks.Task
+import android.content.Intent
+import com.camillebc.fusy.account.model.Account
+import com.camillebc.fusy.utilities.RC_SIGN_IN
+
 
 private const val TAG = APP_TAG + "MainActivity"
 private const val TAG_FIRST_LAUNCH = "FirstLaunchFragment"
 
 class MainActivity : AppCompatActivity(), AccountFragment.OnFragmentInteractionListener {
+
     override fun onFragmentInteraction(uri: Uri) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -52,6 +60,15 @@ class MainActivity : AppCompatActivity(), AccountFragment.OnFragmentInteractionL
             Toast.makeText(this, "Please choose your account type.", Toast.LENGTH_SHORT).show()
         } else {
             super.onBackPressed()
+        }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            data?.let { Account.setGoogleAccount(it) }
+            Toast.makeText(this, "Signed in as " + Account.getName(), Toast.LENGTH_SHORT).show()
         }
     }
 }

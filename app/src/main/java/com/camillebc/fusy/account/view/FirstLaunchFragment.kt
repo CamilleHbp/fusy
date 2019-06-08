@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.camillebc.fusy.R
-
+import com.camillebc.fusy.account.model.Account
+import kotlinx.android.synthetic.main.fragment_first_launch.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -28,5 +28,16 @@ class FirstLaunchFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_first_launch, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        button_firstLaunch_google.setOnClickListener { googleSignIn() }
+    }
+
+    private fun googleSignIn() {
+        activity?.run {
+            Account.googleSignIn(this)
+        }
     }
 }
