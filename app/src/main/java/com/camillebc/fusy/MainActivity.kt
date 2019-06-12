@@ -1,28 +1,29 @@
 package com.camillebc.fusy
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.camillebc.fusy.account.model.Account
 import com.camillebc.fusy.account.view.AccountFragment
 import com.camillebc.fusy.account.view.FirstLaunchFragment
 import com.camillebc.fusy.di.Injector
-import com.camillebc.fusy.utilities.APP_TAG
 import com.camillebc.fusy.utilities.HardwareStatusManager
-import com.camillebc.fusy.utilities.isFirstLaunch
-import javax.inject.Inject
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.tasks.Task
-import android.content.Intent
-import com.camillebc.fusy.account.model.Account
 import com.camillebc.fusy.utilities.RC_SIGN_IN
+import com.camillebc.fusy.utilities.isFirstLaunch
+import com.camillebc.fusy.utilities.logi
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import me.camillebc.fictionhostapi.royalroad.RoyalRoadApi
+import javax.inject.Inject
 
 
-private const val TAG = APP_TAG + "MainActivity"
 private const val TAG_FIRST_LAUNCH = "FirstLaunchFragment"
 
-class MainActivity : AppCompatActivity(), AccountFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispatchers.IO),
+    AccountFragment.OnFragmentInteractionListener {
 
     override fun onFragmentInteraction(uri: Uri) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -51,6 +52,14 @@ class MainActivity : AppCompatActivity(), AccountFragment.OnFragmentInteractionL
             val fragment = if (this.application.isFirstLaunch()) FirstLaunchFragment() else AccountFragment()
             supportFragmentManager.beginTransaction().add(R.id.fragment_main, fragment, TAG_FIRST_LAUNCH).commit()
         }
+
+        launch {
+            RoyalRoadApi.getTags().also {
+                it.forEach { tag ->
+                    logi(tag)
+                }
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -62,6 +71,7 @@ class MainActivity : AppCompatActivity(), AccountFragment.OnFragmentInteractionL
             super.onBackPressed()
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

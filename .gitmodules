@@ -1,3 +1,6 @@
 [submodule "app/src/main/python"]
 	path = app/src/main/python
 	url = https://github.com/EL-S/RoyalRoadLAPI.git
+[submodule "fictionhostapi"]
+	path = fictionhostapi
+	url = git@github.com:CamilleBC/fiction-host-api.git
