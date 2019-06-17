@@ -15,8 +15,8 @@ import com.camillebc.fusy.fragments.FictionDetailFragment
 import com.camillebc.fusy.fragments.FictionListFragment
 import com.camillebc.fusy.interfaces.FictionHostInterface
 import com.camillebc.fusy.utilities.APP_TAG
-import com.camillebc.fusy.utilities.addFragment
-import com.camillebc.fusy.utilities.replaceFragment
+import me.camillebc.utilities.addFragment
+import me.camillebc.utilities.replaceFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

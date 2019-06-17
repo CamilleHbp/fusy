@@ -1,22 +1,23 @@
 package com.camillebc.fusy
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import com.camillebc.fusy.di.Injector
+import com.camillebc.fusy.fragments.FictionListFragment
 import com.camillebc.fusy.model.Fiction
 import com.camillebc.fusy.model.FictionRepository
 import com.camillebc.fusy.model.FictionViewModel
-import com.camillebc.fusy.di.Injector
-import com.camillebc.fusy.fragments.FictionListFragment
-import com.camillebc.fusy.utilities.addFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.camillebc.utilities.extensions.addFragment
 import javax.inject.Inject
 
 class LibraryActivity : AppCompatActivity(), FictionListFragment.OnListFragmentInteractionListener {
-    @Inject lateinit var fictionRepository: FictionRepository
+    @Inject
+    lateinit var fictionRepository: FictionRepository
     private lateinit var fictionViewModel: FictionViewModel
 
     init {

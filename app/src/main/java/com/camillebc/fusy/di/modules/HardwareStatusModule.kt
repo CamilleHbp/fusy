@@ -1,7 +1,7 @@
 package com.camillebc.fusy.di.modules
 
 import android.content.Context
-import com.camillebc.fusy.utilities.HardwareStatusManager
+import me.camillebc.utilities.HardwareStatusManager
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

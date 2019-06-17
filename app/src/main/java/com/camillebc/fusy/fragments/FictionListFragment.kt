@@ -13,7 +13,7 @@ import com.camillebc.fusy.R
 import com.camillebc.fusy.model.Fiction
 import com.camillebc.fusy.model.FictionViewModel
 import com.camillebc.fusy.utilities.APP_TAG
-import com.camillebc.fusy.utilities.RecyclerViewEmptySupport
+import me.camillebc.utilities.RecyclerViewEmptySupport
 import kotlinx.android.synthetic.main.fragment_fiction_list.*
 
 private const val TAG = APP_TAG + "FictionListFragment"

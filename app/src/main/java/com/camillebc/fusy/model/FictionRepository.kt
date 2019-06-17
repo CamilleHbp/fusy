@@ -4,7 +4,7 @@ import android.util.Log
 import com.camillebc.fusy.interfaces.FictionHostInterface
 import com.camillebc.fusy.interfaces.RepositoryInterface
 import com.camillebc.fusy.utilities.APP_TAG
-import com.camillebc.fusy.utilities.HardwareStatusManager
+import me.camillebc.utilities.HardwareStatusManager
 import javax.inject.Singleton
 
 private const val TAG = APP_TAG + "FictionRepository"

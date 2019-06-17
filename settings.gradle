@@ -1,1 +1,1 @@
-include ':app', ':fictionhostapi'
+include ':app', ':fictionhostapi', ':utilities'

@@ -9,7 +9,7 @@ import com.camillebc.fusy.account.model.Account
 import com.camillebc.fusy.account.view.AccountFragment
 import com.camillebc.fusy.account.view.FirstLaunchFragment
 import com.camillebc.fusy.di.Injector
-import com.camillebc.fusy.utilities.HardwareStatusManager
+import me.camillebc.utilities.HardwareStatusManager
 import com.camillebc.fusy.utilities.RC_SIGN_IN
 import com.camillebc.fusy.utilities.isFirstLaunch
 import com.camillebc.fusy.utilities.logi
@@ -59,6 +59,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
                     logi(tag)
                 }
             }
+        }
+        launch {
+            RoyalRoadApi.getFiction("21220/mother-of-learning")
         }
     }
 

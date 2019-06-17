@@ -4,3 +4,6 @@
 [submodule "fictionhostapi"]
 	path = fictionhostapi
 	url = git@github.com:CamilleBC/fiction-host-api.git
+[submodule "utilities"]
+	path = utilities
+	url = git@github.com:CamilleBC/android-kotlin-utilities.git
