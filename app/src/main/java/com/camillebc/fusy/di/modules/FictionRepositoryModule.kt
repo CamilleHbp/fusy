@@ -12,5 +12,5 @@ import javax.inject.Singleton
 class FictionRepositoryModule {
     @Provides
     @Singleton
-    fun provideFictionRepository(fictionDatabase: FictionDatabase, host: FictionHostInterface, hardwareStatusManager: HardwareStatusManager) = FictionRepository(fictionDatabase, host, hardwareStatusManager)
+    fun provideFictionRepository(fictionDatabase: FictionDatabase, hardwareStatusManager: HardwareStatusManager) = FictionRepository(fictionDatabase, hardwareStatusManager)
 }

@@ -9,7 +9,6 @@ import javax.inject.Singleton
 @Component(modules = [
     AppModule::class,
     FictionDatabaseModule::class,
-    FictionHostsModule::class,
     FictionRepositoryModule::class,
     HardwareStatusModule::class
 ])

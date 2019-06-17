@@ -15,18 +15,19 @@ import com.camillebc.fusy.fragments.FictionDetailFragment
 import com.camillebc.fusy.fragments.FictionListFragment
 import com.camillebc.fusy.interfaces.FictionHostInterface
 import com.camillebc.fusy.utilities.APP_TAG
-import me.camillebc.utilities.addFragment
-import me.camillebc.utilities.replaceFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.camillebc.utilities.extensions.addFragment
+import me.camillebc.utilities.extensions.replaceFragment
 import javax.inject.Inject
 
 private const val TAG = APP_TAG + "SearchableActivity"
 
-class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragmentInteractionListener  {
-    @Inject lateinit var host: FictionHostInterface
+class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragmentInteractionListener {
+//    @Inject
+//    lateinit var host: FictionHostInterface
     private lateinit var fictionViewModel: FictionViewModel
 
     init {
@@ -55,7 +56,8 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
         val favoriteFragment = FictionListFragment()
         addFragment(favoriteFragment, R.id.searchable_fragment_layout)
     }
-   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
 
         // Get the SearchView and set the searchable configuration
@@ -69,9 +71,9 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
 
     override fun onListFragmentInteraction(item: Fiction?) {
         if (item != null) {
-            GlobalScope.launch(Dispatchers.IO) {
-                fictionViewModel.fiction.postValue(host.getFiction(item.hostId))
-            }
+//            GlobalScope.launch(Dispatchers.IO) {
+//                fictionViewModel.fiction.postValue(host.getFiction(item.hostId))
+//            }
             val detailFragment = FictionDetailFragment()
             replaceFragment(detailFragment, R.id.searchable_fragment_layout, true)
         }
@@ -80,11 +82,11 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
     private fun search(query: String) {
         val searchFictionList = mutableListOf<Fiction>()
 
-        GlobalScope.launch(Dispatchers.IO) {
-            searchFictionList.addAll(host.search(query))
-            withContext(Dispatchers.Default) {
-                fictionViewModel.fictionList.postValue(searchFictionList)
-            }
-        }
+//        GlobalScope.launch(Dispatchers.IO) {
+//            searchFictionList.addAll(host.search(query))
+//            withContext(Dispatchers.Default) {
+//                fictionViewModel.fictionList.postValue(searchFictionList)
+//            }
+//        }
     }
 }

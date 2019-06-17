@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.chaquo.python'
 
 android {
     compileSdkVersion 28
@@ -20,22 +19,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    defaultConfig {
-        ndk {
-            abiFilters "armeabi-v7a"
-        }
-        python {
-            pip {
-                install "requests"
-                install "beautifulsoup4"
-                install "urllib3"
-                install "lxml"
-            }
-        }
-    }
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
+    }
+    configurations {
+        all*.exclude group: 'com.google.guava', module: 'listenablefuture'
     }
 }
 
@@ -49,14 +38,17 @@ dependencies {
     def room_version = "2.1.0-rc01"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
+    // AppCompat
+    implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
+    // Android Legacy Support
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // Android preferences library
     implementation 'androidx.preference:preference:1.1.0-beta01'
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
+    // ConstraintLayout
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
     // Dagger 2: dependencies injection
     implementation "com.google.dagger:dagger:$dagger_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
-    implementation 'com.google.android.material:material:1.1.0-alpha07'
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     // Glide: image loading library
     implementation "com.github.bumptech.glide:glide:$glide_version"
@@ -65,41 +57,28 @@ dependencies {
     implementation "jp.wasabeef:glide-transformations:4.0.1"
     // Google Play services Auth split
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
-    // Google Api Client library and Android extension
-    implementation 'com.google.api-client:google-api-client:1.23.0'
-    implementation 'com.google.api-client:google-api-client-android:1.22.0'
     // Google Drive Api
     implementation 'com.google.apis:google-api-services-drive:v3-rev110-1.23.0'
-    // GSON: JSON library
-    implementation "com.google.code.gson:gson:2.8.5"
     // JSoup: HTML parser
     implementation "org.jsoup:jsoup:1.12.1"
-    // Room library
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
     // Kotlin Core
     implementation "androidx.core:core-ktx:1.2.0-alpha01"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     // Kotlin Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
-    // Kotlin Retrofit Coroutines Adapter by Jake Wharton
-    // https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
     // Kotlin Lifecycle: ViewModel + LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
-    // OkHttp: HMTL library (more specifically the logger)
-    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-    implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttp_version"
+    // Material Components
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
     // RecyclerView
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha06'
-
     // Retrofit: REST api library
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-scalars:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    // Room library
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
     // Testing Framework
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

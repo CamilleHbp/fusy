@@ -14,20 +14,17 @@ import com.camillebc.fusy.model.FictionViewModel
 import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.fragments.FictionDetailFragment
 import com.camillebc.fusy.fragments.FictionListFragment
-import com.camillebc.fusy.interfaces.FictionHostInterface
 import com.camillebc.fusy.utilities.APP_TAG
-import me.camillebc.utilities.addFragment
-import me.camillebc.utilities.replaceFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import me.camillebc.utilities.extensions.addFragment
+import me.camillebc.utilities.extensions.replaceFragment
 import javax.inject.Inject
 
 private const val TAG = APP_TAG + "AccountActivity"
 
 class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentInteractionListener {
-    @Inject lateinit var host: FictionHostInterface
     private lateinit var fictionViewModel: FictionViewModel
 
     init {
@@ -44,10 +41,10 @@ class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentI
 
         val favouriteFictionList = mutableListOf<Fiction>()
         GlobalScope.launch(Dispatchers.IO) {
-            favouriteFictionList.addAll(host.getFavourites())
-            withContext(Dispatchers.Default) {
-                fictionViewModel.fictionList.postValue(favouriteFictionList)
-            }
+//            favouriteFictionList.addAll(host.getFavourites())
+//            withContext(Dispatchers.Default) {
+//                fictionViewModel.fictionList.postValue(favouriteFictionList)
+//            }
         }
     }
 
@@ -65,9 +62,9 @@ class AccountActivity : AppCompatActivity(), FictionListFragment.OnListFragmentI
 
     override fun onListFragmentInteraction(item: Fiction?) {
         if (item != null) {
-            GlobalScope.launch(Dispatchers.IO) {
-                fictionViewModel.fiction.postValue(host.getFiction(item.hostId))
-            }
+//            GlobalScope.launch(Dispatchers.IO) {
+//                fictionViewModel.fiction.postValue(host.getFiction(item.hostId))
+//            }
             val detailFragment = FictionDetailFragment()
             replaceFragment(detailFragment, R.id.account_fragment, true)
         }

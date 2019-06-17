@@ -8,6 +8,7 @@ import javax.inject.Singleton
 
 @Module
 class HardwareStatusModule {
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun providesHardwareStatusManager(context: Context) = HardwareStatusManager(context)
 }

@@ -1,19 +1,17 @@
 package com.camillebc.fusy.model
 
-import android.util.Log
-import com.camillebc.fusy.interfaces.FictionHostInterface
 import com.camillebc.fusy.interfaces.RepositoryInterface
 import com.camillebc.fusy.utilities.APP_TAG
 import me.camillebc.utilities.HardwareStatusManager
 import javax.inject.Singleton
 
 private const val TAG = APP_TAG + "FictionRepository"
+
 @Singleton
 class FictionRepository(
     private val database: FictionDatabase,
-    private val host: FictionHostInterface,
     private val hardwareStatusManager: HardwareStatusManager
-): RepositoryInterface<Fiction> {
+) : RepositoryInterface<Fiction> {
 
     fun getAll(): List<Fiction> {
         return database.fictionDao().getAllFictions()
@@ -36,15 +34,13 @@ class FictionRepository(
     }
 
     suspend fun updateFavourites(hostIds: List<Long>) {
-        if (hardwareStatusManager.getConnectivityStatus() != HardwareStatusManager.InternetStatus.OFFLINE) {
-            Log.i(TAG, "Connectivity status: ${hardwareStatusManager.getConnectivityStatus().name}")
-            Log.i(TAG, "Getting favourites from Host")
-            val favourites = host.getFavourites()
-            // TODO() // Create a diff to see if there is a need to insert in Db
+//        if (hardwareStatusManager.getConnectivityStatus(activity) != HardwareStatusManager.InternetStatus.OFFLINE) {
+//            Log.i(TAG, "Connectivity status: ${hardwareStatusManager.getConnectivityStatus().name}")
+//            Log.i(TAG, "Getting favourites from Host")
+//            val favourites = host.getFavourites()
+        // TODO() // Create a diff to see if there is a need to insert in Db
 //            database.fictionDao().insertFictions(fictionList)
 //            return fictionList
-        }
-        Log.i(TAG, "Getting favourites from Db")
-//        return database.fictionDao().getFavourites()
+//        }
     }
 }
