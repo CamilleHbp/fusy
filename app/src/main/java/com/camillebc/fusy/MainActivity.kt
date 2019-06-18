@@ -10,13 +10,13 @@ import com.camillebc.fusy.account.view.AccountFragment
 import com.camillebc.fusy.account.view.FirstLaunchFragment
 import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.utilities.APP_PREF
-import me.camillebc.utilities.HardwareStatusManager
 import com.camillebc.fusy.utilities.RC_SIGN_IN
 import com.camillebc.fusy.utilities.logi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.camillebc.fictionhostapi.royalroad.RoyalRoadApi
+import me.camillebc.utilities.HardwareStatusManager
 import javax.inject.Inject
 
 
@@ -64,10 +64,15 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
             val fiction = RoyalRoadApi.getFiction("24709/defiance-of-the-fall")
             logi("Fiction Name: " + fiction.name)
             logi("Fiction Author: " + fiction.author)
-            logi("Fiction Descritption:\n" + fiction.description)
+            logi("Fiction Description:\n" + fiction.description)
 
             fiction.chapters.forEach { chapter ->
                 logi(chapter.id)
+            }
+            RoyalRoadApi.getChapter(fiction.chapters[1])
+            logi("Chapter title: " + fiction.chapters[1].title)
+            fiction.chapters[1].content?.forEach {
+                logi("Chapter html content: $it ")
             }
         }
     }
