@@ -12,7 +12,7 @@ import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.utilities.APP_PREF
 import me.camillebc.utilities.HardwareStatusManager
 import com.camillebc.fusy.utilities.RC_SIGN_IN
-import me.camillebc.utilities.extensions.logi
+import com.camillebc.fusy.utilities.logi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-        val status = hardwareStatusManager.getConnectivityStatus(this).name
+        val status = hardwareStatusManager.getConnectivityStatus().name
         val battery = hardwareStatusManager.getBatteryStatus().name
 
         Toast.makeText(
