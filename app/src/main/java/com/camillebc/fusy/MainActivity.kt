@@ -69,10 +69,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
             fiction.chapters.forEach { chapter ->
                 logi(chapter.id)
             }
-            RoyalRoadApi.getChapter(fiction.chapters[1])
+            RoyalRoadApi.getChapterRange(fiction, 0, 10)
             logi("Chapter title: " + fiction.chapters[1].title)
-            fiction.chapters[1].content?.forEach {
-                logi("Chapter html content: $it ")
+            fiction.chapters.subList(0, 10).forEach { chapter ->
+                logi("Chapter title: ${chapter.title}")
+                chapter.content?.forEach { line ->
+                    logi("Chapter html content: $line ")
+                }
             }
         }
     }
