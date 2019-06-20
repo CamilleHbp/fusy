@@ -1,11 +1,11 @@
 package com.camillebc.fusy.account.view
 
+import android.app.SearchManager
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.camillebc.fusy.R
 import com.camillebc.fusy.utilities.APP_TAG
@@ -22,6 +22,10 @@ private const val TAG = APP_TAG + "AccountFragment"
 class AccountFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,12 +39,25 @@ class AccountFragment : Fragment() {
         listener?.onFragmentInteraction(uri)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_main, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+
+        // Get the SearchView and set the searchable configuration
+        activity?.run {
+            val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+            (menu.findItem(R.id.menu_search).actionView as SearchView).apply {
+                setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            }
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.camillebc.fusy.R
 import com.camillebc.fusy.account.model.Account
-import kotlinx.android.synthetic.main.fragment_first_launch.*
+import kotlinx.android.synthetic.main.fragment_login.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -16,18 +16,23 @@ import kotlinx.android.synthetic.main.fragment_first_launch.*
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [FirstLaunchFragment.OnFragmentInteractionListener] interface
+ * [LoginFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
  *
  */
-class FirstLaunchFragment : Fragment() {
+class LoginFragment : Fragment() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(false)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first_launch, container, false)
+        return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

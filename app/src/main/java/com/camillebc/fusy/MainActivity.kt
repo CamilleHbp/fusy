@@ -1,13 +1,19 @@
 package com.camillebc.fusy
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.camillebc.fusy.account.model.Account
 import com.camillebc.fusy.account.view.AccountFragment
-import com.camillebc.fusy.account.view.FirstLaunchFragment
+import com.camillebc.fusy.account.view.LoginFragment
 import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.utilities.APP_PREF
 import com.camillebc.fusy.utilities.RC_SIGN_IN
@@ -20,7 +26,7 @@ import me.camillebc.utilities.HardwareStatusManager
 import javax.inject.Inject
 
 
-private const val TAG_FIRST_LAUNCH = "FirstLaunchFragment"
+private const val TAG_FIRST_LAUNCH = "LoginFragment"
 
 class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispatchers.IO),
     AccountFragment.OnFragmentInteractionListener {
@@ -49,7 +55,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
         ).show()
 
         if (savedInstanceState == null) { // Fragment will be added again if the Activity already has one stored
-            val fragment = if (isFirstLaunch()) FirstLaunchFragment() else AccountFragment()
+            val fragment = if (isFirstLaunch()) LoginFragment() else AccountFragment()
             supportFragmentManager.beginTransaction().add(R.id.fragment_main, fragment, TAG_FIRST_LAUNCH).commit()
         }
 
@@ -61,21 +67,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
             }
         }
         launch {
-            val fiction = RoyalRoadApi.getFiction("24709/defiance-of-the-fall")
-            logi("Fiction Name: " + fiction.name)
-            logi("Fiction Author: " + fiction.author)
-            logi("Fiction Description:\n" + fiction.description)
+            val fictions = RoyalRoadApi.search("test", tags = listOf("horror", "sci_fi"))
 
-            fiction.chapters.forEach { chapter ->
-                logi(chapter.id)
-            }
-            RoyalRoadApi.getChapterRange(fiction, 0, 10)
-            logi("Chapter title: " + fiction.chapters[1].title)
-            fiction.chapters.subList(0, 10).forEach { chapter ->
-                logi("Chapter title: ${chapter.title}")
-                chapter.content?.forEach { line ->
-                    logi("Chapter html content: $line ")
-                }
+            fictions.forEach { fiction ->
+                logi("Search result: ${fiction.name}")
             }
         }
     }
@@ -97,6 +92,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
         if (requestCode == RC_SIGN_IN) {
             data?.let { Account.setGoogleAccount(it) }
             Toast.makeText(this, "Signed in as " + Account.getName(), Toast.LENGTH_SHORT).show()
+            val accountFragment = AccountFragment()
+            supportFragmentManager.beginTransaction().replace(R.id.fragment_main, accountFragment).commit()
+            supportFragmentManager.popBackStack(TAG_FIRST_LAUNCH, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
     }
 
