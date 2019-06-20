@@ -1,15 +1,10 @@
 package com.camillebc.fusy
 
-import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.camillebc.fusy.account.model.Account
 import com.camillebc.fusy.account.view.AccountFragment
@@ -56,7 +51,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
 
         if (savedInstanceState == null) { // Fragment will be added again if the Activity already has one stored
             val fragment = if (isFirstLaunch()) LoginFragment() else AccountFragment()
-            supportFragmentManager.beginTransaction().add(R.id.fragment_main, fragment, TAG_FIRST_LAUNCH).commit()
+            supportFragmentManager.beginTransaction().add(R.id.fragment_main_navHost, fragment, TAG_FIRST_LAUNCH).commit()
         }
 
         launch {
@@ -93,7 +88,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
             data?.let { Account.setGoogleAccount(it) }
             Toast.makeText(this, "Signed in as " + Account.getName(), Toast.LENGTH_SHORT).show()
             val accountFragment = AccountFragment()
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_main, accountFragment).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.fragment_main_navHost, accountFragment).commit()
             supportFragmentManager.popBackStack(TAG_FIRST_LAUNCH, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
     }
