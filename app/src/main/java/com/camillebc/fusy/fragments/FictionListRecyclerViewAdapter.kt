@@ -9,8 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.camillebc.fusy.R
-import com.camillebc.fusy.model.Fiction
 import com.camillebc.fusy.fragments.FictionListFragment.OnListFragmentInteractionListener
+import com.camillebc.fusy.model.Fiction
 import kotlinx.android.synthetic.main.fragment_fiction.view.*
 
 /**
@@ -21,7 +21,7 @@ class FictionListRecyclerViewAdapter(
     private var data: List<Fiction>,
     private val mListener: OnListFragmentInteractionListener?,
     private val glide: RequestManager
-) : androidx.recyclerview.widget.RecyclerView.Adapter<FictionListRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<FictionListRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
 
@@ -59,8 +59,8 @@ class FictionListRecyclerViewAdapter(
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(val view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
-        val image: ImageView = view.fictionCard_image
-        val title: TextView = view.fictionCard_title
+    inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+        val image: ImageView = view.imageView_fragmentFiction
+        val title: TextView = view.textView_fragmentFiction_title
     }
 }

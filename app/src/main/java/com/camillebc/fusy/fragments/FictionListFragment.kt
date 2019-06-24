@@ -48,7 +48,7 @@ class FictionListFragment : androidx.fragment.app.Fragment() {
             error(R.drawable.fiction_placeholder_royalroad)
         }
         fictionModel = ViewModelProviders.of(this.activity!!).get(FictionViewModel::class.java)
-        fictionListView = recyclerView_fictionList
+        fictionListView = recyclerView_fragmentFictionList
         with(fictionListView) {
             layoutManager = when {
                 columnCount <= 1 -> androidx.recyclerview.widget.LinearLayoutManager(context)
@@ -63,7 +63,7 @@ class FictionListFragment : androidx.fragment.app.Fragment() {
                 favoritesAdapter.setData(it)
             }
             adapter = favoritesAdapter
-            setEmptyView(textView_searchableEmpty)
+            setEmptyView(textView_fragmentFictionList_empty)
             fictionModel.fictionList.observe(this@FictionListFragment, favoritesObserver)
         }
     }

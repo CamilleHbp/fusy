@@ -13,15 +13,9 @@ import com.camillebc.fusy.model.FictionViewModel
 import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.fragments.FictionDetailFragment
 import com.camillebc.fusy.fragments.FictionListFragment
-import com.camillebc.fusy.interfaces.FictionHostInterface
 import com.camillebc.fusy.utilities.APP_TAG
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import me.camillebc.utilities.extensions.addFragment
 import me.camillebc.utilities.extensions.replaceFragment
-import javax.inject.Inject
 
 private const val TAG = APP_TAG + "SearchableActivity"
 
@@ -54,7 +48,7 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
 
         fictionViewModel = ViewModelProviders.of(this).get(FictionViewModel::class.java)
         val favoriteFragment = FictionListFragment()
-        addFragment(favoriteFragment, R.id.searchable_fragment_layout)
+        addFragment(favoriteFragment, R.id.fragment_activitySearchable)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -75,7 +69,7 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
 //                fictionViewModel.fiction.postValue(host.getFiction(item.hostId))
 //            }
             val detailFragment = FictionDetailFragment()
-            replaceFragment(detailFragment, R.id.searchable_fragment_layout, true)
+            replaceFragment(detailFragment, R.id.fragment_activitySearchable, true)
         }
     }
 

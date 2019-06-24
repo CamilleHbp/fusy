@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".SearchableActivity">
 
-    <FrameLayout
-        android:id="@+id/searchable_fragment_layout"
+    <fragment
+        android:id="@+id/fragment_activitySearchable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@+id/account_title" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

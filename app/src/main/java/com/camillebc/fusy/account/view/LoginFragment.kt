@@ -9,10 +9,6 @@ import com.camillebc.fusy.R
 import com.camillebc.fusy.account.model.Account
 import kotlinx.android.synthetic.main.fragment_login.*
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the

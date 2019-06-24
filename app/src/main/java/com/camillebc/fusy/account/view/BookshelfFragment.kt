@@ -8,18 +8,15 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.camillebc.fusy.R
-import com.camillebc.fusy.utilities.APP_TAG
-
-private const val TAG = APP_TAG + "AccountFragment"
 
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [AccountFragment.OnFragmentInteractionListener] interface
+ * [BookshelfFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
  *
  */
-class AccountFragment : Fragment() {
+class BookshelfFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,12 +28,12 @@ class AccountFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account, container, false)
+        return inflater.inflate(R.layout.fragment_bookshelf, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+        listener?.onBookshelfFragmentInteraction(uri)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -79,7 +76,7 @@ class AccountFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onBookshelfFragmentInteraction(uri: Uri)
     }
 
 }

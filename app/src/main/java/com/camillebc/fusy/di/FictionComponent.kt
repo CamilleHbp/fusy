@@ -13,9 +13,6 @@ import javax.inject.Singleton
     HardwareStatusModule::class
 ])
 interface FictionComponent {
-    fun inject(accountActivity: AccountActivity)
-    fun inject(libraryActivity: LibraryActivity)
-    fun inject(loginActivity: LoginActivity)
     fun inject(mainActivity: MainActivity)
     fun inject(searchableActivity: SearchableActivity)
 }

@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.camillebc.fusy.account.model.Account
-import com.camillebc.fusy.account.view.AccountFragment
+import com.camillebc.fusy.account.view.BookshelfFragment
 import com.camillebc.fusy.account.view.LoginFragment
 import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.utilities.APP_PREF
@@ -24,11 +24,7 @@ import javax.inject.Inject
 private const val TAG_FIRST_LAUNCH = "LoginFragment"
 
 class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispatchers.IO),
-    AccountFragment.OnFragmentInteractionListener {
-
-    override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    BookshelfFragment.OnFragmentInteractionListener {
 
     @Inject
     lateinit var hardwareStatusManager: HardwareStatusManager
@@ -50,8 +46,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
         ).show()
 
         if (savedInstanceState == null) { // Fragment will be added again if the Activity already has one stored
-            val fragment = if (isFirstLaunch()) LoginFragment() else AccountFragment()
-            supportFragmentManager.beginTransaction().add(R.id.fragment_main_navHost, fragment, TAG_FIRST_LAUNCH).commit()
+            val fragment = if (isFirstLaunch()) LoginFragment() else BookshelfFragment()
+            supportFragmentManager.beginTransaction().add(R.id.fragment_activityMain_navHost, fragment, TAG_FIRST_LAUNCH).commit()
         }
 
         launch {
@@ -87,10 +83,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
         if (requestCode == RC_SIGN_IN) {
             data?.let { Account.setGoogleAccount(it) }
             Toast.makeText(this, "Signed in as " + Account.getName(), Toast.LENGTH_SHORT).show()
-            val accountFragment = AccountFragment()
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_main_navHost, accountFragment).commit()
+            val accountFragment = BookshelfFragment()
+            supportFragmentManager.beginTransaction().replace(R.id.fragment_activityMain_navHost, accountFragment).commit()
             supportFragmentManager.popBackStack(TAG_FIRST_LAUNCH, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
+    }
+
+    override fun onBookshelfFragmentInteraction(uri: Uri) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun isFirstLaunch(): Boolean {
