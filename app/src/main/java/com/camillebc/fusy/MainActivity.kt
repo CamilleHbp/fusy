@@ -45,11 +45,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
             "Connectivity status: $status\nBattery status: $battery", Toast.LENGTH_SHORT
         ).show()
 
-        if (savedInstanceState == null) { // Fragment will be added again if the Activity already has one stored
-            val fragment = if (isFirstLaunch()) LoginFragment() else BookshelfFragment()
-            supportFragmentManager.beginTransaction().add(R.id.fragment_activityMain_navHost, fragment, TAG_FIRST_LAUNCH).commit()
-        }
-
         launch {
             RoyalRoadApi.getTags().also {
                 it.forEach { tag ->
@@ -66,15 +61,15 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
         }
     }
 
-    override fun onBackPressed() {
-        // Disable back key on first launch: we need to choose an account type
-        val firstLaunchFragment = supportFragmentManager.findFragmentByTag(TAG_FIRST_LAUNCH)
-        if (firstLaunchFragment != null) {
-            Toast.makeText(this, "Please choose your account type.", Toast.LENGTH_SHORT).show()
-        } else {
-            super.onBackPressed()
-        }
-    }
+//    override fun onBackPressed() {
+//        // Disable back key on first launch: we need to choose an account type
+//        val firstLaunchFragment = supportFragmentManager.findFragmentByTag(TAG_FIRST_LAUNCH)
+//        if (firstLaunchFragment != null) {
+//            Toast.makeText(this, "Please choose your account type.", Toast.LENGTH_SHORT).show()
+//        } else {
+//            super.onBackPressed()
+//        }
+//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
