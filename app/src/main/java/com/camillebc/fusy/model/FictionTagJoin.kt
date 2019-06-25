@@ -7,7 +7,7 @@ import androidx.room.ForeignKey
     tableName = "fiction_tag_join",
     primaryKeys = ["fictionId", "tagId"],
     foreignKeys = [
-        ForeignKey(entity = Fiction::class,
+        ForeignKey(entity = FictionForDb::class,
             parentColumns = ["id"],
             childColumns = ["fictionId"],
             onDelete = ForeignKey.NO_ACTION),

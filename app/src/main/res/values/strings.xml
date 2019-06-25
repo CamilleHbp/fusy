@@ -22,7 +22,7 @@
     <string name="search_title">Search results</string>
     <string name="search_hint">Search fictions</string>
     <string name="search_empty">No search results</string>
-    <!-- Strings related to fiction detail -->
+    <!-- Strings related to fictionForDb detail -->
     <string name="fiction_unknown">Unknown</string>
     <string name="fiction_detail_by">by</string>
 

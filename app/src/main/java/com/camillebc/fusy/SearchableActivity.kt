@@ -11,13 +11,16 @@ import androidx.lifecycle.ViewModelProviders
 import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.fragments.FictionDetailFragment
 import com.camillebc.fusy.fragments.FictionListFragment
-import com.camillebc.fusy.model.Fiction
 import com.camillebc.fusy.model.FictionViewModel
 import com.camillebc.fusy.utilities.APP_TAG
 import com.camillebc.fusy.utilities.logi
+import com.camillebc.fusy.utilities.notifyObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import me.camillebc.fictionhostapi.Fiction
 import me.camillebc.fictionhostapi.royalroad.RoyalRoadApi
 import me.camillebc.utilities.extensions.addFragment
 import me.camillebc.utilities.extensions.replaceFragment
@@ -70,19 +73,17 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
         }
     }
 
+    @kotlinx.coroutines.ExperimentalCoroutinesApi
     private fun search(query: String) {
         launch {
             val searchFictionList = RoyalRoadApi.search(query)
-            searchFictionList.forEach {
-             logi("Searchable activity: ${it.name}")
+            searchFictionList.consumeEach { fiction ->
+                logi("Searchable activity: ${fiction.name}")
+                withContext(Dispatchers.Default) {
+                    fictionViewModel.fictionList.value?.add(fiction)
+                    fictionViewModel.fictionList.notifyObserver()
+                }
             }
         }
-
-//        GlobalScope.launch(Dispatchers.IO) {
-//            searchFictionList.addAll(host.search(query))
-//            withContext(Dispatchers.Default) {
-//                fictionViewModel.fictionList.postValue(searchFictionList)
-//            }
-//        }
     }
 }

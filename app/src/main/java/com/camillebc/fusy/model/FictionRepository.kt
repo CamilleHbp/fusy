@@ -11,25 +11,25 @@ private const val TAG = APP_TAG + "FictionRepository"
 class FictionRepository(
     private val database: FictionDatabase,
     private val hardwareStatusManager: HardwareStatusManager
-) : RepositoryInterface<Fiction> {
+) : RepositoryInterface<FictionForDb> {
 
-    fun getAll(): List<Fiction> {
+    fun getAll(): List<FictionForDb> {
         return database.fictionDao().getAllFictions()
     }
 
-    override fun getById(id: Long): Fiction {
+    override fun getById(id: Long): FictionForDb {
         return database.fictionDao().getFictionById(id)
     }
 
-    override fun add(item: Fiction) {
+    override fun add(item: FictionForDb) {
         database.fictionDao().insertFiction(item)
     }
 
-    override fun delete(item: Fiction) {
+    override fun delete(item: FictionForDb) {
         database.fictionDao().deleteFiction(item)
     }
 
-    override fun edit(item: Fiction) {
+    override fun edit(item: FictionForDb) {
         database.fictionDao().updateFiction(item)
     }
 

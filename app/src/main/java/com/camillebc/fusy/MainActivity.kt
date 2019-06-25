@@ -15,6 +15,7 @@ import com.camillebc.fusy.utilities.RC_SIGN_IN
 import com.camillebc.fusy.utilities.logi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import me.camillebc.fictionhostapi.royalroad.RoyalRoadApi
 import me.camillebc.utilities.HardwareStatusManager
@@ -55,8 +56,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
         launch {
             val fictions = RoyalRoadApi.search("test", tags = listOf("horror", "sci_fi"))
 
-            fictions.forEach { fiction ->
-                logi("Search result: ${fiction.name}")
+            fictions.consumeEach {
+                logi("Search result: ${it.name}")
             }
         }
     }

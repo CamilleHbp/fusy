@@ -12,10 +12,11 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.camillebc.fusy.R
-import com.camillebc.fusy.model.Fiction
+import com.camillebc.fusy.model.FictionForDb
 import com.camillebc.fusy.model.FictionViewModel
 import com.camillebc.fusy.utilities.APP_TAG
 import kotlinx.android.synthetic.main.fragment_fiction_detail.*
+import me.camillebc.fictionhostapi.Fiction
 
 private const val TAG = APP_TAG + "FictionDetailFragment"
 
@@ -48,7 +49,7 @@ class FictionDetailFragment : Fragment() {
         fictionModel = activity?.run {
             ViewModelProviders.of(this).get(FictionViewModel::class.java)
         } ?: throw Exception("$TAG | Invalid Activity")
-        fictionModel.fiction.observe(this, Observer<Fiction> { fiction ->
+        fictionModel.fiction.observe(this, Observer { fiction ->
             fictionAuthor.text = fiction.author
             fictionDescription.text = fiction.description
             fictionName.text = fiction.name
