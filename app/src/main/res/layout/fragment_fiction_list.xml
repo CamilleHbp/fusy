@@ -14,15 +14,17 @@
         tools:context=".fragments.FictionListFragment"
         tools:listitem="@layout/fragment_fiction" />
 
-    <TextView
+    <ProgressBar
         android:id="@+id/textView_fragmentFictionList_empty"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/search_empty"
-        android:textAlignment="center"
-        android:textSize="30sp"
+        android:indeterminate="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView_fragmentFictionList"
         app:layout_constraintVertical_bias="0.5" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

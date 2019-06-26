@@ -11,7 +11,7 @@
         android:id="@+id/fictionDetail_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_16dp"
+        android:layout_margin="@dimen/spacing_16dp"
         android:text="@string/fiction_unknown"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/fictionDetail_by"
@@ -19,6 +19,8 @@
 
     <TextView
         android:id="@+id/fictionDetail_by"
+        android:layout_marginStart="@dimen/spacing_16dp"
+        android:layout_marginEnd="@dimen/spacing_16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/fiction_detail_by"
@@ -27,6 +29,8 @@
 
     <TextView
         android:id="@+id/fictionDetail_author"
+        android:layout_marginStart="@dimen/spacing_16dp"
+        android:layout_marginEnd="@dimen/spacing_16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/fiction_unknown"
@@ -48,15 +52,40 @@
         app:layout_constraintTop_toBottomOf="@+id/fictionDetail_author"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/textView_fictionDescription"
+    <ScrollView
         android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/spacing_24dp"
+        app:layout_constraintBottom_toTopOf="@id/button_fragmentFictionDetail_download"
+        app:layout_constraintTop_toBottomOf="@+id/fictionDetail_image"
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <TextView
+            android:id="@+id/textView_fictionDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hello_blank_fragment"
+            android:textAlignment="center" />
+    </ScrollView>
+
+    <Button
+        android:id="@+id/button_fragmentFictionDetail_download"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
-        android:textAlignment="center"
+        android:text="@string/fictionDetail_download"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintTop_toBottomOf="@+id/fictionDetail_image" />
+        app:layout_constraintEnd_toStartOf="@+id/button_fragmentFictionDetail_read"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button_fragmentFictionDetail_read"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fictionDetail_read"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_fragmentFictionDetail_download" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
