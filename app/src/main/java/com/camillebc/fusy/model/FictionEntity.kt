@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "fiction")
-data class FictionForDb(
+data class FictionEntity(
     val name: String,
     val host: String,
     @ColumnInfo(name = "host_id")

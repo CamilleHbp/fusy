@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import javax.inject.Singleton
 
 @Singleton
-@Database(entities = [FictionForDb::class, Tag::class, FictionTagJoin::class], version = 5)
+@Database(entities = [FictionEntity::class, Tag::class, FictionTagJoin::class], version = 5)
 abstract class FictionDatabase: RoomDatabase() {
     abstract fun fictionDao(): FictionDao
     abstract fun tagDao(): TagDao

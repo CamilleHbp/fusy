@@ -11,7 +11,7 @@ interface FictionTagJoinDao {
     fun getTagsForFiction(fictionId: Long): List<Tag>
 
     @Query("select * from fiction  inner join fiction_tag_join on fiction.id=fiction_tag_join.fictionId where fiction_tag_join.tagId=:tagId")
-    fun getFictionsForTag(tagId: Long): List<FictionForDb>
+    fun getFictionsForTag(tagId: Long): List<FictionEntity>
 
     @Insert(onConflict = REPLACE)
     fun insertFictionTagJoin(fictionTagJoin: FictionTagJoin)

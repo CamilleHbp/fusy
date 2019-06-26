@@ -12,11 +12,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.camillebc.fusy.R
-import com.camillebc.fusy.model.FictionForDb
 import com.camillebc.fusy.model.FictionViewModel
 import com.camillebc.fusy.utilities.APP_TAG
 import kotlinx.android.synthetic.main.fragment_fiction_detail.*
-import me.camillebc.fictionhostapi.Fiction
 
 private const val TAG = APP_TAG + "FictionDetailFragment"
 
@@ -42,7 +40,7 @@ class FictionDetailFragment : Fragment() {
         fictionDescription = textView_fictionDescription
         fictionImage = fictionDetail_image
         fictionName = fictionDetail_name
-        val requestOptions = RequestOptions().apply{
+        val requestOptions = RequestOptions().apply {
             placeholder(R.drawable.fiction_placeholder_royalroad)
             error(R.drawable.fiction_placeholder_royalroad)
         }
@@ -51,17 +49,19 @@ class FictionDetailFragment : Fragment() {
         } ?: throw Exception("$TAG | Invalid Activity")
         fictionModel.fiction.observe(this, Observer { fiction ->
             fictionAuthor.text = fiction.author
-            fictionDescription.text = fiction.description
+            fictionDescription.text = StringBuilder().apply {
+                fiction.description.map { append(it) }
+            }.toString()
             fictionName.text = fiction.name
             Glide.with(this).setDefaultRequestOptions(requestOptions).load(fiction.imageUrl).into(fictionImage)
-        })
-    }
+    })
+}
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fiction_detail, container, false)
-    }
+override fun onCreateView(
+    inflater: LayoutInflater, container: ViewGroup?,
+    savedInstanceState: Bundle?
+): View? {
+    // Inflate the layout for this fragment
+    return inflater.inflate(R.layout.fragment_fiction_detail, container, false)
+}
 }

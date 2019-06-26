@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.camillebc.fusy.account.model.Account
 import com.camillebc.fusy.account.view.BookshelfFragment
-import com.camillebc.fusy.account.view.LoginFragment
 import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.utilities.APP_PREF
 import com.camillebc.fusy.utilities.RC_SIGN_IN
@@ -17,7 +16,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
-import me.camillebc.fictionhostapi.royalroad.RoyalRoadApi
+import me.camillebc.fictionproviderapi.ApiProvider
+import me.camillebc.fictionproviderapi.FictionProvider
 import me.camillebc.utilities.HardwareStatusManager
 import javax.inject.Inject
 
@@ -46,15 +46,16 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
             "Connectivity status: $status\nBattery status: $battery", Toast.LENGTH_SHORT
         ).show()
 
+        val royalRoadApi = ApiProvider.getApi(FictionProvider.ROYALROAD)
         launch {
-            RoyalRoadApi.getTags().also {
+            royalRoadApi.getTags().also {
                 it.forEach { tag ->
                     logi(tag)
                 }
             }
         }
         launch {
-            val fictions = RoyalRoadApi.search("test", tags = listOf("horror", "sci_fi"))
+            val fictions = royalRoadApi.search("test")
 
             fictions.consumeEach {
                 logi("Search result: ${it.name}")

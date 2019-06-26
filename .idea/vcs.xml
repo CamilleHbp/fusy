@@ -2,7 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/fictionhostapi" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/fictionproviderapi" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/utilities" vcs="Git" />
   </component>
 </project>

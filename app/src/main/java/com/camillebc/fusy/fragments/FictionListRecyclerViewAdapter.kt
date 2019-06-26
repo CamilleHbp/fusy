@@ -10,16 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.camillebc.fusy.R
 import com.camillebc.fusy.fragments.FictionListFragment.OnListFragmentInteractionListener
-import com.camillebc.fusy.model.FictionForDb
+import com.camillebc.fusy.model.FictionEntity
 import kotlinx.android.synthetic.main.fragment_fiction.view.*
-import me.camillebc.fictionhostapi.Fiction
+import me.camillebc.fictionproviderapi.FictionMetadata
 
 /**
- * [RecyclerView.Adapter] that can display a [FictionForDb] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [FictionEntity] and makes a call to the
  * specified [OnListFragmentInteractionListener].
  */
 class FictionListRecyclerViewAdapter(
-    private var data: List<Fiction>,
+    private var data: List<FictionMetadata>,
     private val mListener: OnListFragmentInteractionListener?,
     private val glide: RequestManager
 ) : RecyclerView.Adapter<FictionListRecyclerViewAdapter.ViewHolder>() {
@@ -28,7 +28,7 @@ class FictionListRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as Fiction
+            val item = v.tag as FictionMetadata
             // Notify the active callbacks interface (the activity, if the fragment is attached to one)
             // that an item has been selected.
             mListener?.onListFragmentInteraction(item)
@@ -55,7 +55,7 @@ class FictionListRecyclerViewAdapter(
 
     override fun getItemCount(): Int = data.size
 
-    fun setData(newData: List<Fiction>) {
+    fun setData(newData: List<FictionMetadata>) {
         data = newData
         notifyDataSetChanged()
     }

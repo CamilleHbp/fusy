@@ -20,8 +20,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.camillebc.fictionhostapi.Fiction
-import me.camillebc.fictionhostapi.royalroad.RoyalRoadApi
+import me.camillebc.fictionproviderapi.ApiProvider
+import me.camillebc.fictionproviderapi.FictionMetadata
+import me.camillebc.fictionproviderapi.FictionProvider
 import me.camillebc.utilities.extensions.addFragment
 import me.camillebc.utilities.extensions.replaceFragment
 
@@ -63,11 +64,9 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onListFragmentInteraction(item: Fiction?) {
+    override fun onListFragmentInteraction(item: FictionMetadata?) {
         if (item != null) {
-//            GlobalScope.launch(Dispatchers.IO) {
-//                fictionViewModel.fiction.postValue(host.getFiction(item.hostId))
-//            }
+            fictionViewModel.fiction.postValue(item)
             val detailFragment = FictionDetailFragment()
             replaceFragment(detailFragment, R.id.fragment_activitySearchable, true)
         }
@@ -76,7 +75,8 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
     @kotlinx.coroutines.ExperimentalCoroutinesApi
     private fun search(query: String) {
         launch {
-            val searchFictionList = RoyalRoadApi.search(query)
+            val api = ApiProvider.getApi(FictionProvider.ROYALROAD)
+            val searchFictionList = api.search(query)
             searchFictionList.consumeEach { fiction ->
                 logi("Searchable activity: ${fiction.name}")
                 withContext(Dispatchers.Default) {

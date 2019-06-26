@@ -14,7 +14,7 @@ import com.camillebc.fusy.model.FictionViewModel
 import com.camillebc.fusy.utilities.APP_TAG
 import me.camillebc.utilities.RecyclerViewEmptySupport
 import kotlinx.android.synthetic.main.fragment_fiction_list.*
-import me.camillebc.fictionhostapi.Fiction
+import me.camillebc.fictionproviderapi.FictionMetadata
 
 private const val TAG = APP_TAG + "FictionListFragment"
 
@@ -59,7 +59,7 @@ class FictionListFragment : androidx.fragment.app.Fragment() {
                 listener,
                 Glide.with(this).setDefaultRequestOptions(requestOptions)
             )
-            val favoritesObserver = Observer<MutableList<Fiction>> {
+            val favoritesObserver = Observer<MutableList<FictionMetadata>> {
                 favoritesAdapter.setData(it)
             }
             adapter = favoritesAdapter
@@ -102,7 +102,7 @@ class FictionListFragment : androidx.fragment.app.Fragment() {
      * for more information.
      */
     interface OnListFragmentInteractionListener {
-        fun onListFragmentInteraction(item: Fiction?)
+        fun onListFragmentInteraction(item: FictionMetadata?)
     }
 
     companion object {

@@ -1,9 +1,9 @@
 [submodule "app/src/main/python"]
 	path = app/src/main/python
 	url = https://github.com/EL-S/RoyalRoadLAPI.git
-[submodule "fictionhostapi"]
-	path = fictionhostapi
-	url = git@github.com:CamilleBC/fictionForDb-host-api.git
+[submodule "fictionproviderapi"]
+    path = fictionproviderapi
+	url = git@github.com:CamilleBC/fictionMetadata-host-api.git
 [submodule "utilities"]
 	path = utilities
 	url = git@github.com:CamilleBC/android-kotlin-utilities.git

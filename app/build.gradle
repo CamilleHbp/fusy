@@ -61,6 +61,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     // Google Drive Api
     implementation 'com.google.apis:google-api-services-drive:v3-rev110-1.23.0'
+    // HTML in TextView
+    implementation 'org.sufficientlysecure:html-textview:3.6'
     // Kotlin Core
     implementation "androidx.core:core-ktx:1.2.0-alpha02"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -82,7 +84,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    // Custom FictionHostApi library
-    implementation project(path: ':fictionhostapi')
+    // Custom FictionProviderApi library
+    implementation project(path: ':fictionproviderapi')
     implementation project(path: ':utilities')
 }
