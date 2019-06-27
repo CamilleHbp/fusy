@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.camillebc.fusy.R
 import com.camillebc.fusy.fragments.FictionListFragment.OnListFragmentInteractionListener
-import com.camillebc.fusy.model.FictionEntity
+import com.camillebc.fusy.model.FictionMetadataEntity
 import kotlinx.android.synthetic.main.fragment_fiction.view.*
 import me.camillebc.fictionproviderapi.FictionMetadata
 
 /**
- * [RecyclerView.Adapter] that can display a [FictionEntity] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [FictionMetadataEntity] and makes a call to the
  * specified [OnListFragmentInteractionListener].
  */
 class FictionListRecyclerViewAdapter(

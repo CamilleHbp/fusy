@@ -9,8 +9,6 @@ import androidx.fragment.app.FragmentManager
 import com.camillebc.fusy.account.model.Account
 import com.camillebc.fusy.account.view.BookshelfFragment
 import com.camillebc.fusy.di.Injector
-import com.camillebc.fusy.utilities.APP_PREF
-import com.camillebc.fusy.utilities.RC_SIGN_IN
 import com.camillebc.fusy.utilities.logi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +46,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
 
         val royalRoadApi = ApiProvider.getApi(FictionProvider.ROYALROAD)
         launch {
-            royalRoadApi.getTags().also {
+            royalRoadApi.getProviderTags().also {
                 it.forEach { tag ->
                     logi(tag)
                 }

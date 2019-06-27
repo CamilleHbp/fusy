@@ -3,8 +3,8 @@ package com.camillebc.fusy.account.model
 import android.app.Activity
 import android.content.Intent
 import android.util.Log
-import com.camillebc.fusy.utilities.APP_TAG
-import com.camillebc.fusy.utilities.RC_SIGN_IN
+import com.camillebc.fusy.APP_TAG
+import com.camillebc.fusy.RC_SIGN_IN
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

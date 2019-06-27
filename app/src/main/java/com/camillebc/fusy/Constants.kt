@@ -1,4 +1,4 @@
-package com.camillebc.fusy.utilities
+package com.camillebc.fusy
 
 internal const val APP_TAG = "Fusy | "
 internal const val APP_PREF = "FusyPreferences"

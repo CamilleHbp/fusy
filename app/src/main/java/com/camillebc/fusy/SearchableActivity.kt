@@ -12,7 +12,6 @@ import com.camillebc.fusy.di.Injector
 import com.camillebc.fusy.fragments.FictionDetailFragment
 import com.camillebc.fusy.fragments.FictionListFragment
 import com.camillebc.fusy.model.FictionViewModel
-import com.camillebc.fusy.utilities.APP_TAG
 import com.camillebc.fusy.utilities.logi
 import com.camillebc.fusy.utilities.notifyObserver
 import kotlinx.coroutines.CoroutineScope

@@ -1,46 +1,42 @@
 package com.camillebc.fusy.model
 
-import com.camillebc.fusy.interfaces.RepositoryInterface
-import com.camillebc.fusy.utilities.APP_TAG
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.produce
+import me.camillebc.fictionproviderapi.FictionProviderApi
 import me.camillebc.utilities.HardwareStatusManager
 import javax.inject.Singleton
 
-private const val TAG = APP_TAG + "FictionRepository"
-
 @Singleton
 class FictionRepository(
+    private val providers: List<FictionProviderApi>,
     private val database: FictionDatabase,
     private val hardwareStatusManager: HardwareStatusManager
-) : RepositoryInterface<FictionEntity> {
+) : CoroutineScope by CoroutineScope(Dispatchers.Default) {
 
-    fun getAll(): List<FictionEntity> {
+    fun getAll(): List<FictionMetadataEntity> {
         return database.fictionDao().getAllFictions()
     }
 
-    override fun getById(id: Long): FictionEntity {
+    fun getById(id: Long): FictionMetadataEntity? {
         return database.fictionDao().getFictionById(id)
     }
 
-    override fun add(item: FictionEntity) {
-        database.fictionDao().insertFiction(item)
-    }
+    fun add(item: FictionMetadataEntity) = database.fictionDao().insertFiction(item)
 
-    override fun delete(item: FictionEntity) {
-        database.fictionDao().deleteFiction(item)
-    }
+    fun delete(item: FictionMetadataEntity) = database.fictionDao().deleteFiction(item)
 
-    override fun edit(item: FictionEntity) {
-        database.fictionDao().updateFiction(item)
-    }
+    fun edit(item: FictionMetadataEntity) = database.fictionDao().updateFiction(item)
 
-    suspend fun updateFavourites(hostIds: List<Long>) {
-//        if (hardwareStatusManager.getConnectivityStatus(activity) != HardwareStatusManager.InternetStatus.OFFLINE) {
-//            Log.i(TAG, "Connectivity status: ${hardwareStatusManager.getConnectivityStatus().name}")
-//            Log.i(TAG, "Getting favourites from Host")
-//            val favourites = host.getFavourites()
-        // TODO() // Create a diff to see if there is a need to insert in Db
-//            database.fictionDao().insertFictions(fictionList)
-//            return fictionList
-//        }
+    @kotlinx.coroutines.ExperimentalCoroutinesApi
+    fun search(
+        query: String? = null,
+        name: String? = null,
+        author: String? = null,
+        tags: List<Tag>? = null,
+        local: Boolean = false
+    ): ReceiveChannel<FictionMetadataEntity> = produce {
+        TODO("Implement a local db and online search") // Should rely on the connection status
     }
 }

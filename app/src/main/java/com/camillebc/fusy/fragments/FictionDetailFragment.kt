@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.camillebc.fusy.R
 import com.camillebc.fusy.model.FictionViewModel
-import com.camillebc.fusy.utilities.APP_TAG
+import com.camillebc.fusy.APP_TAG
 import kotlinx.android.synthetic.main.fragment_fiction_detail.*
 
 private const val TAG = APP_TAG + "FictionDetailFragment"
