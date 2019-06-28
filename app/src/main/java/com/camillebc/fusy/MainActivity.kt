@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
-import com.camillebc.fusy.account.model.Account
-import com.camillebc.fusy.account.view.BookshelfFragment
-import com.camillebc.fusy.di.Injector
+import com.camillebc.fusy.core.account.Account
+import com.camillebc.fusy.bookshelf.view.BookshelfFragment
+import com.camillebc.fusy.core.APP_PREF
+import com.camillebc.fusy.core.RC_SIGN_IN
+import com.camillebc.fusy.core.di.Injector
 import com.camillebc.fusy.utilities.logi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

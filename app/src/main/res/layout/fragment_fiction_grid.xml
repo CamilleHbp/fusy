@@ -6,14 +6,15 @@
     android:layout_height="match_parent">
 
     <me.camillebc.utilities.RecyclerViewEmptySupport
-        android:id="@+id/recyclerView_fragmentFictionList"
+        android:id="@+id/recyclerView_fragmentFictionGrid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/fragment_fiction_list_detail" />
+        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:spanCount="3"
+        tools:listitem="@layout/fragment_fiction_grid_detail" />
 
     <ProgressBar
-        android:id="@+id/textView_fragmentFictionList_empty"
+        android:id="@+id/textView_fragmentFictionGrid_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"

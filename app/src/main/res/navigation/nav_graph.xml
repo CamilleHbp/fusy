@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/bookshelfFragment"
-        android:name="com.camillebc.fusy.account.view.BookshelfFragment"
+        android:name="com.camillebc.fusy.bookshelf.view.BookshelfFragment"
         android:label="fragment_bookshelf"
         tools:layout="@layout/fragment_bookshelf" />
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.camillebc.fusy.account.view.LoginFragment"
+        android:name="com.camillebc.fusy.core.account.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
 </navigation>

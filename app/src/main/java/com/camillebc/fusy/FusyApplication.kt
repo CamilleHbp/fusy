@@ -1,9 +1,9 @@
 package com.camillebc.fusy
 
 import android.app.Application
-import com.camillebc.fusy.di.DaggerFictionComponent
-import com.camillebc.fusy.di.FictionComponent
-import com.camillebc.fusy.di.modules.AppModule
+import com.camillebc.fusy.core.di.DaggerFictionComponent
+import com.camillebc.fusy.core.di.FictionComponent
+import com.camillebc.fusy.core.di.modules.AppModule
 
 class FusyApplication: Application() {
     lateinit var fictionComponent: FictionComponent
