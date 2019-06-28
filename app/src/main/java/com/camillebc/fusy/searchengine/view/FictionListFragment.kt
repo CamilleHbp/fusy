@@ -55,7 +55,7 @@ class FictionListFragment : androidx.fragment.app.Fragment() {
                 else -> androidx.recyclerview.widget.GridLayoutManager(context, columnCount)
             }
             val favoritesAdapter = FictionListRecyclerViewAdapter(
-                fictionModel.fictionList.value!!,
+                fictionModel.fictionSearchList.value!!,
                 listener,
                 Glide.with(this).setDefaultRequestOptions(requestOptions)
             )
@@ -64,7 +64,7 @@ class FictionListFragment : androidx.fragment.app.Fragment() {
             }
             adapter = favoritesAdapter
             setEmptyView(textView_fragmentFictionList_empty)
-            fictionModel.fictionList.observe(this@FictionListFragment, favoritesObserver)
+            fictionModel.fictionSearchList.observe(this@FictionListFragment, favoritesObserver)
         }
     }
 

@@ -4,30 +4,36 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.produce
-import me.camillebc.fictionproviderapi.FictionProviderApi
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import me.camillebc.fictionproviderapi.ApiProvider
 import me.camillebc.utilities.HardwareStatusManager
 import javax.inject.Singleton
 
 @Singleton
 class FictionRepository(
-    private val providers: List<FictionProviderApi>,
     private val database: FictionDatabase,
     private val hardwareStatusManager: HardwareStatusManager
 ) : CoroutineScope by CoroutineScope(Dispatchers.Default) {
+    private val providers = ApiProvider.getAllApi()
 
     fun getAll(): List<Fiction> {
-        return database.fictionDao().getAllFictions()
+        return runBlocking {
+            database.fictionDao().getAllFictions()
+        }
     }
 
-    fun getById(id: Long): Fiction? {
-        return database.fictionDao().getFictionById(id)
+    fun getById(id: String): Fiction? {
+        return runBlocking {
+            database.fictionDao().getFictionById(id)
+        }
     }
 
-    fun add(item: Fiction) = database.fictionDao().insertFiction(item)
+    suspend fun add(item: Fiction) = database.fictionDao().insertFiction(item)
 
-    fun delete(item: Fiction) = database.fictionDao().deleteFiction(item)
+    suspend fun delete(item: Fiction) = database.fictionDao().deleteFiction(item)
 
-    fun edit(item: Fiction) = database.fictionDao().updateFiction(item)
+    suspend fun update(item: Fiction) = database.fictionDao().updateFiction(item)
 
     @kotlinx.coroutines.ExperimentalCoroutinesApi
     fun search(

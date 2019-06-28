@@ -5,15 +5,18 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
 import com.camillebc.fusy.R
-import com.camillebc.fusy.core.di.Injector
 import com.camillebc.fusy.bookshelf.view.FictionDetailFragment
 import com.camillebc.fusy.core.APP_TAG
-import com.camillebc.fusy.searchengine.view.FictionListFragment
+import com.camillebc.fusy.core.di.Injector
+import com.camillebc.fusy.core.model.Fiction
+import com.camillebc.fusy.core.model.FictionRepository
 import com.camillebc.fusy.core.model.FictionViewModel
+import com.camillebc.fusy.searchengine.view.FictionListFragment
 import com.camillebc.fusy.utilities.logi
 import com.camillebc.fusy.utilities.notifyObserver
 import kotlinx.coroutines.CoroutineScope
@@ -26,11 +29,18 @@ import me.camillebc.fictionproviderapi.FictionMetadata
 import me.camillebc.fictionproviderapi.FictionProvider
 import me.camillebc.utilities.extensions.addFragment
 import me.camillebc.utilities.extensions.replaceFragment
+import javax.inject.Inject
 
 private const val TAG = APP_TAG + "SearchableActivity"
 
-class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragmentInteractionListener,
+class SearchableActivity :
+    AppCompatActivity(),
+    FictionListFragment.OnListFragmentInteractionListener,
+    FictionDetailFragment.OnFragmentInteractionListener,
     CoroutineScope by CoroutineScope(Dispatchers.IO) {
+
+    @Inject
+    lateinit var repository: FictionRepository
     private lateinit var fictionViewModel: FictionViewModel
 
     init {
@@ -65,9 +75,18 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onAdd(item: FictionMetadata) {
+        launch { repository.add(Fiction(item)) }
+        Toast.makeText(this, "${item.name} added to the library.", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onRead(item: FictionMetadata) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun onListFragmentInteraction(item: FictionMetadata?) {
         if (item != null) {
-            fictionViewModel.fiction.postValue(item)
+            fictionViewModel.fictionDetail.value = item
             val detailFragment = FictionDetailFragment()
             replaceFragment(detailFragment, R.id.fragment_activitySearchable, true)
         }
@@ -81,8 +100,8 @@ class SearchableActivity : AppCompatActivity(), FictionListFragment.OnListFragme
             searchFictionList.consumeEach { fiction ->
                 logi("Searchable activity: ${fiction.name}")
                 withContext(Dispatchers.Default) {
-                    fictionViewModel.fictionList.value?.add(fiction)
-                    fictionViewModel.fictionList.notifyObserver()
+                    fictionViewModel.fictionSearchList.value?.add(fiction)
+                    fictionViewModel.fictionSearchList.notifyObserver()
                 }
             }
         }

@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="@dimen/spacing_24dp"
-        app:layout_constraintBottom_toTopOf="@id/button_fragmentFictionDetail_download"
+        app:layout_constraintBottom_toTopOf="@id/button_fragmentFictionDetail_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fictionDetail_image"
@@ -71,10 +71,10 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/button_fragmentFictionDetail_download"
+        android:id="@+id/button_fragmentFictionDetail_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/fictionDetail_download"
+        android:text="@string/fictionDetail_addLibrary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_fragmentFictionDetail_read"
         app:layout_constraintHorizontal_bias="0.5"
@@ -88,6 +88,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button_fragmentFictionDetail_download" />
+        app:layout_constraintStart_toEndOf="@+id/button_fragmentFictionDetail_add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

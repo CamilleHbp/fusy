@@ -13,8 +13,7 @@ class FictionRepositoryModule {
     @Provides
     @Singleton
     fun provideFictionRepository(
-        providers: List<FictionProviderApi>,
         fictionDatabase: FictionDatabase,
         hardwareStatusManager: HardwareStatusManager
-    ) = FictionRepository(providers, fictionDatabase, hardwareStatusManager)
+    ) = FictionRepository(fictionDatabase, hardwareStatusManager)
 }

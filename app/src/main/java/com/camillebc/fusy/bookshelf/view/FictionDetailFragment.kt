@@ -1,5 +1,6 @@
 package com.camillebc.fusy.bookshelf.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.camillebc.fusy.R
 import com.camillebc.fusy.core.APP_TAG
 import com.camillebc.fusy.core.model.FictionViewModel
 import kotlinx.android.synthetic.main.fragment_fiction_detail.*
+import me.camillebc.fictionproviderapi.FictionMetadata
 import org.sufficientlysecure.htmltextview.HtmlTextView
 
 private const val TAG = APP_TAG + "FictionDetailFragment"
@@ -34,6 +36,7 @@ class FictionDetailFragment : Fragment() {
     private lateinit var fictionDescription: HtmlTextView
     private lateinit var fictionImage: ImageView
     private lateinit var fictionName: TextView
+    private lateinit var listener: OnFragmentInteractionListener
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -48,7 +51,7 @@ class FictionDetailFragment : Fragment() {
         fictionModel = activity?.run {
             ViewModelProviders.of(this).get(FictionViewModel::class.java)
         } ?: throw Exception("$TAG | Invalid Activity")
-        fictionModel.fiction.observe(this, Observer { fiction ->
+        fictionModel.fictionDetail.observe(this, Observer { fiction ->
             fictionAuthor.text = fiction.author
             fictionDescription.setHtml(StringBuilder ().apply {
                 fiction.description.map { append(it) }
@@ -56,13 +59,39 @@ class FictionDetailFragment : Fragment() {
             fictionName.text = fiction.name
             Glide.with(this).setDefaultRequestOptions(requestOptions).load(fiction.imageUrl).into(fictionImage)
         })
+        button_fragmentFictionDetail_add.setOnClickListener { listener.onAdd(fictionModel.fictionDetail.value!!) }
+        button_fragmentFictionDetail_read.setOnClickListener { listener.onRead(fictionModel.fictionDetail.value!!) }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement OnGridFragmentInteractionListener")
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fiction_detail, container, false)
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     *
+     *
+     * See the Android Training lesson
+     * [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html)
+     * for more information.
+     */
+    interface OnFragmentInteractionListener {
+        fun onAdd(item: FictionMetadata)
+        fun onRead(item: FictionMetadata)
     }
 }

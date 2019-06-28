@@ -12,7 +12,7 @@ class FictionDatabaseModule {
     @Provides
     @Singleton
     fun providesFictionDatabase(context: Context) = Room.databaseBuilder( context,
-        FictionDatabase::class.java, "fiction-db" )
+        FictionDatabase::class.java, "fictionDetail-db" )
         .fallbackToDestructiveMigration()
         .build()
 }

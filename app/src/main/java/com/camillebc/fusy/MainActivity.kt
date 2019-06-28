@@ -54,13 +54,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
                 }
             }
         }
-        launch {
-            val fictions = royalRoadApi.search("test")
-
-            fictions.consumeEach {
-                logi("Search result: ${it.name}")
-            }
-        }
     }
 
 //    override fun onBackPressed() {
