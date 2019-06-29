@@ -1,6 +1,3 @@
-[submodule "fictionproviderapi"]
-    path = fictionproviderapi
-	url = git@github.com:CamilleBC/fictionMetadata-host-api.git
 [submodule "utilities"]
 	path = utilities
 	url = git@github.com:CamilleBC/android-kotlin-utilities.git
