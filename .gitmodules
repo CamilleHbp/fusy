@@ -1,3 +1,6 @@
 [submodule "utilities"]
 	path = utilities
 	url = git@github.com:CamilleBC/android-kotlin-utilities.git
+[submodule "fictionproviderapi"]
+	path = fictionproviderapi
+	url = git@github.com:CamilleBC/fiction-provider-api.git
