@@ -6,23 +6,26 @@ import androidx.room.OnConflictStrategy.REPLACE
 @Dao
 interface CategoryDao {
     @Query("select * from categories")
-    fun getAllCategories(): List<Category>
+    suspend fun getAllCategories(): List<Category>?
 
     @Query("select * from categories where id = :id limit 1")
-    fun getCategory(id: Long): Category
+    suspend fun getCategory(id: Long): Category?
+
+    @Query("select * from categories where name = :name limit 1")
+    suspend fun getCategoryByName(name: String?): Category
 
     @Insert(onConflict = REPLACE)
-    fun insertCategory(category: Category)
+    suspend fun insertCategory(category: Category)
 
     @Insert(onConflict = REPLACE)
-    fun insertCategories(categories: List<Category>)
+    suspend fun insertCategories(categories: List<Category>)
 
     @Update(onConflict = REPLACE)
-    fun updateCategory(category: Category)
+    suspend fun updateCategory(category: Category)
 
     @Update(onConflict = REPLACE)
-    fun updateCategories(categories: List<Category>)
+    suspend fun updateCategories(categories: List<Category>)
 
     @Delete
-    fun deleteCategory(category: Category)
+    suspend fun deleteCategory(category: Category)
 }

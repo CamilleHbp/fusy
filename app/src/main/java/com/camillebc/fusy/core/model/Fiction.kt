@@ -1,22 +1,24 @@
 package com.camillebc.fusy.core.model
 
+import android.content.res.Resources
 import androidx.room.*
+import com.camillebc.fusy.core.CATEGORY_DEFAULT
 import me.camillebc.fictionproviderapi.FictionMetadata
 
 @Entity(
     tableName = "fictions",
-    indices = [Index("category_id")],
+    indices = [Index("category_name")],
     foreignKeys = [
         ForeignKey(
-            entity = Fiction::class,
-            parentColumns = ["id"],
-            childColumns = ["category_id"],
+            entity = Category::class,
+            parentColumns = ["name"],
+            childColumns = ["category_name"],
             onDelete = ForeignKey.CASCADE
         )]
 )
 data class Fiction(
-    @PrimaryKey
-    val id: String,
+    @ColumnInfo(name = "fiction_id")
+    val fictionId: String,
     val name: String,
     val provider: String,
     val author: String = "unknown",
@@ -29,21 +31,28 @@ data class Fiction(
     var pageCount: Long? = null,
     var ratings: Int? = null,
     var userRatings: Int? = null,
-    @ColumnInfo(name = "category_id")
-    var categoryId: Long? = null
+    @ColumnInfo(name = "category_name")
+    var categoryName: String? = null
 ) {
-    constructor(fictionMetadata: FictionMetadata, favourite: Boolean = false, category: Long? = null) : this(
+    constructor(
+        fictionMetadata: FictionMetadata,
+        favourite: Boolean = false,
+        category: String? = null
+    ) : this(
+        fictionMetadata.fictionId,
         fictionMetadata.name,
         fictionMetadata.provider,
-        fictionMetadata.fictionId,
         fictionMetadata.author,
         fictionMetadata.authorId,
         fictionMetadata.description.joinToString(),
-        false,
+        favourite,
         fictionMetadata.imageUrl,
         fictionMetadata.pageCount,
         fictionMetadata.ratings,
         fictionMetadata.userRatings,
-        null
+        category
     )
+
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0
 }

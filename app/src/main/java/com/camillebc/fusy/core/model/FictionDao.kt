@@ -12,7 +12,16 @@ interface FictionDao {
     suspend fun getFavourites(favourite: Boolean = true): List<Fiction>
 
     @Query("select * from fictions where id = :id limit 1")
-    suspend fun getFictionById(id: String): Fiction?
+    suspend fun getFictionById(id: Long): Fiction?
+
+    @Query("select * from fictions where fiction_id = :fictionId and provider = :provider limit 1")
+    suspend fun getFictionByFictionId(fictionId: String, provider: String): Fiction?
+
+    @Query("select * from fictions where category_name = :category")
+    suspend fun getFictionsByCategory(category: String?): List<Fiction>?
+
+    @Query("select * from fictions where category_name is null")
+    suspend fun getFictionsDefaultCategory(): List<Fiction>?
 
     @Query("select * from fictions where name = :name limit 1")
     suspend fun getFictionByTitle(name: String): Fiction?

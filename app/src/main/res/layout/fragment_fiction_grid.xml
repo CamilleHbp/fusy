@@ -14,7 +14,7 @@
         tools:listitem="@layout/fragment_fiction_grid_detail" />
 
     <ProgressBar
-        android:id="@+id/textView_fragmentFictionGrid_empty"
+        android:id="@+id/progressBar_fragmentFictionGrid_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"

@@ -7,23 +7,23 @@ import me.camillebc.fictionproviderapi.Chapter
 @Dao
 interface ChapterDao {
     @Query("select * from chapters where fiction_id = :fictionId")
-    fun getFictionChapters(fictionId: Long): List<Chapter>
+    suspend fun getFictionChapters(fictionId: Long): List<Chapter>
 
     @Query("select * from categories where id = :id limit 1")
-    fun getChapter(id: Long): Chapter
+    suspend fun getChapter(id: Long): Chapter
 
     @Insert(onConflict = REPLACE)
-    fun insertChapter(chapter: Chapter)
+    suspend fun insertChapter(chapter: Chapter)
 
     @Insert(onConflict = REPLACE)
-    fun insertChapters(chapters: List<Chapter>)
+    suspend fun insertChapters(chapters: List<Chapter>)
 
     @Update(onConflict = REPLACE)
-    fun updateChapter(chapter: Chapter)
+    suspend fun updateChapter(chapter: Chapter)
 
     @Update(onConflict = REPLACE)
-    fun updateChapters(chapters: List<Chapter>)
+    suspend fun updateChapters(chapters: List<Chapter>)
 
     @Delete
-    fun deleteChapter(chapter: Chapter)
+    suspend fun deleteChapter(chapter: Chapter)
 }

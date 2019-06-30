@@ -64,7 +64,7 @@ class FictionListFragment : androidx.fragment.app.Fragment() {
             }
             adapter = favoritesAdapter
             setEmptyView(textView_fragmentFictionList_empty)
-            fictionModel.fictionSearchList.observe(this@FictionListFragment, favoritesObserver)
+            fictionModel.fictionSearchList.observe(viewLifecycleOwner, favoritesObserver)
         }
     }
 

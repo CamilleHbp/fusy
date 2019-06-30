@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imageView_fragmentFictionHorizontal"
+            android:id="@+id/imageView_fragmentFictionGrid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
@@ -23,7 +23,7 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/textView_fragmentFiction_unread"
+            android:id="@+id/textView_fragmentFictionGrid_unread"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_8dp"
@@ -36,11 +36,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView_fragmentFiction_title"
-            android:layout_width="wrap_content"
+            android:id="@+id/textView_fragmentFictionGrid_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autoSizeTextType="uniform"
+            android:textColor="@color/white2"
             android:layout_margin="@dimen/spacing_8dp"
-            android:background="@color/transparent1"
+            android:background="@color/transparent3"
             android:elevation="2dp"
             android:hint="@string/fiction_title"
             android:textAlignment="center"

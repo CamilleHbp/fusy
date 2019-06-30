@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/fictionproviderapi/fictionproviderapi.iml" filepath="$PROJECT_DIR$/fictionproviderapi/fictionproviderapi.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/fusy.iml" filepath="$PROJECT_DIR$/.idea/fusy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fusy.iml" filepath="$PROJECT_DIR$/fusy.iml" />
       <module fileurl="file://$PROJECT_DIR$/utilities/utilities.iml" filepath="$PROJECT_DIR$/utilities/utilities.iml" />
     </modules>
   </component>

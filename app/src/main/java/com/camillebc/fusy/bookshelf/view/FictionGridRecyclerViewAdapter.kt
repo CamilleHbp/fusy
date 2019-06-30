@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.camillebc.fusy.R
 import com.camillebc.fusy.core.model.Fiction
+import kotlinx.android.synthetic.main.fragment_fiction_grid_detail.view.*
 import kotlinx.android.synthetic.main.fragment_fiction_list_detail.view.*
 import me.camillebc.fictionproviderapi.FictionMetadata
 
@@ -18,7 +19,7 @@ import me.camillebc.fictionproviderapi.FictionMetadata
  * specified [FictionGridFragment.OnGridFragmentInteractionListener].
  */
 class FictionGridRecyclerViewAdapter(
-    private var data: List<FictionMetadata>,
+    private var data: List<Fiction>,
     private val listener: FictionGridFragment.OnGridFragmentInteractionListener?,
     private val glide: RequestManager
 ) : RecyclerView.Adapter<FictionGridRecyclerViewAdapter.ViewHolder>() {
@@ -27,7 +28,7 @@ class FictionGridRecyclerViewAdapter(
 
     init {
         onClickListener = View.OnClickListener { v ->
-            val item = v.tag as FictionMetadata
+            val item = v.tag as Fiction
             // Notify the active callbacks interface (the activity, if the fragment is attached to one)
             // that an item has been selected.
             listener?.onGridFragmentInteraction(item)
@@ -36,7 +37,7 @@ class FictionGridRecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_fiction_list_detail, parent, false)
+            .inflate(R.layout.fragment_fiction_grid_detail, parent, false)
         return ViewHolder(view)
     }
 
@@ -54,13 +55,13 @@ class FictionGridRecyclerViewAdapter(
 
     override fun getItemCount(): Int = data.size
 
-    fun setData(newData: List<FictionMetadata>) {
+    fun setData(newData: List<Fiction>) {
         data = newData
         notifyDataSetChanged()
     }
 
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val image: ImageView = view.imageView_fragmentFiction
-        val title: TextView = view.textView_fragmentFiction_title
+        val image: ImageView = view.imageView_fragmentFictionGrid
+        val title: TextView = view.textView_fragmentFictionGrid_title
     }
 }

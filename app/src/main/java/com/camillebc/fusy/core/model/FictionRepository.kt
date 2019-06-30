@@ -4,8 +4,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.produce
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import me.camillebc.fictionproviderapi.ApiProvider
 import me.camillebc.utilities.HardwareStatusManager
 import javax.inject.Singleton
@@ -17,17 +15,21 @@ class FictionRepository(
 ) : CoroutineScope by CoroutineScope(Dispatchers.Default) {
     private val providers = ApiProvider.getAllApi()
 
-    fun getAll(): List<Fiction> {
-        return runBlocking {
-            database.fictionDao().getAllFictions()
+    suspend fun getAll(): List<Fiction> = database.fictionDao().getAllFictions()
+
+    suspend fun getFictionById(id: Long): Fiction? = database.fictionDao().getFictionById(id)
+
+    suspend fun getFictionsByCategory(category: String?): List<Fiction>? {
+        return if (category != null) {
+            database.fictionDao().getFictionsByCategory(category)
+        } else {
+            database.fictionDao().getFictionsDefaultCategory()
         }
     }
 
-    fun getById(id: String): Fiction? {
-        return runBlocking {
-            database.fictionDao().getFictionById(id)
-        }
-    }
+    suspend fun getCategories(): List<String>? = database.categoryDao().getAllCategories()?.map { it.name ?: "" }?.sorted()
+
+    suspend fun getTags(): List<String> = database.tagDao().getAllTags().map { it.name }.sortedWith(compareBy { it })
 
     suspend fun add(item: Fiction) = database.fictionDao().insertFiction(item)
 

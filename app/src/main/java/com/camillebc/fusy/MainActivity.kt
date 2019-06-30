@@ -1,34 +1,34 @@
 package com.camillebc.fusy
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
-import com.camillebc.fusy.core.account.Account
+import androidx.lifecycle.ViewModelProviders
 import com.camillebc.fusy.bookshelf.view.BookshelfFragment
+import com.camillebc.fusy.bookshelf.view.FictionDetailFragment
 import com.camillebc.fusy.core.APP_PREF
 import com.camillebc.fusy.core.RC_SIGN_IN
+import com.camillebc.fusy.core.account.Account
 import com.camillebc.fusy.core.di.Injector
-import com.camillebc.fusy.utilities.logi
+import com.camillebc.fusy.core.model.Fiction
+import com.camillebc.fusy.core.model.FictionViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
-import me.camillebc.fictionproviderapi.ApiProvider
-import me.camillebc.fictionproviderapi.FictionProvider
 import me.camillebc.utilities.HardwareStatusManager
+import me.camillebc.utilities.extensions.replaceFragment
 import javax.inject.Inject
-
 
 private const val TAG_FIRST_LAUNCH = "LoginFragment"
 
-class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispatchers.IO),
-    BookshelfFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), BookshelfFragment.OnBookshelfFragmentInteractionListener,
+    FictionDetailFragment.OnDetailFragmentInteractionListener, CoroutineScope by CoroutineScope(Dispatchers.IO) {
 
     @Inject
     lateinit var hardwareStatusManager: HardwareStatusManager
+    private lateinit var fictionViewModel: FictionViewModel
 
     init {
         Injector.fictionComponent.inject(this)
@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        fictionViewModel = ViewModelProviders.of(this).get(FictionViewModel::class.java)
         setContentView(R.layout.activity_main)
         val status = hardwareStatusManager.getConnectivityStatus().name
         val battery = hardwareStatusManager.getBatteryStatus().name
@@ -45,15 +46,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
             this,
             "Connectivity status: $status\nBattery status: $battery", Toast.LENGTH_SHORT
         ).show()
-
-        val royalRoadApi = ApiProvider.getApi(FictionProvider.ROYALROAD)
-        launch {
-            royalRoadApi.getProviderTags().also {
-                it.forEach { tag ->
-                    logi(tag)
-                }
-            }
-        }
     }
 
 //    override fun onBackPressed() {
@@ -74,12 +66,24 @@ class MainActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispa
             data?.let { Account.setGoogleAccount(it) }
             Toast.makeText(this, "Signed in as " + Account.getName(), Toast.LENGTH_SHORT).show()
             val accountFragment = BookshelfFragment()
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_activityMain_navHost, accountFragment).commit()
+            replaceFragment(R.id.fragment_activityMain_navHost, accountFragment)
             supportFragmentManager.popBackStack(TAG_FIRST_LAUNCH, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
     }
 
-    override fun onBookshelfFragmentInteraction(uri: Uri) {
+    override fun onGridFragmentInteraction(item: Fiction?) {
+        item?.let {
+            fictionViewModel.fictionDetail.postValue(item)
+            replaceFragment(R.id.recyclerView_fragmentBookshelf, FictionDetailFragment(), true)
+        }
+    }
+
+    override fun onAdd(item: Fiction) {
+        launch { fictionViewModel.addFictionToRepository(item) }
+        Toast.makeText(this, "${item.name} added to the library.", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onRead(item: Fiction) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

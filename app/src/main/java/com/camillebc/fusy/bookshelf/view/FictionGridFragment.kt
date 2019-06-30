@@ -10,10 +10,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.camillebc.fusy.R
+import com.camillebc.fusy.core.model.Fiction
 import com.camillebc.fusy.core.model.FictionViewModel
 import kotlinx.android.synthetic.main.fragment_fiction_grid.*
-import kotlinx.android.synthetic.main.fragment_fiction_list.*
-import me.camillebc.fictionproviderapi.FictionMetadata
 import me.camillebc.utilities.RecyclerViewEmptySupport
 
 /**
@@ -25,16 +24,8 @@ class FictionGridFragment : androidx.fragment.app.Fragment() {
 
     private var columnCount = 3
     private var listener: OnGridFragmentInteractionListener? = null
-    private lateinit var fictionListView: RecyclerViewEmptySupport
+    private lateinit var fictionGridView: RecyclerViewEmptySupport
     private lateinit var fictionModel: FictionViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
-    }
 
     /**
      * [onActivityCreated] is called AFTER [onCreateView] and AFTER the parent activity's [onCreate]
@@ -46,23 +37,23 @@ class FictionGridFragment : androidx.fragment.app.Fragment() {
             error(R.drawable.fiction_placeholder_royalroad)
         }
         fictionModel = ViewModelProviders.of(this.activity!!).get(FictionViewModel::class.java)
-        fictionListView = recyclerView_fragmentFictionGrid
-        with(fictionListView) {
+        fictionGridView = recyclerView_fragmentFictionGrid
+        with(fictionGridView) {
             layoutManager = when {
                 columnCount <= 1 -> androidx.recyclerview.widget.LinearLayoutManager(context)
                 else -> androidx.recyclerview.widget.GridLayoutManager(context, columnCount)
             }
-            val favoritesAdapter = FictionGridRecyclerViewAdapter(
-                fictionModel.fictionSearchList.value!!,
+            val bookshelfAdapter = FictionGridRecyclerViewAdapter(
+                fictionModel.fictionBookshelfList.value!!,
                 listener,
                 Glide.with(this).setDefaultRequestOptions(requestOptions)
             )
-            val favoritesObserver = Observer<MutableList<FictionMetadata>> {
-                favoritesAdapter.setData(it)
+            val bookshelfObserver = Observer<MutableList<Fiction>> {
+                bookshelfAdapter.setData(it)
             }
-            adapter = favoritesAdapter
-            setEmptyView(textView_fragmentFictionList_empty)
-            fictionModel.fictionSearchList.observe(this@FictionGridFragment, favoritesObserver)
+            adapter = bookshelfAdapter
+            setEmptyView(progressBar_fragmentFictionGrid_empty)
+            fictionModel.fictionBookshelfList.observe(viewLifecycleOwner, bookshelfObserver)
         }
     }
 
@@ -71,15 +62,15 @@ class FictionGridFragment : androidx.fragment.app.Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Set the adapter
-        return inflater.inflate(R.layout.fragment_fiction_list, container, false)
+        return inflater.inflate(R.layout.fragment_fiction_grid, container, false)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnGridFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException("$context must implement OnGridFragmentInteractionListener")
+        listener = when {
+            context is OnGridFragmentInteractionListener -> context
+            parentFragment is OnGridFragmentInteractionListener -> parentFragment as OnGridFragmentInteractionListener
+            else -> throw RuntimeException("$context must implement OnGridFragmentInteractionListener")
         }
     }
 
@@ -100,21 +91,6 @@ class FictionGridFragment : androidx.fragment.app.Fragment() {
      * for more information.
      */
     interface OnGridFragmentInteractionListener {
-        fun onGridFragmentInteraction(item: FictionMetadata?)
-    }
-
-    companion object {
-
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            FictionGridFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
+        fun onGridFragmentInteraction(item: Fiction?)
     }
 }

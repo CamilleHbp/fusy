@@ -14,9 +14,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.camillebc.fusy.R
 import com.camillebc.fusy.core.APP_TAG
+import com.camillebc.fusy.core.model.Fiction
 import com.camillebc.fusy.core.model.FictionViewModel
 import kotlinx.android.synthetic.main.fragment_fiction_detail.*
-import me.camillebc.fictionproviderapi.FictionMetadata
 import org.sufficientlysecure.htmltextview.HtmlTextView
 
 private const val TAG = APP_TAG + "FictionDetailFragment"
@@ -24,11 +24,8 @@ private const val TAG = APP_TAG + "FictionDetailFragment"
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [FictionDetailFragment.OnFragmentInteractionListener] interface
+ * [FictionDetailFragment.OnDetailFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [FictionDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
  */
 class FictionDetailFragment : Fragment() {
     private lateinit var fictionModel: FictionViewModel
@@ -36,7 +33,7 @@ class FictionDetailFragment : Fragment() {
     private lateinit var fictionDescription: HtmlTextView
     private lateinit var fictionImage: ImageView
     private lateinit var fictionName: TextView
-    private lateinit var listener: OnFragmentInteractionListener
+    private lateinit var listener: OnDetailFragmentInteractionListener
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -51,9 +48,9 @@ class FictionDetailFragment : Fragment() {
         fictionModel = activity?.run {
             ViewModelProviders.of(this).get(FictionViewModel::class.java)
         } ?: throw Exception("$TAG | Invalid Activity")
-        fictionModel.fictionDetail.observe(this, Observer { fiction ->
+        fictionModel.fictionDetail.observe(viewLifecycleOwner, Observer { fiction ->
             fictionAuthor.text = fiction.author
-            fictionDescription.setHtml(StringBuilder ().apply {
+            fictionDescription.setHtml(StringBuilder().apply {
                 fiction.description.map { append(it) }
             }.toString())
             fictionName.text = fiction.name
@@ -65,12 +62,13 @@ class FictionDetailFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
+        if (context is OnDetailFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException("$context must implement OnGridFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnridFragmentInteractionListener")
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -90,8 +88,8 @@ class FictionDetailFragment : Fragment() {
      * [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html)
      * for more information.
      */
-    interface OnFragmentInteractionListener {
-        fun onAdd(item: FictionMetadata)
-        fun onRead(item: FictionMetadata)
+    interface OnDetailFragmentInteractionListener {
+        fun onAdd(item: Fiction)
+        fun onRead(item: Fiction)
     }
 }

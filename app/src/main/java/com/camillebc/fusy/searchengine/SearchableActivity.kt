@@ -14,34 +14,28 @@ import com.camillebc.fusy.bookshelf.view.FictionDetailFragment
 import com.camillebc.fusy.core.APP_TAG
 import com.camillebc.fusy.core.di.Injector
 import com.camillebc.fusy.core.model.Fiction
-import com.camillebc.fusy.core.model.FictionRepository
 import com.camillebc.fusy.core.model.FictionViewModel
 import com.camillebc.fusy.searchengine.view.FictionListFragment
 import com.camillebc.fusy.utilities.logi
 import com.camillebc.fusy.utilities.notifyObserver
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import me.camillebc.fictionproviderapi.ApiProvider
 import me.camillebc.fictionproviderapi.FictionMetadata
 import me.camillebc.fictionproviderapi.FictionProvider
 import me.camillebc.utilities.extensions.addFragment
 import me.camillebc.utilities.extensions.replaceFragment
-import javax.inject.Inject
 
 private const val TAG = APP_TAG + "SearchableActivity"
 
 class SearchableActivity :
     AppCompatActivity(),
     FictionListFragment.OnListFragmentInteractionListener,
-    FictionDetailFragment.OnFragmentInteractionListener,
+    FictionDetailFragment.OnDetailFragmentInteractionListener,
     CoroutineScope by CoroutineScope(Dispatchers.IO) {
 
-    @Inject
-    lateinit var repository: FictionRepository
     private lateinit var fictionViewModel: FictionViewModel
+    private var searchJob: Job? = null
 
     init {
         Injector.fictionComponent.inject(this)
@@ -60,7 +54,12 @@ class SearchableActivity :
 
         fictionViewModel = ViewModelProviders.of(this).get(FictionViewModel::class.java)
         val favoriteFragment = FictionListFragment()
-        addFragment(favoriteFragment, R.id.fragment_activitySearchable)
+        addFragment(R.id.fragment_activitySearchable, favoriteFragment)
+    }
+
+    override fun onStop() {
+        searchJob?.cancel()
+        super.onStop()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -75,26 +74,25 @@ class SearchableActivity :
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onAdd(item: FictionMetadata) {
-        launch { repository.add(Fiction(item)) }
+    override fun onAdd(item: Fiction) {
+        launch { fictionViewModel.addFictionToRepository(item) }
         Toast.makeText(this, "${item.name} added to the library.", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onRead(item: FictionMetadata) {
+    override fun onRead(item: Fiction) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onListFragmentInteraction(item: FictionMetadata?) {
         if (item != null) {
-            fictionViewModel.fictionDetail.value = item
-            val detailFragment = FictionDetailFragment()
-            replaceFragment(detailFragment, R.id.fragment_activitySearchable, true)
+            fictionViewModel.fictionDetail.value = Fiction(item)
+            replaceFragment(R.id.fragment_activitySearchable, FictionDetailFragment(), true)
         }
     }
 
     @kotlinx.coroutines.ExperimentalCoroutinesApi
     private fun search(query: String) {
-        launch {
+        searchJob = launch {
             val api = ApiProvider.getApi(FictionProvider.ROYALROAD)
             val searchFictionList = api.search(query)
             searchFictionList.consumeEach { fiction ->
