@@ -8,6 +8,7 @@ import me.camillebc.fictionproviderapi.FictionMetadata
 @Entity(
     tableName = "fictions",
     indices = [Index("category_name")],
+    primaryKeys = ["fiction_id", "provider"],
     foreignKeys = [
         ForeignKey(
             entity = Category::class,
@@ -32,7 +33,9 @@ data class Fiction(
     var ratings: Int? = null,
     var userRatings: Int? = null,
     @ColumnInfo(name = "category_name")
-    var categoryName: String? = null
+    var categoryName: String? = null,
+    var chaptersTotal: Long,
+    var lastChapterRead: Long = 0
 ) {
     constructor(
         fictionMetadata: FictionMetadata,
@@ -50,9 +53,7 @@ data class Fiction(
         fictionMetadata.pageCount,
         fictionMetadata.ratings,
         fictionMetadata.userRatings,
-        category
+        category,
+        0
     )
-
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
 }

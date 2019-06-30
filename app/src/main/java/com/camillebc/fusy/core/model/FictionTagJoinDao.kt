@@ -10,7 +10,7 @@ interface FictionTagJoinDao {
     @Query("select * from tags  inner join fiction_tag_join on tags.id=fiction_tag_join.tag_id where fiction_tag_join.fiction_id=:fictionId")
     suspend fun getTagsForFiction(fictionId: Long): List<Tag>
 
-    @Query("select * from fictions  inner join fiction_tag_join on fictions.id=fiction_tag_join.fiction_id where fiction_tag_join.tag_id=:tagId")
+    @Query("select * from fictions  inner join fiction_tag_join on fictions.fiction_id = fiction_tag_join.fiction_id where fiction_tag_join.tag_id=:tagId")
     suspend fun getFictionsForTag(tagId: Long): List<Fiction>
 
     @Insert(onConflict = REPLACE)

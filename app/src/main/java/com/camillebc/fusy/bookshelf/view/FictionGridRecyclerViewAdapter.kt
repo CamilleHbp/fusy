@@ -11,8 +11,6 @@ import com.bumptech.glide.RequestManager
 import com.camillebc.fusy.R
 import com.camillebc.fusy.core.model.Fiction
 import kotlinx.android.synthetic.main.fragment_fiction_grid_detail.view.*
-import kotlinx.android.synthetic.main.fragment_fiction_list_detail.view.*
-import me.camillebc.fictionproviderapi.FictionMetadata
 
 /**
  * [RecyclerView.Adapter] that can display a [Fiction] and makes a call to the
@@ -43,8 +41,11 @@ class FictionGridRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        holder.title.text = item.name
-        glide.load(item.imageUrl).into(holder.image)
+        with(holder) {
+            title.text = item.name
+            unread.text = (item.chaptersTotal - item.lastChapterRead).toString()
+            glide.load(item.imageUrl).into(image)
+        }
 
         // Set the click listener with the item as view's tag
         with(holder.view) {
@@ -63,5 +64,6 @@ class FictionGridRecyclerViewAdapter(
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val image: ImageView = view.imageView_fragmentFictionGrid
         val title: TextView = view.textView_fragmentFictionGrid_title
+        val unread: TextView = view.textView_fragmentFictionGrid_unread
     }
 }

@@ -6,6 +6,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavHostController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.camillebc.fusy.bookshelf.view.BookshelfFragment
 import com.camillebc.fusy.bookshelf.view.FictionDetailFragment
 import com.camillebc.fusy.core.APP_PREF
@@ -74,7 +77,8 @@ class MainActivity : AppCompatActivity(), BookshelfFragment.OnBookshelfFragmentI
     override fun onGridFragmentInteraction(item: Fiction?) {
         item?.let {
             fictionViewModel.fictionDetail.postValue(item)
-            replaceFragment(R.id.recyclerView_fragmentBookshelf, FictionDetailFragment(), true)
+//            replaceFragment(R.id.fragment_activityMain_navHost, FictionDetailFragment(), true)
+            findNavController(R.id.fragment_activityMain_navHost).navigate(R.id.action_bookshelfFragment_to_fictionDetailFragment)
         }
     }
 

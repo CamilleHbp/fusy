@@ -13,8 +13,20 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="-791" />
+                            <option name="y" value="-113" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="fictionDetailFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-597" />
+                            <option name="y" value="-120" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -25,8 +37,20 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-364" />
-                            <option name="y" value="201" />
+                            <option name="x" value="-136" />
+                            <option name="y" value="126" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="searchableActivity">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-787" />
+                            <option name="y" value="295" />
                           </Point>
                         </option>
                       </LayoutPositions>

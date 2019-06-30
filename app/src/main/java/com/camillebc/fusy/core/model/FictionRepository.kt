@@ -17,21 +17,25 @@ class FictionRepository(
 
     suspend fun getAll(): List<Fiction> = database.fictionDao().getAllFictions()
 
-    suspend fun getFictionById(id: Long): Fiction? = database.fictionDao().getFictionById(id)
+    suspend fun getFictionById(fictionId: String, provider: String): Fiction? =
+        database.fictionDao().getFictionById(fictionId, provider)
 
     suspend fun getFictionsByCategory(category: String?): List<Fiction>? {
         return if (category != null) {
             database.fictionDao().getFictionsByCategory(category)
         } else {
-            database.fictionDao().getFictionsDefaultCategory()
+            database.fictionDao().getFictionsByDefaultCategory()
         }
     }
 
-    suspend fun getCategories(): List<String>? = database.categoryDao().getAllCategories()?.map { it.name ?: "" }?.sorted()
+    suspend fun getCategories(): List<String>? =
+        database.categoryDao().getAllCategories()?.map { it.name ?: "" }?.sorted()
 
     suspend fun getTags(): List<String> = database.tagDao().getAllTags().map { it.name }.sortedWith(compareBy { it })
 
-    suspend fun add(item: Fiction) = database.fictionDao().insertFiction(item)
+    suspend fun add(item: Fiction) {
+        database.fictionDao().upsertFiction(item)
+    }
 
     suspend fun delete(item: Fiction) = database.fictionDao().deleteFiction(item)
 

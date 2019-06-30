@@ -12,8 +12,8 @@ import androidx.room.Index
     foreignKeys = [
         ForeignKey(
             entity = Fiction::class,
-            parentColumns = ["id"],
-            childColumns = ["fiction_id"],
+            parentColumns = ["fiction_id", "provider"],
+            childColumns = ["fiction_id", "provider"],
             onDelete = ForeignKey.NO_ACTION
         ),
         ForeignKey(
@@ -26,7 +26,9 @@ import androidx.room.Index
 )
 data class FictionTagJoin(
     @ColumnInfo(name = "fiction_id")
-    val fictionId: Long,
+    val fictionId: String,
+    @ColumnInfo(name = "provider")
+    val provider: String,
     @ColumnInfo(name = "tag_id")
     val tagId: Long
 )
