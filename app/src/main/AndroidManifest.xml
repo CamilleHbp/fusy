@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.camillebc.fusy">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:installLocation="auto"
         android:name=".FusyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_fusy"
+        android:installLocation="auto"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_fusy_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".MainActivity">
             <meta-data
                 android:name="android.app.default_searchable"
@@ -23,6 +25,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- This is added to handle a deep link -->
+            <nav-graph android:value="@navigation/library" />
         </activity>
         <activity android:name=".searchengine.SearchableActivity">
             <intent-filter>

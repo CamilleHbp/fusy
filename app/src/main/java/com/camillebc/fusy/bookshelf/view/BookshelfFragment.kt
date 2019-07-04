@@ -8,6 +8,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.camillebc.fusy.R
@@ -27,14 +28,13 @@ import me.camillebc.utilities.RecyclerViewEmptySupport
  */
 class BookshelfFragment :
     Fragment(),
-    CoroutineScope by CoroutineScope(Dispatchers.IO) {
-
+    CoroutineScope by CoroutineScope(Dispatchers.IO),
+    FictionGridFragment.OnGridFragmentInteractionListener {
     private var columnCount = 3
     private var category: String? = null
     private var fetchFictionsJob: Job? = null
     private lateinit var fictionViewModel: FictionViewModel
     private lateinit var fictionGridView: RecyclerViewEmptySupport
-    private var listener: FictionGridFragment.OnGridFragmentInteractionListener? = null
     private lateinit var tabLayout: TabLayout
 
 
@@ -48,6 +48,7 @@ class BookshelfFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        logi("OnCreate")
     }
 
     override fun onCreateView(
@@ -80,20 +81,6 @@ class BookshelfFragment :
         }
     }
 
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnBookshelfFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException("$context must implement OnBookshelfFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
 
     private fun setTabLayout() {
         tabLayout = tabLayout_fragmentBookshelf
@@ -140,7 +127,7 @@ class BookshelfFragment :
             }
             val bookshelfAdapter = FictionGridRecyclerViewAdapter(
                 fictionViewModel.fictionBookshelfList.value!!,
-                listener,
+                this@BookshelfFragment,
                 Glide.with(this).setDefaultRequestOptions(requestOptions)
             )
             val bookshelfObserver = Observer<MutableList<Fiction>> {
@@ -152,16 +139,11 @@ class BookshelfFragment :
         }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson
-     * [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnBookshelfFragmentInteractionListener : FictionGridFragment.OnGridFragmentInteractionListener
+    override fun onGridFragmentInteraction(item: Fiction?) {
+        item?.let {
+            fictionViewModel.fictionDetail.postValue(it)
+            findNavController().navigate(R.id.action_bookshelfFragment_to_fictionDetailFragment)
+        }
+    }
+
 }

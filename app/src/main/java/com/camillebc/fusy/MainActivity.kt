@@ -1,37 +1,50 @@
 package com.camillebc.fusy
 
-import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavHostController
-import androidx.navigation.findNavController
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.camillebc.fusy.bookshelf.view.BookshelfFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.camillebc.fusy.bookshelf.view.FictionDetailFragment
 import com.camillebc.fusy.core.APP_PREF
-import com.camillebc.fusy.core.RC_SIGN_IN
-import com.camillebc.fusy.core.account.Account
 import com.camillebc.fusy.core.di.Injector
 import com.camillebc.fusy.core.model.Fiction
 import com.camillebc.fusy.core.model.FictionViewModel
+import com.camillebc.fusy.reader.ReaderFragment
+import com.camillebc.fusy.searchengine.view.SearchFragment
+import com.camillebc.fusy.utilities.logi
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.camillebc.utilities.HardwareStatusManager
-import me.camillebc.utilities.extensions.replaceFragment
+import me.camillebc.utilities.extensions.setupWithNavController
 import javax.inject.Inject
 
 private const val TAG_FIRST_LAUNCH = "LoginFragment"
 
-class MainActivity : AppCompatActivity(), BookshelfFragment.OnBookshelfFragmentInteractionListener,
-    FictionDetailFragment.OnDetailFragmentInteractionListener, CoroutineScope by CoroutineScope(Dispatchers.IO) {
+class MainActivity :
+    AppCompatActivity(),
+    CoroutineScope by CoroutineScope(Dispatchers.IO),
+    FictionDetailFragment.OnDetailFragmentInteractionListener,
+    NavigationView.OnNavigationItemSelectedListener,
+    ReaderFragment.OnReaderFragmentInteractionListener,
+    SearchFragment.OnSearchFragmentInteractionListener {
 
     @Inject
     lateinit var hardwareStatusManager: HardwareStatusManager
     private lateinit var fictionViewModel: FictionViewModel
+    private var currentNavController: LiveData<NavController>? = null
+    private var navHostFragmentMap: Map<Int, NavHostFragment>? = null
 
     init {
         Injector.fictionComponent.inject(this)
@@ -45,41 +58,34 @@ class MainActivity : AppCompatActivity(), BookshelfFragment.OnBookshelfFragmentI
         val status = hardwareStatusManager.getConnectivityStatus().name
         val battery = hardwareStatusManager.getBatteryStatus().name
 
+        if (savedInstanceState == null) {
+            setupBottomNavigationBar()
+        } // Else, need to wait for onRestoreInstanceState
         Toast.makeText(
             this,
             "Connectivity status: $status\nBattery status: $battery", Toast.LENGTH_SHORT
         ).show()
     }
 
-//    override fun onBackPressed() {
-//        // Disable back key on first launch: we need to choose an account type
-//        val firstLaunchFragment = supportFragmentManager.findFragmentByTag(TAG_FIRST_LAUNCH)
-//        if (firstLaunchFragment != null) {
-//            Toast.makeText(this, "Please choose your account type.", Toast.LENGTH_SHORT).show()
-//        } else {
-//            super.onBackPressed()
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+//        if (requestCode == RC_SIGN_IN) {
+//            data?.let { Account.setGoogleAccount(it) }
+//            Toast.makeText(this, "Signed in as " + Account.getName(), Toast.LENGTH_SHORT).show()
+//            val accountFragment = BookshelfFragment()
+//            replaceFragment(R.id.constraintLayout_activityMain_navHost, accountFragment)
+//            supportFragmentManager.popBackStack(TAG_FIRST_LAUNCH, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 //        }
 //    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            data?.let { Account.setGoogleAccount(it) }
-            Toast.makeText(this, "Signed in as " + Account.getName(), Toast.LENGTH_SHORT).show()
-            val accountFragment = BookshelfFragment()
-            replaceFragment(R.id.fragment_activityMain_navHost, accountFragment)
-            supportFragmentManager.popBackStack(TAG_FIRST_LAUNCH, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        }
+    override fun onReaderFragmentInteraction(uri: Uri) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onGridFragmentInteraction(item: Fiction?) {
-        item?.let {
-            fictionViewModel.fictionDetail.postValue(item)
-//            replaceFragment(R.id.fragment_activityMain_navHost, FictionDetailFragment(), true)
-            findNavController(R.id.fragment_activityMain_navHost).navigate(R.id.action_bookshelfFragment_to_fictionDetailFragment)
-        }
+    override fun onSearchFragmentInteraction(uri: Uri) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onAdd(item: Fiction) {
@@ -114,6 +120,75 @@ class MainActivity : AppCompatActivity(), BookshelfFragment.OnBookshelfFragmentI
             currentVersionCode > savedVersionCode -> true // TODO This is an upgrade
             else -> true
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val containerId = R.id.constraintLayout_activityMain_navHost
+        val navHostFragment = when (item.itemId) {
+            R.id.library -> navHostFragmentMap!![R.navigation.library] as Fragment
+            R.id.reader -> navHostFragmentMap!![R.navigation.reader] as Fragment
+            R.id.search_engine -> navHostFragmentMap!![R.navigation.search_engine] as Fragment
+            else -> return false
+        }
+        supportFragmentManager.beginTransaction()
+            .replace(containerId, navHostFragment, "library")
+            .setPrimaryNavigationFragment(navHostFragment)
+            .commitNow()
+        return true
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        // Now that BottomNavigationBar has restored its instance state
+        // and its selectedItemId, we can proceed with setting up the
+        // BottomNavigationBar with Navigation
+        setupBottomNavigationBar()
+    }
+
+//    /**
+//     * Called on first creation and when restoring state.
+//     */
+//    private fun setupBottomNavigationBar() {
+//        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation_activityMain)
+//
+//        val navGraphIds =
+//            listOf(R.navigation.library, R.navigation.reader, R.navigation.search_engine)
+//
+//        // Setup the bottom navigation view with a list of navigation graphs
+//        val controller = bottomNavigationView.setupWithNavController(
+//            navGraphIds = navGraphIds,
+//            fragmentManager = supportFragmentManager,
+//            containerId = R.id.constraintLayout_activityMain_navHost,
+//            intent = intent
+//        )
+//
+//        // Whenever the selected controller changes, setup the action bar.
+//        controller.observe(this, Observer { navController ->
+//            setupActionBarWithNavController(navController)
+//        })
+//        currentNavController = controller
+//        bottomNavigationView.selectedItemId = R.id.library
+//    }
+
+    private fun setupBottomNavigationBar() {
+        val navGraphIds = listOf(R.navigation.library, R.navigation.reader, R.navigation.search_engine)
+        navHostFragmentMap = createNavHostFragments(navGraphIds)
+        bottomNavigation_activityMain.setOnNavigationItemSelectedListener {
+            this.onNavigationItemSelected(it)
+        }
+    }
+
+    private fun createNavHostFragments(navGraphIds: List<Int>): Map<Int, NavHostFragment> =
+        mutableMapOf<Int, NavHostFragment>().also { list ->
+            navGraphIds.forEach { navGraphId ->
+                list[navGraphId] = NavHostFragment.create(navGraphId)
+                logi("navGraphId: $navGraphId")
+                logi("NavHostFragment: ${list[navGraphId]}")
+            }
+        }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return currentNavController?.value?.navigateUp() ?: false
     }
 }
 

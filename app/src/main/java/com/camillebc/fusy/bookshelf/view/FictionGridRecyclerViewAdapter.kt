@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.camillebc.fusy.R
 import com.camillebc.fusy.core.model.Fiction
-import kotlinx.android.synthetic.main.fragment_fiction_grid_detail.view.*
+import kotlinx.android.synthetic.main.fiction_grid_detail.view.*
 
 /**
  * [RecyclerView.Adapter] that can display a [Fiction] and makes a call to the
@@ -35,7 +35,7 @@ class FictionGridRecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_fiction_grid_detail, parent, false)
+            .inflate(R.layout.fiction_grid_detail, parent, false)
         return ViewHolder(view)
     }
 

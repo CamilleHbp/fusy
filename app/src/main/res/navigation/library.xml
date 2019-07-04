@@ -2,31 +2,21 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/bookshelfFragment">
+    android:id="@+id/library_nav_graph"
+    app:startDestination="@+id/bookshelfFragment">
 
     <fragment
         android:id="@+id/bookshelfFragment"
         android:name="com.camillebc.fusy.bookshelf.view.BookshelfFragment"
         android:label="fragment_bookshelf"
-        tools:layout="@layout/fragment_bookshelf" >
+        tools:layout="@layout/fragment_bookshelf">
         <action
             android:id="@+id/action_bookshelfFragment_to_fictionDetailFragment"
             app:destination="@id/fictionDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.camillebc.fusy.core.account.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
-    <fragment
         android:id="@+id/fictionDetailFragment"
         android:name="com.camillebc.fusy.bookshelf.view.FictionDetailFragment"
         android:label="fragment_fiction_detail"
         tools:layout="@layout/fragment_fiction_detail" />
-    <activity
-        android:id="@+id/searchableActivity"
-        android:name="com.camillebc.fusy.searchengine.SearchableActivity"
-        android:label="activity_searchable"
-        tools:layout="@layout/activity_searchable" />
 </navigation>

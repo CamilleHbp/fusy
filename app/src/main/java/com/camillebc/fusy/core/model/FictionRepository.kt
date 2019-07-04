@@ -28,10 +28,11 @@ class FictionRepository(
         }
     }
 
-    suspend fun getCategories(): List<String>? =
-        database.categoryDao().getAllCategories()?.map { it.name ?: "" }?.sorted()
+    suspend fun getCategories(): List<String> =
+        database.categoryDao().getAllCategories()?.map { it.name ?: "" }?.sorted() ?: listOf()
 
-    suspend fun getTags(): List<String> = database.tagDao().getAllTags().map { it.name }.sortedWith(compareBy { it })
+    suspend fun getTags(): List<String> =
+        database.tagDao().getAllTags()?.map { it.name }?.sortedWith(compareBy { it }) ?: listOf()
 
     suspend fun add(item: Fiction) {
         database.fictionDao().upsertFiction(item)

@@ -11,6 +11,7 @@
         android:id="@+id/tabLayout_fragmentBookshelf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:tabMaxWidth="2000dp"
         app:layout_constraintTop_toTopOf="parent"
         app:tabMode="auto">
 
@@ -29,17 +30,15 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tabLayout_fragmentBookshelf"
         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:listitem="@layout/fragment_fiction_grid_detail"
+        tools:listitem="@layout/fiction_grid_detail"
         tools:spanCount="3" />
 
     <TextView
         android:id="@+id/textView_fragmentBookshelf_empty"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/bookshelf_empty"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/tabLayout_fragmentBookshelf" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

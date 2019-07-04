@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy.REPLACE
 @Dao
 interface TagDao {
     @Query("select * from tags")
-    suspend fun getAllTags(): List<Tag>
+    suspend fun getAllTags(): List<Tag>?
 
     @Query("select * from tags where warning = :warning")
     suspend fun getWarnings(warning: Boolean = true): List<Tag>

@@ -12,7 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.camillebc.fusy.R
 import com.camillebc.fusy.core.APP_TAG
 import com.camillebc.fusy.core.model.FictionViewModel
-import kotlinx.android.synthetic.main.fragment_fiction_list.*
+import kotlinx.android.synthetic.main.fiction_list.*
 import me.camillebc.fictionproviderapi.FictionMetadata
 import me.camillebc.utilities.RecyclerViewEmptySupport
 
@@ -73,7 +73,7 @@ class FictionListFragment : androidx.fragment.app.Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Set the adapter
-        return inflater.inflate(R.layout.fragment_fiction_list, container, false)
+        return inflater.inflate(R.layout.fiction_list, container, false)
     }
 
     override fun onAttach(context: Context) {

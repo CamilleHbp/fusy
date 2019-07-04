@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.camillebc.fusy.R
 import com.camillebc.fusy.core.model.Fiction
-import kotlinx.android.synthetic.main.fragment_fiction_list_detail.view.*
+import kotlinx.android.synthetic.main.fiction_list_detail.view.*
 import me.camillebc.fictionproviderapi.FictionMetadata
 
 /**
@@ -36,7 +36,7 @@ class FictionListRecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_fiction_list_detail, parent, false)
+            .inflate(R.layout.fiction_list_detail, parent, false)
         return ViewHolder(view)
     }
 

@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         tools:spanCount="3"
-        tools:listitem="@layout/fragment_fiction_grid_detail" />
+        tools:listitem="@layout/fiction_grid_detail" />
 
     <ProgressBar
         android:id="@+id/progressBar_fragmentFictionGrid_empty"

@@ -21,7 +21,8 @@ class FictionViewModel : ViewModel(), CoroutineScope by CoroutineScope(Dispatche
 
     suspend fun addFictionToRepository(fiction: Fiction) = repository.add(fiction)
 
-    suspend fun getBookshelfCategories(): List<String>? = repository.getCategories()
+    suspend fun getBookshelfCategories(): List<String> = repository.getCategories()
+    suspend fun getTags(): List<String> = repository.getTags()
 
     suspend fun setBookshelfList(categoryName: String?) =
         fictionBookshelfList.postValue(repository.getFictionsByCategory(categoryName) as MutableList<Fiction>?)

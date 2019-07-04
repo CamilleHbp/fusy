@@ -12,7 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.camillebc.fusy.R
 import com.camillebc.fusy.core.model.Fiction
 import com.camillebc.fusy.core.model.FictionViewModel
-import kotlinx.android.synthetic.main.fragment_fiction_grid.*
+import kotlinx.android.synthetic.main.fiction_grid.*
 import me.camillebc.utilities.RecyclerViewEmptySupport
 
 /**
@@ -62,7 +62,7 @@ class FictionGridFragment : androidx.fragment.app.Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Set the adapter
-        return inflater.inflate(R.layout.fragment_fiction_grid, container, false)
+        return inflater.inflate(R.layout.fiction_grid, container, false)
     }
 
     override fun onAttach(context: Context) {
