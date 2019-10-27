@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".searchengine.view.SearchFragment">
+    tools:context=".searchengine.view.SearchFragment"
+    android:id="@+id/constraintLayout_fragmentSearch">
 
     <EditText
         android:id="@+id/editText_fragmentSearch_query"
@@ -15,23 +16,35 @@
         android:hint="@string/search_hint"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_conversion_absoluteHeight="45dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_conversion_absoluteWidth="213dp" />
 
     <me.camillebc.utilities.RecyclerViewEmptySupport
         android:id="@+id/recyclerView_fragmentSearch"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_8dp"
         app:layout_constraintTop_toBottomOf="@id/editText_fragmentSearch_query"
         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         tools:listitem="@layout/tag_detail"
-        tools:spanCount="4" />
+        tools:spanCount="4"
+        tools:layout_conversion_absoluteHeight="723dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_conversion_absoluteWidth="411dp" />
 
     <TextView
-        android:id="@+id/textView_fragmentBookshelf_empty"
+        android:id="@+id/textView_fragmentSearch_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/search_tags_empty"
-        app:layout_constraintTop_toBottomOf="@id/editText_fragmentSearch_query" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView_fragmentSearch"
+        tools:layout_conversion_absoluteHeight="19dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_conversion_absoluteWidth="411dp" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

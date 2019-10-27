@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.camillebc.fusy.R
 import com.camillebc.fusy.core.model.FictionViewModel
+import com.camillebc.fusy.utilities.logi
 import com.camillebc.fusy.utilities.notifyObserver
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.CoroutineScope
@@ -81,7 +82,7 @@ class SearchFragment : Fragment(), CoroutineScope by CoroutineScope(Dispatchers.
                 tagGridAdapter.setData(it)
             }
             adapter = tagGridAdapter
-            setEmptyView(textView_fragmentBookshelf_empty)
+            setEmptyView(textView_fragmentSearch_empty)
             tagList.observe(viewLifecycleOwner, tagObserver)
         }
     }
@@ -89,6 +90,9 @@ class SearchFragment : Fragment(), CoroutineScope by CoroutineScope(Dispatchers.
     private fun updateTags() {
         with(tagList) {
             launch {
+                fictionViewModel.getTags().forEach {
+                    logi("tag: $it")
+                }
                 postValue(fictionViewModel.getTags())
                 notifyObserver()
             }

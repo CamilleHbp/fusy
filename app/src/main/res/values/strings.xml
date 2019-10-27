@@ -41,4 +41,5 @@
     <string name="menu_bookshelf">Bookshelf</string>
     <string name="menu_search">Search</string>
     <string name="search_tags_empty">No tags available</string>
+    <string name="fiction_add_library_category">Choose category</string>
 </resources>

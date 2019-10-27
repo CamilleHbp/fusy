@@ -36,7 +36,7 @@ class MainActivity :
     AppCompatActivity(),
     CoroutineScope by CoroutineScope(Dispatchers.IO),
     FictionDetailFragment.OnDetailFragmentInteractionListener,
-    NavigationView.OnNavigationItemSelectedListener,
+//    NavigationView.OnNavigationItemSelectedListener,
     ReaderFragment.OnReaderFragmentInteractionListener,
     SearchFragment.OnSearchFragmentInteractionListener {
 
@@ -122,20 +122,20 @@ class MainActivity :
         }
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val containerId = R.id.constraintLayout_activityMain_navHost
-        val navHostFragment = when (item.itemId) {
-            R.id.library -> navHostFragmentMap!![R.navigation.library] as Fragment
-            R.id.reader -> navHostFragmentMap!![R.navigation.reader] as Fragment
-            R.id.search_engine -> navHostFragmentMap!![R.navigation.search_engine] as Fragment
-            else -> return false
-        }
-        supportFragmentManager.beginTransaction()
-            .replace(containerId, navHostFragment, "library")
-            .setPrimaryNavigationFragment(navHostFragment)
-            .commitNow()
-        return true
-    }
+//    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+//        val containerId = R.id.constraintLayout_activityMain_navHost
+//        val navHostFragment = when (item.itemId) {
+//            R.id.library -> navHostFragmentMap!![R.navigation.library] as Fragment
+//            R.id.reader -> navHostFragmentMap!![R.navigation.reader] as Fragment
+//            R.id.search_engine -> navHostFragmentMap!![R.navigation.search_engine] as Fragment
+//            else -> return false
+//        }
+//        supportFragmentManager.beginTransaction()
+//            .replace(containerId, navHostFragment, "library")
+//            .setPrimaryNavigationFragment(navHostFragment)
+//            .commitNow()
+//        return true
+//    }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
@@ -145,47 +145,29 @@ class MainActivity :
         setupBottomNavigationBar()
     }
 
-//    /**
-//     * Called on first creation and when restoring state.
-//     */
-//    private fun setupBottomNavigationBar() {
-//        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation_activityMain)
-//
-//        val navGraphIds =
-//            listOf(R.navigation.library, R.navigation.reader, R.navigation.search_engine)
-//
-//        // Setup the bottom navigation view with a list of navigation graphs
-//        val controller = bottomNavigationView.setupWithNavController(
-//            navGraphIds = navGraphIds,
-//            fragmentManager = supportFragmentManager,
-//            containerId = R.id.constraintLayout_activityMain_navHost,
-//            intent = intent
-//        )
-//
-//        // Whenever the selected controller changes, setup the action bar.
-//        controller.observe(this, Observer { navController ->
-//            setupActionBarWithNavController(navController)
-//        })
-//        currentNavController = controller
-//        bottomNavigationView.selectedItemId = R.id.library
-//    }
-
+    /**
+     * Called on first creation and when restoring state.
+     */
     private fun setupBottomNavigationBar() {
-        val navGraphIds = listOf(R.navigation.library, R.navigation.reader, R.navigation.search_engine)
-        navHostFragmentMap = createNavHostFragments(navGraphIds)
-        bottomNavigation_activityMain.setOnNavigationItemSelectedListener {
-            this.onNavigationItemSelected(it)
-        }
-    }
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation_activityMain)
 
-    private fun createNavHostFragments(navGraphIds: List<Int>): Map<Int, NavHostFragment> =
-        mutableMapOf<Int, NavHostFragment>().also { list ->
-            navGraphIds.forEach { navGraphId ->
-                list[navGraphId] = NavHostFragment.create(navGraphId)
-                logi("navGraphId: $navGraphId")
-                logi("NavHostFragment: ${list[navGraphId]}")
-            }
-        }
+        val navGraphIds =
+            listOf(R.navigation.reader, R.navigation.library, R.navigation.search_engine)
+
+        // Setup the bottom navigation view with a list of navigation graphs
+        val controller = bottomNavigationView.setupWithNavController(
+            navGraphIds = navGraphIds,
+            fragmentManager = supportFragmentManager,
+            containerId = R.id.constraintLayout_activityMain_navHost,
+            intent = intent
+        )
+
+        // Whenever the selected controller changes, setup the action bar.
+        controller.observe(this, Observer { navController ->
+            setupActionBarWithNavController(navController)
+        })
+        currentNavController = controller
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         return currentNavController?.value?.navigateUp() ?: false

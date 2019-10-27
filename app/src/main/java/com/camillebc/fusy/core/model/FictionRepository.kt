@@ -42,6 +42,19 @@ class FictionRepository(
 
     suspend fun update(item: Fiction) = database.fictionDao().updateFiction(item)
 
+    suspend fun updateTags() {
+        val tagList = mutableListOf<Tag>().also { list ->
+            providers.forEach { provider ->
+                provider.getProviderTags().distinct().forEach { tagString ->
+                    if (list.none { it.name == tagString }) {
+                        list.add(Tag(name = tagString))
+                    }
+                }
+            }
+        }
+        database.tagDao().updateTags(tagList.distinct())
+    }
+
     @kotlinx.coroutines.ExperimentalCoroutinesApi
     fun search(
         query: String? = null,
